@@ -1,11 +1,26 @@
-[gd_scene load_steps=5 format=3 uid="uid://cn4qndkuji4ls"]
+[gd_scene load_steps=11 format=3 uid="uid://cn4qndkuji4ls"]
 
 [ext_resource type="Script" path="res://Player/Player.gd" id="1_t7byk"]
 [ext_resource type="Script" path="res://Player/Camera3D.gd" id="2_b20r0"]
+[ext_resource type="Shader" path="res://shaders/testingUV.gdshader" id="3_t78rq"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_5u2jp"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_0wx0t"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_kobv7"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_jutj2"]
+noise = SubResource("FastNoiseLite_kobv7")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_n6530"]
+shader = ExtResource("3_t78rq")
+shader_parameter/distortionTexture = SubResource("NoiseTexture2D_jutj2")
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_w3wc3"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_7hc47"]
+shader = ExtResource("3_t78rq")
 
 [node name="Player" type="CharacterBody3D"]
 script = ExtResource("1_t7byk")
@@ -20,3 +35,9 @@ mesh = SubResource("CapsuleMesh_0wx0t")
 transform = Transform3D(1, 0, 0, 0, 0.916139, 0.400861, 0, -0.400861, 0.916139, 0, 4.50628, 8.71055)
 top_level = true
 script = ExtResource("2_b20r0")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Camera3D"]
+transform = Transform3D(1, 0, 0, 0, -0.18306, -0.983102, 0, 0.983102, -0.18306, 0, -0.263403, -1.79234)
+material_override = SubResource("ShaderMaterial_n6530")
+mesh = SubResource("PlaneMesh_w3wc3")
+surface_material_override/0 = SubResource("ShaderMaterial_7hc47")

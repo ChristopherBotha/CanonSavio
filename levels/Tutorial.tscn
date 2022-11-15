@@ -1,4 +1,6 @@
-[gd_scene load_steps=4 format=3 uid="uid://cgvnhgorwk8mc"]
+[gd_scene load_steps=7 format=3 uid="uid://cgvnhgorwk8mc"]
+
+[ext_resource type="Shader" path="res://shaders/testingUV.gdshader" id="1_mrkt7"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_byaxv"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
@@ -13,6 +15,12 @@ sky = SubResource("Sky_71xog")
 tonemap_mode = 2
 glow_enabled = true
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_1512c"]
+shader = ExtResource("1_mrkt7")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_50kv6"]
+albedo_color = Color(0, 0, 0, 1)
+
 [node name="Tutorial" type="Node3D"]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
@@ -24,6 +32,8 @@ shadow_enabled = true
 
 [node name="CSGBox3D" type="CSGBox3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
+material_override = SubResource("ShaderMaterial_1512c")
+material_overlay = SubResource("StandardMaterial3D_50kv6")
 use_collision = true
 size = Vector3(100, 1, 100)
 

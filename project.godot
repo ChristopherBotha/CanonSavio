@@ -19,3 +19,12 @@ config/icon="res://icon.svg"
 
 SignalBus="*res://scripts/SignalBus.gd"
 Game="*res://scripts/Game.gd"
+
+[display]
+
+window/vsync/vsync_mode=0
+window/stretch/mode="canvas_items"
+
+[xr]
+
+shaders/enabled=true
