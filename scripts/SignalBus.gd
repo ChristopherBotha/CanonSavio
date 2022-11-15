@@ -19,4 +19,4 @@ signal interact(val)
 signal updateEnemiesDamage(val)
 signal enemyCounter(val)
 
-
+signal trauma(val,timer)
