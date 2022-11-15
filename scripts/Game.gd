@@ -1,6 +1,5 @@
 extends Node
 
-
 var playerDamage : float 
 var playerMaxMana : float
 var playerMana : float

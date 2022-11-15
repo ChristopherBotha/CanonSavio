@@ -1,7 +1,42 @@
-[gd_scene format=3 uid="uid://cgvnhgorwk8mc"]
+[gd_scene load_steps=4 format=3 uid="uid://cgvnhgorwk8mc"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_byaxv"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_71xog"]
+sky_material = SubResource("ProceduralSkyMaterial_byaxv")
+
+[sub_resource type="Environment" id="Environment_q1ao5"]
+background_mode = 2
+sky = SubResource("Sky_71xog")
+tonemap_mode = 2
+glow_enabled = true
 
 [node name="Tutorial" type="Node3D"]
 
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_q1ao5")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -0.500003, 0.749999, -0.43301, 0, 0, 0)
+shadow_enabled = true
+
 [node name="CSGBox3D" type="CSGBox3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
+use_collision = true
 size = Vector3(100, 1, 100)
+
+[node name="playerSpawn" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.02626, 14.0194)
+
+[node name="enemySpawners" type="Node" parent="."]
+
+[node name="enemySpawn" type="Marker3D" parent="enemySpawners"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -24.8655, 2.59364, -19.9576)
+
+[node name="enemySpawn2" type="Marker3D" parent="enemySpawners"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 26.0943, 0, -25.4159)
+
+[node name="enemySpawn3" type="Marker3D" parent="enemySpawners"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.292753, 1.04333, -26.1909)
