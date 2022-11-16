@@ -1,3 +1,5 @@
+extends Node
+
 #player changes
 signal updatePlayerHealth(val)
 signal updatePlayerMana(val)

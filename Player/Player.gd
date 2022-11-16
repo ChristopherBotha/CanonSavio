@@ -1,5 +1,5 @@
 extends CharacterBody3D
-
+class_name Player
 
 var SPEED = 5.0
 var JUMP_VELOCITY = 4.5
@@ -15,7 +15,9 @@ var momentum : float = 0.1
 var friction : float = 0.05
 var airFriction : float = 0.07
 
-@onready var body = $CollisionShape3D
+@onready var body = $Body
+@onready var back = $Body/Back
+@onready var camera = $Camera_Orbit/h/v/SpringArm3D/Camera3D
 var h_rot
 
 func _physics_process(delta):
@@ -68,9 +70,12 @@ func sprinting(delta):
 	if Input.is_action_pressed("sprint"):
 		SPEED = maxSpeed
 		handleInput(delta)
+		camera.fov = move_toward(camera.fov, 90, 0.5)
 	else:
 		SPEED = 5.0
 		handleInput(delta)
+		camera.fov = move_toward(camera.fov, 75, 0.5)
+		
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:

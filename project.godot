@@ -8,6 +8,34 @@
 
 config_version=5
 
+_global_script_classes=[{
+"base": "CharacterBody3D",
+"class": &"Player",
+"language": &"GDScript",
+"path": "res://Player/Player.gd"
+}, {
+"base": "State",
+"class": &"PlayerState",
+"language": &"GDScript",
+"path": "res://Player/Player_State.gd"
+}, {
+"base": "Node",
+"class": &"State",
+"language": &"GDScript",
+"path": "res://Player/State.gd"
+}, {
+"base": "Node",
+"class": &"State_Machine",
+"language": &"GDScript",
+"path": "res://Player/State_Machine.gd"
+}]
+_global_script_class_icons={
+"Player": "",
+"PlayerState": "",
+"State": "",
+"State_Machine": ""
+}
+
 [application]
 
 config/name="CanonSavio"

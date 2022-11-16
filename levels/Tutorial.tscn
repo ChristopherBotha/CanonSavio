@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://cgvnhgorwk8mc"]
+[gd_scene load_steps=20 format=3 uid="uid://cgvnhgorwk8mc"]
 
 [ext_resource type="Shader" path="res://shaders/testingUV.gdshader" id="1_mrkt7"]
 [ext_resource type="Script" path="res://scripts/Tutorial.gd" id="1_pxheu"]
@@ -20,8 +20,22 @@ glow_enabled = true
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_1512c"]
 shader = ExtResource("1_mrkt7")
 
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_svemp"]
+noise_type = 4
+frequency = 0.037
+fractal_type = 2
+fractal_weighted_strength = 0.24
+domain_warp_fractal_octaves = 10
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_wrnsy"]
+seamless = true
+as_normal_map = true
+noise = SubResource("FastNoiseLite_svemp")
+
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_50kv6"]
 albedo_color = Color(0, 0, 0, 1)
+normal_texture = SubResource("NoiseTexture2D_wrnsy")
+uv1_world_triplanar = true
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_dgue4"]
 height = 15.008
@@ -134,6 +148,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.292753, 1.04333, -26.1909)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.933034, -77.9416)
+visible = false
 mesh = SubResource("PlaneMesh_d12x1")
 surface_material_override/0 = SubResource("ShaderMaterial_dcju8")
 
