@@ -1,17 +1,19 @@
-[gd_scene load_steps=7 format=3 uid="uid://cgvnhgorwk8mc"]
+[gd_scene load_steps=18 format=3 uid="uid://cgvnhgorwk8mc"]
 
 [ext_resource type="Shader" path="res://shaders/testingUV.gdshader" id="1_mrkt7"]
+[ext_resource type="Script" path="res://scripts/Tutorial.gd" id="1_pxheu"]
+[ext_resource type="Shader" path="res://shaders/water_spec.gdshader" id="3_24cnc"]
 
-[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_byaxv"]
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_e51e4"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
 ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
 
-[sub_resource type="Sky" id="Sky_71xog"]
-sky_material = SubResource("ProceduralSkyMaterial_byaxv")
+[sub_resource type="Sky" id="Sky_kp03l"]
+sky_material = SubResource("ProceduralSkyMaterial_e51e4")
 
-[sub_resource type="Environment" id="Environment_q1ao5"]
+[sub_resource type="Environment" id="Environment_4rb1d"]
 background_mode = 2
-sky = SubResource("Sky_71xog")
+sky = SubResource("Sky_kp03l")
 tonemap_mode = 2
 glow_enabled = true
 
@@ -21,10 +23,61 @@ shader = ExtResource("1_mrkt7")
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_50kv6"]
 albedo_color = Color(0, 0, 0, 1)
 
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_dgue4"]
+height = 15.008
+radius = 100.0
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_d12x1"]
+size = Vector2(50, 50)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_oc6gv"]
+frequency = 0.082
+fractal_octaves = 10
+fractal_gain = 5.0
+fractal_weighted_strength = 0.35
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_uywij"]
+seamless = true
+seamless_blend_skirt = 0.57
+noise = SubResource("FastNoiseLite_oc6gv")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_blc62"]
+noise_type = 0
+frequency = 0.02
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_ri2kl"]
+seamless = true
+bump_strength = 17.2
+noise = SubResource("FastNoiseLite_blc62")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_8tbe1"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_7bm2m"]
+as_normal_map = true
+bump_strength = 20.0
+noise = SubResource("FastNoiseLite_8tbe1")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_dcju8"]
+render_priority = 0
+shader = ExtResource("3_24cnc")
+shader_parameter/color = Color(0.290196, 0.290196, 0, 0.121569)
+shader_parameter/edge_color = Color(0, 0, 0, 0.866667)
+shader_parameter/edge_scale = 0.25
+shader_parameter/far = 100.0
+shader_parameter/near = 0.1
+shader_parameter/noise1 = SubResource("NoiseTexture2D_uywij")
+shader_parameter/noise2 = SubResource("NoiseTexture2D_ri2kl")
+shader_parameter/normalmap = SubResource("NoiseTexture2D_7bm2m")
+shader_parameter/speed = 0.001
+shader_parameter/time_factor = Vector2(1, 2)
+shader_parameter/wave_frequency = Vector2(12, 12)
+shader_parameter/wave_strengh = Vector2(0.25, 0.01)
+
 [node name="Tutorial" type="Node3D"]
+script = ExtResource("1_pxheu")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = SubResource("Environment_q1ao5")
+environment = SubResource("Environment_4rb1d")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -0.500003, 0.749999, -0.43301, 0, 0, 0)
@@ -37,8 +90,36 @@ material_overlay = SubResource("StandardMaterial3D_50kv6")
 use_collision = true
 size = Vector3(100, 1, 100)
 
+[node name="CSGBox3D2" type="CSGBox3D" parent="."]
+transform = Transform3D(0.210523, 0, 0, 0, 1, 0, 0, 0, 0.154916, 0, -1, -68.101)
+material_override = SubResource("ShaderMaterial_1512c")
+material_overlay = SubResource("StandardMaterial3D_50kv6")
+use_collision = true
+size = Vector3(100, 1, 100)
+
+[node name="CSGBox3D3" type="CSGBox3D" parent="."]
+transform = Transform3D(0.210523, 0, 0, 0, 1, 0, 0, 0, 0.154916, -11.2596, -1, -94.6051)
+material_override = SubResource("ShaderMaterial_1512c")
+material_overlay = SubResource("StandardMaterial3D_50kv6")
+use_collision = true
+size = Vector3(100, 1, 100)
+
+[node name="CSGBox3D4" type="CSGBox3D" parent="."]
+transform = Transform3D(0.210523, 0, 0, 0, 1, 0, 0, 0, 0.154916, 11.077, 13.336, -115.628)
+material_override = SubResource("ShaderMaterial_1512c")
+material_overlay = SubResource("StandardMaterial3D_50kv6")
+use_collision = true
+size = Vector3(100, 1, 100)
+
+[node name="Area3D" type="Area3D" parent="CSGBox3D4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 59.3143, 0, 374.931)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CSGBox3D4/Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -91.4737, -10.5658, 129.467)
+shape = SubResource("CylinderShape3D_dgue4")
+
 [node name="playerSpawn" type="Marker3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.02626, 14.0194)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.1202, 1.09363, -20.7696)
 
 [node name="enemySpawners" type="Node" parent="."]
 
@@ -50,3 +131,10 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 26.0943, 0, -25.4159)
 
 [node name="enemySpawn3" type="Marker3D" parent="enemySpawners"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.292753, 1.04333, -26.1909)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.933034, -77.9416)
+mesh = SubResource("PlaneMesh_d12x1")
+surface_material_override/0 = SubResource("ShaderMaterial_dcju8")
+
+[connection signal="body_entered" from="CSGBox3D4/Area3D" to="." method="_on_area_3d_body_entered"]

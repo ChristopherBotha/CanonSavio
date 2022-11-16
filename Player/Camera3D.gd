@@ -24,9 +24,9 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-
-	player_pos = Vector3(owner.transform.origin.x + x_axis,owner.transform.origin.y + y_axis, owner.transform.origin.z + z_axis )
-	transform.origin = transform.origin.lerp(player_pos, delay)
+	
+#	player_pos = Vector3(owner.global_position.x + x_axis,owner.global_position.y + y_axis, owner.global_position.z + z_axis )
+#	global_position = global_position.lerp(player_pos, delay)
 	
 	trauma = min(max(0, trauma - delta*2), 1)
 	frustum_offset = Vector2((2*randf() - 1)*max_shake*trauma*trauma, (2*randf() - 1)*max_shake*trauma*trauma)

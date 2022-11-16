@@ -1,43 +1,43 @@
-[gd_scene load_steps=11 format=3 uid="uid://cn4qndkuji4ls"]
+[gd_scene load_steps=8 format=3 uid="uid://cn4qndkuji4ls"]
 
 [ext_resource type="Script" path="res://Player/Player.gd" id="1_t7byk"]
+[ext_resource type="Script" path="res://Player/Camera_Orbit.gd" id="2_60t8r"]
 [ext_resource type="Script" path="res://Player/Camera3D.gd" id="2_b20r0"]
-[ext_resource type="Shader" path="res://shaders/testingUV.gdshader" id="3_t78rq"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_5u2jp"]
 
+[sub_resource type="BoxMesh" id="BoxMesh_gfind"]
+size = Vector3(2, 1, 1)
+
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_0wx0t"]
 
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_kobv7"]
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_7wy4n"]
 
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_jutj2"]
-noise = SubResource("FastNoiseLite_kobv7")
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_n6530"]
-shader = ExtResource("3_t78rq")
-shader_parameter/distortionTexture = SubResource("NoiseTexture2D_jutj2")
-
-[sub_resource type="PlaneMesh" id="PlaneMesh_w3wc3"]
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_7hc47"]
-shader = ExtResource("3_t78rq")
-
-[node name="Player" type="CharacterBody3D"]
+[node name="Player" type="CharacterBody3D" groups=["Player"]]
 script = ExtResource("1_t7byk")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("CapsuleShape3D_5u2jp")
 
+[node name="MeshInstance3D" type="MeshInstance3D" parent="CollisionShape3D"]
+mesh = SubResource("BoxMesh_gfind")
+
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 mesh = SubResource("CapsuleMesh_0wx0t")
 
-[node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.916139, 0.400861, 0, -0.400861, 0.916139, 0, 4.50628, 8.71055)
-top_level = true
-script = ExtResource("2_b20r0")
+[node name="Camera_Orbit" type="Node3D" parent="."]
+script = ExtResource("2_60t8r")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Camera3D"]
-transform = Transform3D(1, 0, 0, 0, -0.18306, -0.983102, 0, 0.983102, -0.18306, 0, -0.263403, -1.79234)
-material_override = SubResource("ShaderMaterial_n6530")
-mesh = SubResource("PlaneMesh_w3wc3")
-surface_material_override/0 = SubResource("ShaderMaterial_7hc47")
+[node name="h" type="Node3D" parent="Camera_Orbit"]
+
+[node name="v" type="Node3D" parent="Camera_Orbit/h"]
+
+[node name="SpringArm3D" type="SpringArm3D" parent="Camera_Orbit/h/v"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.86744, 1.60137)
+shape = SubResource("CapsuleShape3D_7wy4n")
+spring_length = 5.0
+margin = 0.2
+
+[node name="Camera3D" type="Camera3D" parent="Camera_Orbit/h/v/SpringArm3D"]
+transform = Transform3D(1, 0, 0, 0, 0.933755, 0.357912, 0, -0.357912, 0.933755, 0, 2.22281, 3.60407)
+script = ExtResource("2_b20r0")

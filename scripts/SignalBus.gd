@@ -18,5 +18,9 @@ signal interact(val)
 #Enemies
 signal updateEnemiesDamage(val)
 signal enemyCounter(val)
-
 signal trauma(val,timer)
+
+#moveplatform
+signal movePlatform()
+	
+	
