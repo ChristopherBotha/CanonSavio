@@ -24,5 +24,5 @@ signal trauma(val,timer)
 
 #moveplatform
 signal movePlatform()
-	
-	
+
+signal releaseVictim(val)

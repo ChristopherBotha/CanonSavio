@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://cn4qndkuji4ls"]
+[gd_scene load_steps=16 format=3 uid="uid://cn4qndkuji4ls"]
 
 [ext_resource type="Script" path="res://Player/Player.gd" id="1_t7byk"]
 [ext_resource type="Script" path="res://Player/Camera_Orbit.gd" id="2_60t8r"]
@@ -9,6 +9,7 @@
 [ext_resource type="ArrayMesh" uid="uid://8m40bfpr1i3" path="res://weapons/Sword-0-Sword.obj" id="6_dphkx"]
 [ext_resource type="Texture2D" uid="uid://butna4rf3v77n" path="res://weapons/Sword-0-Sword.png" id="7_bk4g1"]
 [ext_resource type="PackedScene" uid="uid://bgeptktrjpeup" path="res://weapons/chain.tscn" id="7_cliux"]
+[ext_resource type="PackedScene" uid="uid://fn4ue284pmgv" path="res://motion_blur/motion_blur.tscn" id="7_ot74o"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_5u2jp"]
 
@@ -16,6 +17,9 @@
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_64tf8"]
 albedo_texture = ExtResource("7_bk4g1")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_0y4bp"]
+size = Vector3(1, 1, 0.122059)
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_7wy4n"]
 
@@ -43,7 +47,16 @@ skeleton = NodePath("../../../..")
 surface_material_override/0 = SubResource("StandardMaterial3D_64tf8")
 
 [node name="Chain2" parent="Body" instance=ExtResource("7_cliux")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.41226)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.573027)
+
+[node name="hand" type="Area3D" parent="Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.07376)
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Body/hand"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.357233)
+shape = SubResource("BoxShape3D_0y4bp")
 
 [node name="Camera_Orbit" type="Node3D" parent="."]
 script = ExtResource("2_60t8r")
@@ -60,8 +73,11 @@ margin = 0.2
 
 [node name="Camera3D" type="Camera3D" parent="Camera_Orbit/h/v/SpringArm3D"]
 transform = Transform3D(1, 0, 0, 0, 0.933755, 0.357912, 0, -0.357912, 0.933755, 0, 2.22281, 3.60407)
-fov = 37.8493
+projection = 2
+near = 0.8
 script = ExtResource("2_b20r0")
+
+[node name="motion_blur" parent="Camera_Orbit/h/v/SpringArm3D/Camera3D" instance=ExtResource("7_ot74o")]
 
 [node name="State_Machine" type="Node" parent="."]
 script = ExtResource("4_5n36r")
@@ -69,3 +85,5 @@ initial_state = NodePath("Idle")
 
 [node name="Idle" type="Node" parent="State_Machine"]
 script = ExtResource("5_ttj82")
+
+[connection signal="body_entered" from="Body/hand" to="." method="_on_hand_body_entered"]

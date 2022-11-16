@@ -4,8 +4,6 @@ class_name Player
 var SPEED = 5.0
 var JUMP_VELOCITY = 4.5
 
-
-
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 
@@ -21,6 +19,8 @@ var airFriction : float = 0.07
 @onready var back = $Body/Back
 @onready var camera = $Camera_Orbit/h/v/SpringArm3D/Camera3D
 @onready var cams = $Camera_Orbit
+@onready var hand = $Body/hand
+
 var h_rot
 
 func _physics_process(delta):
@@ -73,11 +73,11 @@ func sprinting(delta):
 	if Input.is_action_pressed("sprint"):
 		SPEED = maxSpeed
 		handleInput(delta)
-		camera.fov = move_toward(camera.fov, 90, 0.5)
+		camera.near = move_toward(camera.near, 0.5, 0.02)
 	else:
 		SPEED = 5.0
 		handleInput(delta)
-		camera.fov = move_toward(camera.fov, 75, 0.5)
+		camera.near = move_toward(camera.near, 0.8, 0.02)
 		
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -86,3 +86,10 @@ func _unhandled_input(event: InputEvent) -> void:
 
 	if event.is_action_pressed("ui_cancel"):
 		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+
+
+func _on_hand_body_entered(body):
+	if body.is_in_group("Enemies"):
+		SignalBus.emit_signal("releaseVictim",null)
+		
+	pass # Replace with function body.

@@ -4,35 +4,25 @@ var distance
 var victim = null
 var chained : bool = false
 
+func _ready():
+	SignalBus.connect("releaseVictim", releaseVic)
+
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	print(chained)
 	
-	if $RayCast3D.get_collider():
-		if Input.is_action_pressed("chain") and chained == false:
-			distance = transform.origin.distance_to($RayCast3D.get_collision_point())
-			$Scaler.scale.z = distance / 2
-			chained = true
-			if victim != null :
-				victim.global_position = victim.global_position.lerp(owner.global_position, 0.5)
-				if victim.global_position == owner.global_position:
-					$Scaler.scale.z = 0.001
-					await get_tree().create_timer(4).timeout
-					victim = null 
-					chained = false
-			else:
-				await get_tree().create_timer(4).timeout
+	if $RayCast3D.is_colliding():
+		if $RayCast3D.get_collider().is_in_group("Enemies") and chained == false:
+			victim = $RayCast3D.get_collider()
+			if Input.is_action_pressed("chain") :
+				SignalBus.emit_signal("trauma",0.5,0.2)
+				chained = true
+				await get_tree().create_timer(3).timeout
+				victim = null
 				chained = false
-	else:
-		$Scaler.scale.z = 0.001
-		await get_tree().create_timer(4).timeout
-		chained = false
 
+	if victim != null and chained == true:
+		victim.global_position = victim.global_position.lerp(owner.hand.global_position, 0.5)
 
-
-func _on_area_3d_body_entered(body):
-	if body.is_in_group("Enemies"):
-		victim = body
-
-func _on_area_3d_body_exited(body):
-	pass # Replace with function body.
+func releaseVic(val):
+	victim = val
