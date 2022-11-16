@@ -4,10 +4,12 @@ class_name Player
 var SPEED = 5.0
 var JUMP_VELOCITY = 4.5
 
+
+
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 
-var maxSpeed : float = 10.0
+var maxSpeed : float = 15
 var minSpeed : float = 0.0
 var maxJumpHeight : float = 6
 
@@ -18,6 +20,7 @@ var airFriction : float = 0.07
 @onready var body = $Body
 @onready var back = $Body/Back
 @onready var camera = $Camera_Orbit/h/v/SpringArm3D/Camera3D
+@onready var cams = $Camera_Orbit
 var h_rot
 
 func _physics_process(delta):
@@ -46,7 +49,7 @@ func handleInput(delta):
 				
 #	var direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
 	
-	if input_dir.z != 0 or input_dir.x != 0:
+	if input_dir.z != 0 or input_dir.x != 0 :
 		body.rotation.y = lerp_angle(body.rotation.y, atan2(input_dir.x, input_dir.z), delta * 5)
 		
 	if input_dir and !is_on_floor():

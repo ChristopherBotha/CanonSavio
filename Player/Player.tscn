@@ -8,13 +8,11 @@
 [ext_resource type="Script" path="res://Player/Idle.gd" id="5_ttj82"]
 [ext_resource type="ArrayMesh" uid="uid://8m40bfpr1i3" path="res://weapons/Sword-0-Sword.obj" id="6_dphkx"]
 [ext_resource type="Texture2D" uid="uid://butna4rf3v77n" path="res://weapons/Sword-0-Sword.png" id="7_bk4g1"]
+[ext_resource type="PackedScene" uid="uid://bgeptktrjpeup" path="res://weapons/chain.tscn" id="7_cliux"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_5u2jp"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_0wx0t"]
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_rwcpr"]
-size = Vector3(0.3, 2, 1)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_64tf8"]
 albedo_texture = ExtResource("7_bk4g1")
@@ -32,23 +30,19 @@ mesh = SubResource("CapsuleMesh_0wx0t")
 skeleton = NodePath("../..")
 
 [node name="Back" type="Node3D" parent="Body"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.112669, 0.0189176, -0.781431)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.112669, 0.411911, -0.781431)
 
 [node name="holsterSword" type="Marker3D" parent="Body/Back"]
 top_level = true
 script = ExtResource("2_a4i7v")
 
-[node name="Area3D" type="Area3D" parent="Body/Back/holsterSword"]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Body/Back/holsterSword/Area3D"]
-transform = Transform3D(-0.0444672, -0.726455, 0.685774, -0.0470063, 0.687214, 0.724932, -0.997904, 0, -0.0647064, 0.148879, -0.211216, -0.0322895)
-shape = SubResource("BoxShape3D_rwcpr")
-
-[node name="Sword-0-sword" type="MeshInstance3D" parent="Body/Back/holsterSword/Area3D"]
+[node name="Sword-0-sword" type="MeshInstance3D" parent="Body/Back/holsterSword"]
 transform = Transform3D(-0.031127, -0.508518, 0.480042, -0.0329044, 0.48105, 0.507453, -0.698533, 1.04308e-08, -0.0452945, 0.919651, -0.994198, 5.96046e-08)
 mesh = ExtResource("6_dphkx")
-skeleton = NodePath("../../../../..")
+skeleton = NodePath("../../../..")
 surface_material_override/0 = SubResource("StandardMaterial3D_64tf8")
+
+[node name="Chain2" parent="Body" instance=ExtResource("7_cliux")]
 
 [node name="Camera_Orbit" type="Node3D" parent="."]
 script = ExtResource("2_60t8r")
@@ -65,6 +59,7 @@ margin = 0.2
 
 [node name="Camera3D" type="Camera3D" parent="Camera_Orbit/h/v/SpringArm3D"]
 transform = Transform3D(1, 0, 0, 0, 0.933755, 0.357912, 0, -0.357912, 0.933755, 0, 2.22281, 3.60407)
+fov = 37.8493
 script = ExtResource("2_b20r0")
 
 [node name="State_Machine" type="Node" parent="."]

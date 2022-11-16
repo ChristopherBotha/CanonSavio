@@ -13,11 +13,11 @@ func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 
 func _unhandled_input(event):
-	
+
 	if event is InputEventMouseMotion:
 		camrot_h -= event.relative.x * h_sensitivity
 		camrot_v -= event.relative.y * v_sensitivity
-
+	
 
 func _process(_delta):
 
@@ -25,3 +25,4 @@ func _process(_delta):
 	
 	$h.rotation.y = h_acceleration * camrot_h 
 	$h/v.rotation.x = v_acceleration * camrot_v 
+	
