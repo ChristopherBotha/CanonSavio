@@ -43,6 +43,7 @@ skeleton = NodePath("../../../..")
 surface_material_override/0 = SubResource("StandardMaterial3D_64tf8")
 
 [node name="Chain2" parent="Body" instance=ExtResource("7_cliux")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.41226)
 
 [node name="Camera_Orbit" type="Node3D" parent="."]
 script = ExtResource("2_60t8r")

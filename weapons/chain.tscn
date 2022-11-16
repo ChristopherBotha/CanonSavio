@@ -13,15 +13,15 @@ script = ExtResource("1_dflix")
 target_position = Vector3(0, 0, 1000)
 
 [node name="Scaler" type="Node3D" parent="."]
+transform = Transform3D(0.02, 0, 0, 0, 0.02, 0, 0, 0, 0.02, 0, 0, 1)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Scaler"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1)
 mesh = SubResource("BoxMesh_k63lx")
 
 [node name="Area3D" type="Area3D" parent="Scaler"]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Scaler/Area3D"]
-transform = Transform3D(1.3, 0, 0, 0, 1.3, 0, 0, 0, 1.3, 0, 0, 1)
+transform = Transform3D(1.3, 0, 0, 0, 1.3, 0, 0, 0, 1.3, 0, 0, 0)
 shape = SubResource("BoxShape3D_rljjr")
 
 [connection signal="body_entered" from="Scaler/Area3D" to="." method="_on_area_3d_body_entered"]
