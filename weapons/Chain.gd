@@ -15,7 +15,7 @@ func _process(delta):
 		if $RayCast3D.get_collider().is_in_group("Enemies") and chained == false:
 			victim = $RayCast3D.get_collider()
 			if Input.is_action_pressed("chain") :
-				SignalBus.emit_signal("trauma",0.5,0.2)
+				SignalBus.emit_signal("trauma",1.0,0.2)
 				chained = true
 				await get_tree().create_timer(3).timeout
 				victim = null

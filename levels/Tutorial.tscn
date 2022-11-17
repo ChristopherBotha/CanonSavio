@@ -1,8 +1,11 @@
-[gd_scene load_steps=20 format=3 uid="uid://cgvnhgorwk8mc"]
+[gd_scene load_steps=25 format=3 uid="uid://cgvnhgorwk8mc"]
 
 [ext_resource type="Shader" path="res://shaders/testingUV.gdshader" id="1_mrkt7"]
 [ext_resource type="Script" path="res://scripts/Tutorial.gd" id="1_pxheu"]
 [ext_resource type="Shader" path="res://shaders/water_spec.gdshader" id="3_24cnc"]
+[ext_resource type="Script" path="res://scripts/pitfall.gd" id="4_xxp8m"]
+[ext_resource type="Script" path="res://scripts/healarea.gd" id="5_rdcnw"]
+[ext_resource type="PackedScene" uid="uid://bys8nihkk0m07" path="res://levels/skybox.tscn" id="6_om4ls"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_e51e4"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
@@ -87,6 +90,11 @@ shader_parameter/time_factor = Vector2(1, 2)
 shader_parameter/wave_frequency = Vector2(12, 12)
 shader_parameter/wave_strengh = Vector2(0.25, 0.01)
 
+[sub_resource type="BoxMesh" id="BoxMesh_3hpkn"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_0fc6b"]
+size = Vector3(2.16348, 1.32238, 1.96786)
+
 [node name="Tutorial" type="Node3D"]
 script = ExtResource("1_pxheu")
 
@@ -152,4 +160,36 @@ visible = false
 mesh = SubResource("PlaneMesh_d12x1")
 surface_material_override/0 = SubResource("ShaderMaterial_dcju8")
 
+[node name="Area3D" type="Area3D" parent="."]
+transform = Transform3D(1.73648, 0, 9.84808, 0, 10, 0, -9.84808, 0, 1.73648, 23.4983, 4.32257, 25.9719)
+collision_layer = 2
+collision_mask = 4
+script = ExtResource("4_xxp8m")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Area3D"]
+transform = Transform3D(1, 0, 0, 0, 0.5711, 0.82088, 0, -0.82088, 0.5711, 0, 0.509466, 0)
+mesh = SubResource("BoxMesh_3hpkn")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.298305, 0)
+shape = SubResource("BoxShape3D_0fc6b")
+
+[node name="Area3D2" type="Area3D" parent="."]
+transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, -11.9871, 4.32257, 25.9719)
+collision_layer = 2
+collision_mask = 4
+script = ExtResource("5_rdcnw")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Area3D2"]
+transform = Transform3D(1, 0, 0, 0, 0.5711, 0.82088, 0, -0.82088, 0.5711, 0, 0.509466, 0)
+mesh = SubResource("BoxMesh_3hpkn")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.298305, 0)
+shape = SubResource("BoxShape3D_0fc6b")
+
+[node name="Skybox" parent="." instance=ExtResource("6_om4ls")]
+
 [connection signal="body_entered" from="CSGBox3D4/Area3D" to="." method="_on_area_3d_body_entered"]
+[connection signal="body_entered" from="Area3D" to="Area3D" method="_on_body_entered"]
+[connection signal="body_entered" from="Area3D2" to="Area3D2" method="_on_body_entered"]

@@ -3,14 +3,21 @@ class_name Player
 
 var SPEED = 5.0
 var JUMP_VELOCITY = 4.5
+var dashSpeed = 200
+var dashing : bool = false
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 
+var health: float = 100:
+	set(new_value): 
+		health = clamp(new_value,0,100)
+		SignalBus.emit_signal("healthUpdated", health)
+		
 var maxSpeed : float = 15
 var minSpeed : float = 0.0
 var maxJumpHeight : float = 6
-
+var dir = Vector3.ZERO
 var momentum : float = 0.1
 var friction : float = 0.05
 var airFriction : float = 0.07
@@ -25,7 +32,7 @@ var h_rot
 
 func _physics_process(delta):
 	
-	
+	print($Body/RayCast3D.get_collision_point())
 	# Add the gravity.
 	velocity.y -= gravity * delta
 
@@ -38,6 +45,7 @@ func _physics_process(delta):
 	# As good practice, you should replace UI actions with custom gameplay actions.
 	
 	sprinting(delta)
+	dash(delta)
 	move_and_slide()
 
 func handleInput(delta):
@@ -48,6 +56,7 @@ func handleInput(delta):
 				Input.get_action_strength("down") - Input.get_action_strength("up")).rotated(Vector3.UP, h_rot).normalized()
 				
 #	var direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
+	dir = input_dir
 	
 	if input_dir.z != 0 or input_dir.x != 0 :
 		body.rotation.y = lerp_angle(body.rotation.y, atan2(input_dir.x, input_dir.z), delta * 5)
@@ -78,7 +87,17 @@ func sprinting(delta):
 		SPEED = 5.0
 		handleInput(delta)
 		camera.near = move_toward(camera.near, 0.8, 0.02)
-		
+
+func dash(delta):
+	if Input.is_action_just_pressed("dash") and dashing == false:
+		dashing = true
+		var where = $Body/RayCast3D.get_collision_point()
+		velocity = where
+		await get_tree().create_timer(3).timeout
+		dashing = false
+	else: 
+		SPEED = 5.0
+		handleInput(delta)
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:

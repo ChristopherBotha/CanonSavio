@@ -1,9 +1,25 @@
-[gd_scene load_steps=2 format=3 uid="uid://ch2agfg0jedp3"]
+[gd_scene load_steps=3 format=3 uid="uid://ch2agfg0jedp3"]
 
 [ext_resource type="Script" path="res://scripts/World.gd" id="1_kk85k"]
+[ext_resource type="Script" path="res://scripts/playerUI.gd" id="2_732ay"]
 
 [node name="World" type="Node3D"]
 script = ExtResource("1_kk85k")
 level = "res://levels/Tutorial.tscn"
 
 [node name="Level" type="Node3D" parent="."]
+
+[node name="playerUI" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("2_732ay")
+
+[node name="ProgressBar" type="ProgressBar" parent="playerUI"]
+offset_left = 59.0
+offset_top = 41.0
+offset_right = 274.0
+offset_bottom = 68.0
+value = 100.0
+rounded = true
