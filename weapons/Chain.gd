@@ -9,8 +9,7 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	print(chained)
-	
+
 	if $RayCast3D.is_colliding():
 		if $RayCast3D.get_collider().is_in_group("Enemies") and chained == false:
 			victim = $RayCast3D.get_collider()

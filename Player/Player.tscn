@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://cn4qndkuji4ls"]
+[gd_scene load_steps=23 format=3 uid="uid://cn4qndkuji4ls"]
 
 [ext_resource type="Script" path="res://Player/Player.gd" id="1_t7byk"]
 [ext_resource type="Script" path="res://Player/Camera_Orbit.gd" id="2_60t8r"]
@@ -9,6 +9,13 @@
 [ext_resource type="ArrayMesh" uid="uid://8m40bfpr1i3" path="res://weapons/Sword-0-Sword.obj" id="6_dphkx"]
 [ext_resource type="Texture2D" uid="uid://butna4rf3v77n" path="res://weapons/Sword-0-Sword.png" id="7_bk4g1"]
 [ext_resource type="PackedScene" uid="uid://bgeptktrjpeup" path="res://weapons/chain.tscn" id="7_cliux"]
+[ext_resource type="Script" path="res://Player/Dash.gd" id="10_d7xi5"]
+[ext_resource type="Script" path="res://Player/Walk.gd" id="11_hf8yi"]
+[ext_resource type="Script" path="res://Player/Run.gd" id="12_3hqwf"]
+[ext_resource type="Script" path="res://Player/Jump.gd" id="13_6u450"]
+[ext_resource type="Script" path="res://Player/Chain.gd" id="14_rjbxq"]
+[ext_resource type="Script" path="res://Player/Aim.gd" id="15_uf4uc"]
+[ext_resource type="Script" path="res://Player/Fall.gd" id="16_v33u0"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_5u2jp"]
 
@@ -16,6 +23,9 @@
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_64tf8"]
 albedo_texture = ExtResource("7_bk4g1")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_dj31n"]
+size = Vector3(0.3, 1.8, 0.2)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_0y4bp"]
 size = Vector3(1, 1, 0.122059)
@@ -46,6 +56,14 @@ transform = Transform3D(-0.031127, -0.508518, 0.480042, -0.0329044, 0.48105, 0.5
 mesh = ExtResource("6_dphkx")
 skeleton = NodePath("../../../..")
 surface_material_override/0 = SubResource("StandardMaterial3D_64tf8")
+
+[node name="Area3D" type="Area3D" parent="Body/Back/holsterSword"]
+collision_mask = 4
+linear_damp_space_override = 1
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Body/Back/holsterSword/Area3D"]
+transform = Transform3D(0.693414, -0.720539, 0, 0.720539, 0.693414, -3.72529e-09, 0, -4.65661e-10, 1, 0.228489, -0.291688, -0.0611179)
+shape = SubResource("BoxShape3D_dj31n")
 
 [node name="Chain2" parent="Body" instance=ExtResource("7_cliux")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.573027)
@@ -87,5 +105,26 @@ initial_state = NodePath("Idle")
 
 [node name="Idle" type="Node" parent="State_Machine"]
 script = ExtResource("5_ttj82")
+
+[node name="Dash" type="Node" parent="State_Machine"]
+script = ExtResource("10_d7xi5")
+
+[node name="Walk" type="Node" parent="State_Machine"]
+script = ExtResource("11_hf8yi")
+
+[node name="Run" type="Node" parent="State_Machine"]
+script = ExtResource("12_3hqwf")
+
+[node name="Jump" type="Node" parent="State_Machine"]
+script = ExtResource("13_6u450")
+
+[node name="Chain" type="Node" parent="State_Machine"]
+script = ExtResource("14_rjbxq")
+
+[node name="Aim" type="Node" parent="State_Machine"]
+script = ExtResource("15_uf4uc")
+
+[node name="Fall" type="Node" parent="State_Machine"]
+script = ExtResource("16_v33u0")
 
 [connection signal="body_entered" from="Body/hand" to="." method="_on_hand_body_entered"]

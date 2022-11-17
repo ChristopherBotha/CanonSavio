@@ -4,7 +4,18 @@ class_name Player
 var SPEED = 5.0
 var JUMP_VELOCITY = 4.5
 var dashSpeed = 200
-var dashing : bool = false
+
+
+var dashing = false
+#	set(new_value): 
+#		dashing = new_value
+#	get:
+#		return dashing
+	
+var sprinting : bool = false
+var jumping : bool = false
+var attacking : bool = false
+
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
@@ -22,6 +33,7 @@ var momentum : float = 0.1
 var friction : float = 0.05
 var airFriction : float = 0.07
 
+@onready var state_name = $State_Machine
 @onready var body = $Body
 @onready var back = $Body/Back
 @onready var camera = $Camera_Orbit/h/v/SpringArm3D/Camera3D
@@ -31,21 +43,16 @@ var airFriction : float = 0.07
 var h_rot
 
 func _physics_process(delta):
-	
-	print($Body/RayCast3D.get_collision_point())
 	# Add the gravity.
-	velocity.y -= gravity * delta
-
-	# Handle Jump.
-	if Input.is_action_pressed("ui_accept") and is_on_floor():
-		while velocity.y < maxJumpHeight:
-			velocity.y += JUMP_VELOCITY
+	
+	if !is_on_floor():
+		velocity.y -= gravity * delta
 
 	# Get the input direction and handle the movement/deceleration.
 	# As good practice, you should replace UI actions with custom gameplay actions.
-	
-	sprinting(delta)
-	dash(delta)
+	sprintFalse()
+	handleInput(delta)
+	handle_animaton()
 	move_and_slide()
 
 func handleInput(delta):
@@ -54,16 +61,16 @@ func handleInput(delta):
 	
 	var input_dir = Vector3(Input.get_action_strength("right") - Input.get_action_strength("left"),0,
 				Input.get_action_strength("down") - Input.get_action_strength("up")).rotated(Vector3.UP, h_rot).normalized()
-				
-#	var direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
+
 	dir = input_dir
 	
+	#rotate body accroding to mouse input
 	if input_dir.z != 0 or input_dir.x != 0 :
 		body.rotation.y = lerp_angle(body.rotation.y, atan2(input_dir.x, input_dir.z), delta * 5)
-		
+	
+	
 	if input_dir and !is_on_floor():
 		velocity = velocity.lerp(Vector3(input_dir.x * SPEED, velocity.y, input_dir.z * SPEED), airFriction ) 
-		
 	elif !is_on_floor():
 		velocity.z = move_toward(velocity.z, 0, airFriction)
 		velocity.x = move_toward(velocity.x, 0, airFriction)
@@ -73,31 +80,43 @@ func handleInput(delta):
 		
 	elif is_on_floor() and input_dir == Vector3.ZERO:
 		velocity = velocity.lerp(Vector3(0.0, velocity.y, 0.0), friction ) 
-			
-	else:
-		velocity.x = move_toward(velocity.x, 0, SPEED)
-		velocity.z = move_toward(velocity.z, 0, SPEED)
+		velocity.y = 0.0
 
-func sprinting(delta):
+	else:
+		velocity = velocity.lerp(Vector3(input_dir.x,0.0,input_dir.z) * SPEED, momentum ) 
+#		velocity.x = move_toward(velocity.x, 0, SPEED)
+#		velocity.z = move_toward(velocity.z, 0, SPEED)
+
+func sprint():
 	if Input.is_action_pressed("sprint"):
 		SPEED = maxSpeed
-		handleInput(delta)
 		camera.near = move_toward(camera.near, 0.5, 0.02)
-	else:
+	elif Input.is_action_just_released("sprint"):
+		sprinting = false
+
+func sprintFalse():
+	if sprinting == false:
 		SPEED = 5.0
-		handleInput(delta)
 		camera.near = move_toward(camera.near, 0.8, 0.02)
 
-func dash(delta):
-	if Input.is_action_just_pressed("dash") and dashing == false:
-		dashing = true
+func dash():
+	if dashing == true and is_on_floor():
+		SignalBus.emit_signal("delayChange")
+		
 		var where = $Body/RayCast3D.get_collision_point()
-		velocity = where
-		await get_tree().create_timer(3).timeout
+		if dir != Vector3.ZERO:
+			velocity = velocity.direction_to(Vector3(where.x, 0.0, where.z)) * dashSpeed
+			velocity = velocity.lerp(Vector3.ZERO, 0.2 ) 
+		elif dir == Vector3.ZERO:
+			velocity = velocity.direction_to(Vector3(where.x, 0.0, where.z)) * dashSpeed 
+			velocity = velocity.lerp(Vector3.ZERO, 1.3 ) 
+		velocity = velocity.move_toward(Vector3.ZERO, 0.2 )
+
+		await get_tree().create_timer(1).timeout
 		dashing = false
+		
 	else: 
 		SPEED = 5.0
-		handleInput(delta)
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
@@ -106,9 +125,11 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("ui_cancel"):
 		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 
-
 func _on_hand_body_entered(body):
 	if body.is_in_group("Enemies"):
 		SignalBus.emit_signal("releaseVictim",null)
-		
-	pass # Replace with function body.
+
+func handle_animaton():
+	for j in state_name.get_children():
+		if state_name.state.name == j.get_name():
+			pass
