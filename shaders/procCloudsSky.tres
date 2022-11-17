@@ -1,0 +1,25 @@
+[gd_resource type="ShaderMaterial" load_steps=5 format=3 uid="uid://bhud87ug0j83v"]
+
+[ext_resource type="Shader" path="res://shaders/skyShader.gdshader" id="1_njcbk"]
+[ext_resource type="CompressedTexture3D" uid="uid://byt5ljovjnj5b" path="res://shaders/perlworlnoise.tga" id="2_lc1xl"]
+[ext_resource type="Texture2D" uid="uid://dc8ogcst66ege" path="res://shaders/weather.bmp" id="3_8a4jx"]
+[ext_resource type="CompressedTexture3D" uid="uid://bs48nhf5w0oj7" path="res://shaders/worlnoise.bmp" id="4_asl8h"]
+
+[resource]
+shader = ExtResource("1_njcbk")
+shader_parameter/_density = 0.05
+shader_parameter/_time_offset = 0.0
+shader_parameter/_time_scale = 1.0
+shader_parameter/cloud_coverage = 0.25
+shader_parameter/exposure = 0.1
+shader_parameter/ground_color = Color(1, 1, 1, 1)
+shader_parameter/mie = 0.005
+shader_parameter/mie_color = Color(0.63, 0.77, 0.92, 1)
+shader_parameter/mie_eccentricity = 0.8
+shader_parameter/perlworlnoise = ExtResource("2_lc1xl")
+shader_parameter/rayleigh = 2.0
+shader_parameter/rayleigh_color = Color(0.26, 0.41, 0.58, 1)
+shader_parameter/sun_disk_scale = 1.0
+shader_parameter/turbidity = 10.0
+shader_parameter/weathermap = ExtResource("3_8a4jx")
+shader_parameter/worlnoise = ExtResource("4_asl8h")

@@ -7,18 +7,16 @@
 [ext_resource type="Script" path="res://scripts/healarea.gd" id="5_rdcnw"]
 [ext_resource type="PackedScene" uid="uid://bys8nihkk0m07" path="res://levels/skybox.tscn" id="6_om4ls"]
 
-[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_e51e4"]
-sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
-ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+[sub_resource type="PhysicalSkyMaterial" id="PhysicalSkyMaterial_e57ql"]
 
 [sub_resource type="Sky" id="Sky_kp03l"]
-sky_material = SubResource("ProceduralSkyMaterial_e51e4")
+sky_material = SubResource("PhysicalSkyMaterial_e57ql")
 
 [sub_resource type="Environment" id="Environment_4rb1d"]
 background_mode = 2
+background_energy_multiplier = 1.81
 sky = SubResource("Sky_kp03l")
-tonemap_mode = 2
-glow_enabled = true
+tonemap_mode = 3
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_1512c"]
 shader = ExtResource("1_mrkt7")
@@ -102,7 +100,7 @@ script = ExtResource("1_pxheu")
 environment = SubResource("Environment_4rb1d")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -0.500003, 0.749999, -0.43301, 0, 0, 0)
+transform = Transform3D(0.211325, 0.969493, 0.124195, 0, -0.127065, 0.991895, 0.977415, -0.209612, -0.0268519, 0, 0, 0)
 shadow_enabled = true
 
 [node name="CSGBox3D" type="CSGBox3D" parent="."]
