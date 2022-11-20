@@ -58,7 +58,6 @@ func handleInput(delta):
 				Input.get_action_strength("down") - Input.get_action_strength("up")).rotated(Vector3.UP, h_rot).normalized()
 
 	dir = input_dir
-	print(velocity)
 	
 	#rotate body accroding to mouse input
 	if input_dir.z != 0 or input_dir.x != 0 :
