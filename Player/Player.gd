@@ -5,7 +5,7 @@ var SPEED = 5.0
 var JUMP_VELOCITY = 4.5
 var dashSpeed = 200
 @onready var eyes = $eyes
-
+@onready var playback = $AnimationTree.get("parameters/playback")
 var dashing = false
 var sprinting : bool = false
 var jumping : bool = false
@@ -123,8 +123,16 @@ func _on_hand_body_entered(body):
 func handle_animaton():
 	for j in state_name.get_children():
 		if state_name.state.name == j.get_name():
-			pass
+			playback.travel(state_name.state.name)
 
-func hurt(damage):
+func hurt(damage)-> void:
 	health -= damage
-	
+
+func _on_hit_box_body_entered(body):
+	if body.is_in_group("Enemies"):
+		if body.has_method("hurt"):
+			body.hurt(50, -5)
+	pass # Replace with function body.
+
+func attackingFalse()-> void:
+	attacking = false

@@ -9,11 +9,11 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-
-	if $RayCast3D.is_colliding():
+#
+	if $RayCast3D.get_collider() != null:
 		if $RayCast3D.get_collider().is_in_group("Enemies") and chained == false:
 			victim = $RayCast3D.get_collider()
-			if Input.is_action_pressed("chain") :
+			if Input.is_action_pressed("chain") and victim != null:
 				SignalBus.emit_signal("trauma",1.0,0.2)
 				chained = true
 				await get_tree().create_timer(3).timeout
@@ -22,6 +22,7 @@ func _process(delta):
 
 	if victim != null and chained == true:
 		victim.global_position = victim.global_position.lerp(owner.hand.global_position, 0.5)
+	pass
 
 func releaseVic(val):
 	victim = val

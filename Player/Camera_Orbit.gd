@@ -24,7 +24,6 @@ func _unhandled_input(event):
 	
 
 func _process(_delta):
-	print(lock)
 	camrot_v = clamp(camrot_v , deg_to_rad(-20), deg_to_rad(20))
 	
 	if Input.is_action_just_pressed("lock"):

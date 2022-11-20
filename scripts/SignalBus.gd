@@ -22,3 +22,4 @@ signal movePlatform()
 signal releaseVictim(val)
 
 signal delayChange(val)
+signal hitStop(val,time)
