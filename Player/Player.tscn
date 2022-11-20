@@ -284,6 +284,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0682487, 1.42171)
 shape = SubResource("BoxShape3D_1ohue")
 disabled = true
 
+[node name="nozzle" type="Marker3D" parent="Body"]
+
 [node name="Camera_Orbit" type="Node3D" parent="."]
 script = ExtResource("2_60t8r")
 

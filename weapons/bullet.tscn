@@ -1,0 +1,21 @@
+[gd_scene load_steps=4 format=3 uid="uid://cu8xd8vmhqvlg"]
+
+[ext_resource type="Script" path="res://scripts/bullet.gd" id="1_s0jjt"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_udgaq"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_w14e4"]
+
+[node name="bullet" type="RigidBody3D"]
+mass = 0.01
+script = ExtResource("1_s0jjt")
+
+[node name="Area3D" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+shape = SubResource("SphereShape3D_udgaq")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Area3D"]
+mesh = SubResource("SphereMesh_w14e4")
+
+[connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]

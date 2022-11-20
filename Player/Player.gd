@@ -1,6 +1,24 @@
 extends CharacterBody3D
 class_name Player
 
+@onready var bullet = preload("res://weapons/bullet.tscn")
+@onready var nozzle = $Body/nozzle
+
+var direction # direction which player is facing
+
+var myEquip = { 
+	0: "sword",
+	1: "gun"
+}
+var shot = false
+
+var guns = {
+	"machineGun": machineGun(),
+	"magNum": magNum(),
+	"shotGun": shotGun()
+}
+
+
 var SPEED = 5.0
 var JUMP_VELOCITY = 4.5
 var dashSpeed = 200
@@ -35,16 +53,17 @@ var airFriction : float = 0.07
 @onready var camera = $Camera_Orbit/h/v/SpringArm3D/Camera3D
 @onready var cams = $Camera_Orbit
 @onready var hand = $Body/hand
+@onready var horRot = $Camera_Orbit/h
 
 var h_rot
 
 func _physics_process(delta):
 	if !is_on_floor():
 		velocity.y -= gravity * delta
+		
+	pushBack()
 	
-	# Get the input direction and handle the movement/deceleration.
-	# As good practice, you should replace UI actions with custom gameplay actions.
-
+	shoot()
 	sprintFalse()
 	handleInput(delta)
 	handle_animaton()
@@ -61,7 +80,7 @@ func handleInput(delta):
 	
 	#rotate body accroding to mouse input
 	if input_dir.z != 0 or input_dir.x != 0 :
-		body.rotation.y = lerp_angle(body.rotation.y, atan2(input_dir.x, input_dir.z), delta * 5)
+		body.rotation.y = lerp_angle(body.rotation.y, atan2(input_dir.x, input_dir.z), delta * 10)
 	
 	
 	if input_dir and !is_on_floor():
@@ -136,3 +155,36 @@ func _on_hit_box_body_entered(body):
 
 func attackingFalse()-> void:
 	attacking = false
+
+func machineGun()-> void:
+	pass
+
+func magNum() -> void:
+	if shot == true and aimCast.get_collider() != null:
+		var bullets = bullet.instantiate()
+		nozzle.add_child(bullets)
+		bullets.look_at(aimCast.get_collision_point(), Vector3.UP)
+		bullets.shoot = true
+		
+		var where = aimCast.get_collision_point().normalized()
+		velocity = velocity.direction_to(Vector3(where.x, 0.0, where.z)) * (20)
+		velocity = velocity.lerp(Vector3.ZERO, 1.5) 
+		
+#		velocity = velocity.lerp(direction * 5, 5)
+
+func shotGun()-> void:
+	pass
+	
+func shoot() -> void:
+	if Input.is_action_pressed("shoot") and shot == false:
+		shot = true
+		magNum()
+		await get_tree().create_timer(1).timeout
+		shot = false
+		pass
+
+func pushBack():
+	if aimCast.get_collider() != null:
+		var dir_x = (aimCast.get_collider().global_position.x - global_transform.origin.x)
+		var dir_z = (aimCast.get_collider().global_position.z - global_transform.origin.z)
+		direction = Vector3(dir_x,0.0, dir_z).normalized()
