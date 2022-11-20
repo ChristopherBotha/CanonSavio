@@ -22,6 +22,7 @@ func _process(delta):
 	
 	trauma = min(max(0, trauma - delta*2), 1)
 	frustum_offset = Vector2((2*randf() - 1)*max_shake*trauma*trauma, (2*randf() - 1)*max_shake*trauma*trauma)
+	
 
 
 func traumas(val,timer):

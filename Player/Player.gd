@@ -4,18 +4,14 @@ class_name Player
 var SPEED = 5.0
 var JUMP_VELOCITY = 4.5
 var dashSpeed = 200
-
+@onready var eyes = $eyes
 
 var dashing = false
-#	set(new_value): 
-#		dashing = new_value
-#	get:
-#		return dashing
-	
 var sprinting : bool = false
 var jumping : bool = false
 var attacking : bool = false
 
+@onready var aimCast = $Body/RayCast3D
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
@@ -43,13 +39,12 @@ var airFriction : float = 0.07
 var h_rot
 
 func _physics_process(delta):
-	# Add the gravity.
-	
 	if !is_on_floor():
 		velocity.y -= gravity * delta
-
+	
 	# Get the input direction and handle the movement/deceleration.
 	# As good practice, you should replace UI actions with custom gameplay actions.
+
 	sprintFalse()
 	handleInput(delta)
 	handle_animaton()
@@ -63,6 +58,7 @@ func handleInput(delta):
 				Input.get_action_strength("down") - Input.get_action_strength("up")).rotated(Vector3.UP, h_rot).normalized()
 
 	dir = input_dir
+	print(velocity)
 	
 	#rotate body accroding to mouse input
 	if input_dir.z != 0 or input_dir.x != 0 :
@@ -71,21 +67,15 @@ func handleInput(delta):
 	
 	if input_dir and !is_on_floor():
 		velocity = velocity.lerp(Vector3(input_dir.x * SPEED, velocity.y, input_dir.z * SPEED), airFriction ) 
-	elif !is_on_floor():
-		velocity.z = move_toward(velocity.z, 0, airFriction)
-		velocity.x = move_toward(velocity.x, 0, airFriction)
+		
+	elif !is_on_floor() :
+		velocity = velocity.lerp(Vector3(input_dir.x * SPEED, velocity.y, input_dir.z * SPEED), airFriction ) 
 		
 	elif input_dir and is_on_floor():
 		velocity = velocity.lerp(Vector3(input_dir.x,0.0,input_dir.z) * SPEED, momentum ) 
 		
 	elif is_on_floor() and input_dir == Vector3.ZERO:
 		velocity = velocity.lerp(Vector3(0.0, velocity.y, 0.0), friction ) 
-		velocity.y = 0.0
-
-	else:
-		velocity = velocity.lerp(Vector3(input_dir.x,0.0,input_dir.z) * SPEED, momentum ) 
-#		velocity.x = move_toward(velocity.x, 0, SPEED)
-#		velocity.z = move_toward(velocity.z, 0, SPEED)
 
 func sprint():
 	if Input.is_action_pressed("sprint"):
@@ -104,12 +94,15 @@ func dash():
 		SignalBus.emit_signal("delayChange")
 		
 		var where = $Body/RayCast3D.get_collision_point()
+	
+		
 		if dir != Vector3.ZERO:
 			velocity = velocity.direction_to(Vector3(where.x, 0.0, where.z)) * dashSpeed
 			velocity = velocity.lerp(Vector3.ZERO, 0.2 ) 
 		elif dir == Vector3.ZERO:
-			velocity = velocity.direction_to(Vector3(where.x, 0.0, where.z)) * dashSpeed 
-			velocity = velocity.lerp(Vector3.ZERO, 1.3 ) 
+			velocity = velocity.direction_to(Vector3(where.x, 0.0, where.z)) * (dashSpeed - 20)
+			velocity = velocity.lerp(Vector3.ZERO, 1.3) 
+			
 		velocity = velocity.move_toward(Vector3.ZERO, 0.2 )
 
 		await get_tree().create_timer(1).timeout
@@ -133,3 +126,4 @@ func handle_animaton():
 	for j in state_name.get_children():
 		if state_name.state.name == j.get_name():
 			pass
+

@@ -20,8 +20,7 @@ func _ready():
 	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	print(delay)
-		
+
 	player_pos = Vector3(owner.back.global_position.x ,owner.back.global_position.y, owner.back.global_position.z)
 	
 	global_position = global_position.lerp(player_pos, delay)

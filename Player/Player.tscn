@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://cn4qndkuji4ls"]
+[gd_scene load_steps=24 format=3 uid="uid://cn4qndkuji4ls"]
 
 [ext_resource type="Script" path="res://Player/Player.gd" id="1_t7byk"]
 [ext_resource type="Script" path="res://Player/Camera_Orbit.gd" id="2_60t8r"]
@@ -31,6 +31,10 @@ size = Vector3(0.3, 1.8, 0.2)
 size = Vector3(1, 1, 0.122059)
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_7wy4n"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_2bxcc"]
+height = 32.4
+radius = 30.0
 
 [node name="Player" type="CharacterBody3D" groups=["Player"]]
 collision_layer = 4
@@ -79,6 +83,7 @@ shape = SubResource("BoxShape3D_0y4bp")
 
 [node name="RayCast3D" type="RayCast3D" parent="Body"]
 target_position = Vector3(0, 0, 1000)
+collision_mask = 3
 
 [node name="Camera_Orbit" type="Node3D" parent="."]
 script = ExtResource("2_60t8r")
@@ -98,6 +103,14 @@ transform = Transform3D(1, 0, 0, 0, 0.933755, 0.357912, 0, -0.357912, 0.933755, 
 projection = 2
 near = 0.8
 script = ExtResource("2_b20r0")
+
+[node name="lock_range" type="Area3D" parent="Camera_Orbit"]
+collision_layer = 0
+collision_mask = 2
+monitorable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Camera_Orbit/lock_range"]
+shape = SubResource("CylinderShape3D_2bxcc")
 
 [node name="State_Machine" type="Node" parent="."]
 script = ExtResource("4_5n36r")
@@ -127,4 +140,8 @@ script = ExtResource("15_uf4uc")
 [node name="Fall" type="Node" parent="State_Machine"]
 script = ExtResource("16_v33u0")
 
+[node name="eyes" type="Node3D" parent="."]
+
 [connection signal="body_entered" from="Body/hand" to="." method="_on_hand_body_entered"]
+[connection signal="body_entered" from="Camera_Orbit/lock_range" to="Camera_Orbit" method="_on_lock_range_body_entered"]
+[connection signal="body_exited" from="Camera_Orbit/lock_range" to="Camera_Orbit" method="_on_lock_range_body_exited"]
