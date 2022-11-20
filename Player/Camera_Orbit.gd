@@ -33,15 +33,16 @@ func _process(_delta):
 	if enemy and lock == true:
 		if enemy != null and lock == true:
 			if enemy and lock == true:
-				$h.look_at(enemy[0].global_transform.origin, Vector3.UP)
+				$h.look_at(enemy[0].global_transform.origin, Vector3.UP )
 
 				await get_tree().create_timer(0.3).timeout
 				if Input.is_action_just_pressed("lock") and lock == true:
 					lock = false
 					print("hello")
-					$h.rotate_y(deg_to_rad(owner.aimCast.rotation.y * TURN_SPEED))
+					$h.rotate_y(deg_to_rad(owner.rotation.y * TURN_SPEED))
 	else:
 		lock = false
+		$h.rotate_y(deg_to_rad(owner.rotation.y * TURN_SPEED))
 		$h.rotation.y = h_acceleration * camrot_h 
 		$h/v.rotation.x = v_acceleration * camrot_v 
 

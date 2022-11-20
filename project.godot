@@ -48,6 +48,11 @@ config/icon="res://icon.svg"
 SignalBus="*res://scripts/SignalBus.gd"
 Game="*res://scripts/Game.gd"
 
+[debug]
+
+gdscript/warnings/unused_signal=0
+gdscript/warnings/return_value_discarded=0
+
 [input]
 
 sprint={

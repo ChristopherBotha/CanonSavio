@@ -94,7 +94,6 @@ func dash():
 		
 		var where = $Body/RayCast3D.get_collision_point()
 	
-		
 		if dir != Vector3.ZERO:
 			velocity = velocity.direction_to(Vector3(where.x, 0.0, where.z)) * dashSpeed
 			velocity = velocity.lerp(Vector3.ZERO, 0.2 ) 
@@ -126,3 +125,6 @@ func handle_animaton():
 		if state_name.state.name == j.get_name():
 			pass
 
+func hurt(damage):
+	health -= damage
+	
