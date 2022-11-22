@@ -1,4 +1,4 @@
-[gd_scene load_steps=68 format=3 uid="uid://cn4qndkuji4ls"]
+[gd_scene load_steps=70 format=3 uid="uid://cn4qndkuji4ls"]
 
 [ext_resource type="Script" path="res://Player/Player.gd" id="1_t7byk"]
 [ext_resource type="Script" path="res://Player/Camera_Orbit.gd" id="2_60t8r"]
@@ -6,8 +6,10 @@
 [ext_resource type="Script" path="res://Player/Camera3D.gd" id="2_b20r0"]
 [ext_resource type="Script" path="res://Player/State_Machine.gd" id="4_5n36r"]
 [ext_resource type="Script" path="res://Player/Idle.gd" id="5_ttj82"]
+[ext_resource type="PackedScene" uid="uid://hfanbdpcg5ry" path="res://weapons/axe.tscn" id="6_4xs0f"]
 [ext_resource type="ArrayMesh" uid="uid://8m40bfpr1i3" path="res://weapons/Sword-0-Sword.obj" id="6_dphkx"]
 [ext_resource type="Texture2D" uid="uid://butna4rf3v77n" path="res://weapons/Sword-0-Sword.png" id="7_bk4g1"]
+[ext_resource type="Curve" path="res://weapons/Axe/Axe_Curve.tres" id="7_c0yms"]
 [ext_resource type="PackedScene" uid="uid://bgeptktrjpeup" path="res://weapons/chain.tscn" id="7_cliux"]
 [ext_resource type="Script" path="res://Player/Dash.gd" id="10_d7xi5"]
 [ext_resource type="Script" path="res://Player/Walk.gd" id="11_hf8yi"]
@@ -287,6 +289,16 @@ disabled = true
 
 [node name="nozzle" type="Marker3D" parent="Body"]
 
+[node name="SwordHand" type="Node3D" parent="Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.700812, 0, 0.231215)
+
+[node name="Marker3D" type="Marker3D" parent="Body/SwordHand"]
+
+[node name="Axe" parent="Body/SwordHand/Marker3D" node_paths=PackedStringArray("player") instance=ExtResource("6_4xs0f")]
+transform = Transform3D(-8.74228e-08, 0, -2, -0.62646, 1.89935, 2.73835e-08, 1.89935, 0.62646, -8.30234e-08, 0, 0.16432, 0)
+recall_curve = ExtResource("7_c0yms")
+player = NodePath("../../../..")
+
 [node name="Camera_Orbit" type="Node3D" parent="."]
 script = ExtResource("2_60t8r")
 
@@ -295,13 +307,13 @@ script = ExtResource("2_60t8r")
 [node name="v" type="Node3D" parent="Camera_Orbit/h"]
 
 [node name="SpringArm3D" type="SpringArm3D" parent="Camera_Orbit/h/v"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.86744, 1.60137)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.714036, 1.1514, 1.60137)
 shape = SubResource("CapsuleShape3D_7wy4n")
 spring_length = 5.0
 margin = 0.2
 
 [node name="Camera3D" type="Camera3D" parent="Camera_Orbit/h/v/SpringArm3D"]
-transform = Transform3D(1, 0, 0, 0, 0.933755, 0.357912, 0, -0.357912, 0.933755, 0, 2.22281, 3.60407)
+transform = Transform3D(1, 0, 0, 0, 0.933755, 0.357912, 0, -0.357912, 0.933755, -0.14213, 0.633441, 2.02853)
 projection = 2
 near = 0.8
 script = ExtResource("2_b20r0")

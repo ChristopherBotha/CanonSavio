@@ -1,7 +1,8 @@
-[gd_scene load_steps=25 format=3 uid="uid://cgvnhgorwk8mc"]
+[gd_scene load_steps=28 format=3 uid="uid://cgvnhgorwk8mc"]
 
 [ext_resource type="Shader" path="res://shaders/testingUV.gdshader" id="1_mrkt7"]
 [ext_resource type="Script" path="res://scripts/Tutorial.gd" id="1_pxheu"]
+[ext_resource type="Texture2D" uid="uid://b1mu36nb7pnvf" path="res://textures/_1m x 1m(1).png" id="2_0mgka"]
 [ext_resource type="Shader" path="res://shaders/water_spec.gdshader" id="3_24cnc"]
 [ext_resource type="Script" path="res://scripts/pitfall.gd" id="4_xxp8m"]
 [ext_resource type="Script" path="res://scripts/healarea.gd" id="5_rdcnw"]
@@ -17,6 +18,11 @@ background_mode = 2
 background_energy_multiplier = 1.81
 sky = SubResource("Sky_kp03l")
 tonemap_mode = 3
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_m88pb"]
+albedo_texture = ExtResource("2_0mgka")
+uv1_triplanar = true
+texture_filter = 2
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_1512c"]
 shader = ExtResource("1_mrkt7")
@@ -93,6 +99,10 @@ shader_parameter/wave_strengh = Vector2(0.25, 0.01)
 [sub_resource type="BoxShape3D" id="BoxShape3D_0fc6b"]
 size = Vector3(2.16348, 1.32238, 1.96786)
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jccr4"]
+albedo_texture = ExtResource("2_0mgka")
+uv1_triplanar = true
+
 [node name="Tutorial" type="Node3D"]
 script = ExtResource("1_pxheu")
 
@@ -105,10 +115,9 @@ shadow_enabled = true
 
 [node name="CSGBox3D" type="CSGBox3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
-material_override = SubResource("ShaderMaterial_1512c")
-material_overlay = SubResource("StandardMaterial3D_50kv6")
 use_collision = true
 size = Vector3(100, 1, 100)
+material = SubResource("StandardMaterial3D_m88pb")
 
 [node name="CSGBox3D2" type="CSGBox3D" parent="."]
 transform = Transform3D(0.210523, 0, 0, 0, 1, 0, 0, 0, 0.154916, 0, -1, -68.101)
@@ -187,6 +196,24 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.298305, 0)
 shape = SubResource("BoxShape3D_0fc6b")
 
 [node name="Skybox" parent="." instance=ExtResource("6_om4ls")]
+
+[node name="CSGCombiner3D" type="CSGCombiner3D" parent="."]
+use_collision = true
+
+[node name="CSGBox3D5" type="CSGBox3D" parent="CSGCombiner3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 23, -49.493)
+size = Vector3(100, 50, 1)
+material = SubResource("StandardMaterial3D_jccr4")
+
+[node name="CSGBox3D6" type="CSGBox3D" parent="CSGCombiner3D"]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 49.7557, 23, 0.106144)
+size = Vector3(100, 50, 1)
+material = SubResource("StandardMaterial3D_jccr4")
+
+[node name="CSGBox3D7" type="CSGBox3D" parent="CSGCombiner3D"]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -50.0591, 23, 0.106144)
+size = Vector3(100, 50, 1)
+material = SubResource("StandardMaterial3D_jccr4")
 
 [connection signal="body_entered" from="CSGBox3D4/Area3D" to="." method="_on_area_3d_body_entered"]
 [connection signal="body_entered" from="Area3D" to="Area3D" method="_on_body_entered"]

@@ -1,8 +1,9 @@
 extends CharacterBody3D
 class_name Player
 
-@onready var bullet = preload("res://weapons/bullet_body.tscn")
+#@onready var bullet = preload("res://weapons/bullet_body.tscn")
 @onready var nozzle = $Body/nozzle
+@onready var axe = $Body/SwordHand/Marker3D/Axe
 
 var direction # direction which player is facing
 
@@ -10,6 +11,7 @@ var myEquip = {
 	0: "sword",
 	1: "gun"
 }
+
 var shot = false
 
 var guns = {
@@ -17,7 +19,6 @@ var guns = {
 	"magNum": magNum(),
 	"shotGun": shotGun()
 }
-
 
 var SPEED = 5.0
 var JUMP_VELOCITY = 4.5
@@ -28,7 +29,7 @@ var dashing = false
 var sprinting : bool = false
 var jumping : bool = false
 var attacking : bool = false
-@onready var shootCast = $Camera_Orbit/h/v/SpringArm3D/Camera3D/RayCast3D2
+
 @onready var aimCast = $Body/RayCast3D
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
@@ -62,7 +63,7 @@ func _physics_process(delta):
 		velocity.y -= gravity * delta
 		
 	pushBack()
-	
+	axeing()
 	shoot()
 	sprintFalse()
 	handleInput(delta)
@@ -163,9 +164,9 @@ func magNum() -> void:
 	if shot == true and aimCast.get_collider() != null and is_on_floor():
 		var DAMAGE = 50
 		
-		var bullets = bullet.instantiate()
-		nozzle.add_child(bullets)
-		bullets.look_at(aimCast.get_collision_point(), Vector3.UP)
+#		var bullets = bullet.instantiate()
+#		nozzle.add_child(bullets)
+#		bullets.look_at(aimCast.get_collision_point(), Vector3.UP)
 		
 		if aimCast.get_collider().is_in_group("Enemies"):
 			print(aimCast.get_collider())
@@ -189,3 +190,10 @@ func pushBack():
 		var dir_x = (aimCast.get_collider().global_position.x - global_transform.origin.x)
 		var dir_z = (aimCast.get_collider().global_position.z - global_transform.origin.z)
 		direction = Vector3(dir_x,0.0, dir_z).normalized()
+
+func axeing():
+	if Input.is_action_just_pressed("throw"):
+		axe.throw()
+		
+	if Input.is_action_just_pressed("recall"):
+		axe.recall()
