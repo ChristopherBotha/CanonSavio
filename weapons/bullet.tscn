@@ -7,10 +7,15 @@
 [sub_resource type="SphereMesh" id="SphereMesh_w14e4"]
 
 [node name="bullet" type="RigidBody3D"]
-mass = 0.01
+collision_layer = 0
+collision_mask = 2
+mass = 0.3
+gravity_scale = 0.0
 script = ExtResource("1_s0jjt")
 
 [node name="Area3D" type="Area3D" parent="."]
+collision_layer = 0
+collision_mask = 2
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
 shape = SubResource("SphereShape3D_udgaq")

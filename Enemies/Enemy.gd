@@ -33,11 +33,11 @@ func _physics_process(delta):
 	move_and_slide()
 
 	
-func hurt(hurt_damage, pushBack) -> void:
+func hurt(hurt_damage, pushBack, timeScale, hitstopDuration) -> void:
 	health -= hurt_damage
 	
 	SignalBus.emit_signal("trauma", 0.5, 0.2)
-	SignalBus.emit_signal("hitStop",0.1, 0.05)
+	SignalBus.emit_signal("hitStop",timeScale, hitstopDuration)
 	
 	pushBack()
 	velocity = velocity.lerp(direction * 5, pushBack)

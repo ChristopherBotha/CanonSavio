@@ -11,7 +11,7 @@ func _ready():
 	
 func _physics_process(_delta):
 	if shoot:
-		apply_impulse(-transform.basis.z, -transform.basis.z * SPEED)
+		apply_impulse(transform.basis.z, transform.basis.z * SPEED)
 
 func queueFree():
 	
@@ -21,7 +21,7 @@ func queueFree():
 func _on_area_3d_body_entered(body):
 	if body.is_in_group("Enemies"):
 		if body.has_method("hurt"):
-			body.hurt(DAMAGE, -3)
+			body.hurt(DAMAGE, -1, 0.1,0.01)
 			self.queue_free()
 		else:
 			self.queue_free()

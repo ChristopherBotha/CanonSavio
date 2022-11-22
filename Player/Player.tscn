@@ -272,11 +272,12 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.357233)
 shape = SubResource("BoxShape3D_0y4bp")
 
 [node name="RayCast3D" type="RayCast3D" parent="Body"]
+visible = false
 target_position = Vector3(0, 0, 1000)
 collision_mask = 3
 
 [node name="hitBox" type="Area3D" parent="Body"]
-collision_layer = 4
+collision_layer = 0
 collision_mask = 2
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Body/hitBox"]

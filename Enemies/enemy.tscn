@@ -30,3 +30,6 @@ target_position = Vector3(0, 0, -1000)
 collision_mask = 4
 
 [node name="healthBar" parent="." instance=ExtResource("2_jq8c0")]
+
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
+avoidance_enabled = true

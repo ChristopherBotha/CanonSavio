@@ -1,7 +1,7 @@
 extends CharacterBody3D
 class_name Player
 
-@onready var bullet = preload("res://weapons/bullet.tscn")
+@onready var bullet = preload("res://weapons/bullet_body.tscn")
 @onready var nozzle = $Body/nozzle
 
 var direction # direction which player is facing
@@ -28,7 +28,7 @@ var dashing = false
 var sprinting : bool = false
 var jumping : bool = false
 var attacking : bool = false
-
+@onready var shootCast = $Camera_Orbit/h/v/SpringArm3D/Camera3D/RayCast3D2
 @onready var aimCast = $Body/RayCast3D
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
@@ -150,7 +150,7 @@ func hurt(damage)-> void:
 func _on_hit_box_body_entered(body):
 	if body.is_in_group("Enemies"):
 		if body.has_method("hurt"):
-			body.hurt(50, -5)
+			body.hurt(50, -5, 0.1,0.1)
 	pass # Replace with function body.
 
 func attackingFalse()-> void:
@@ -160,26 +160,27 @@ func machineGun()-> void:
 	pass
 
 func magNum() -> void:
-	if shot == true and aimCast.get_collider() != null:
+	if shot == true and aimCast.get_collider() != null and is_on_floor():
+		var DAMAGE = 50
+		
 		var bullets = bullet.instantiate()
 		nozzle.add_child(bullets)
 		bullets.look_at(aimCast.get_collision_point(), Vector3.UP)
-		bullets.shoot = true
 		
-		var where = aimCast.get_collision_point().normalized()
-		velocity = velocity.direction_to(Vector3(where.x, 0.0, where.z)) * (20)
-		velocity = velocity.lerp(Vector3.ZERO, 1.5) 
-		
-#		velocity = velocity.lerp(direction * 5, 5)
+		if aimCast.get_collider().is_in_group("Enemies"):
+			print(aimCast.get_collider())
+			if aimCast.get_collider().has_method("hurt"):
+				aimCast.get_collider().hurt(DAMAGE, -1, 0.1,0.01)
 
 func shotGun()-> void:
 	pass
 	
 func shoot() -> void:
-	if Input.is_action_pressed("shoot") and shot == false:
+
+	if Input.is_action_just_pressed("shoot") and shot == false:
 		shot = true
 		magNum()
-		await get_tree().create_timer(1).timeout
+		await get_tree().create_timer(0.1).timeout
 		shot = false
 		pass
 
