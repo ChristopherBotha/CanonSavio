@@ -30,7 +30,7 @@ var sprinting : bool = false
 var jumping : bool = false
 var attacking : bool = false
 
-@onready var aimCast = $Body/RayCast3D
+@onready var aimCast = $Camera_Orbit/h/v/SpringArm3D/Camera3D/RayCast3D
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
@@ -152,7 +152,6 @@ func _on_hit_box_body_entered(body):
 	if body.is_in_group("Enemies"):
 		if body.has_method("hurt"):
 			body.hurt(50, -5, 0.1,0.1)
-	pass # Replace with function body.
 
 func attackingFalse()-> void:
 	attacking = false

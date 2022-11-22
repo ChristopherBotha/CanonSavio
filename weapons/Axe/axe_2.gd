@@ -16,6 +16,8 @@ signal returned
 enum STATE {HELD, THROWN, LANDED, RECALLED}
 var state: STATE = STATE.HELD
 
+var enemy = null
+
 var recall_start: Vector3
 var recall_progress: float = 0.0
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
@@ -27,10 +29,14 @@ func _ready():
 func _physics_process(delta):	
 	if state == STATE.THROWN || state == STATE.RECALLED:
 		rotate_object_local(Vector3.RIGHT, deg_to_rad(spin_speed))
-		
+	
+	if enemy != null:
+		global_position = enemy.global_position
+		global_rotation = enemy.global_rotation
+	
 	if state == STATE.THROWN:
 		if !is_on_floor():
-			velocity.y -= gravity * delta
+			velocity.y -= gravity * delta * 0.2
 		move_and_collide(velocity * delta)
 		
 	if state == STATE.RECALLED:
@@ -81,6 +87,27 @@ func recall():
 func _on_area_3d_body_shape_entered(body_rid, body, body_shape_index, local_shape_index):
 	if state == STATE.RECALLED:
 		return
-	
 	velocity = Vector3.ZERO
 	state = STATE.LANDED
+
+
+func _on_area_3d_2_body_entered(body):
+	if state == STATE.RECALLED:
+		return
+		
+	if body.is_in_group("Enemies"):
+		print("Hello")
+		velocity = Vector3.ZERO
+		enemy = body
+		state = STATE.LANDED
+		body.hurt(150, -1, 0.1,0.01)
+		if body.health <= 0:
+			recall()
+	else:
+		velocity = Vector3.ZERO
+		state = STATE.LANDED
+
+
+func _on_area_3d_2_body_exited(body):
+	if body.is_in_group("Enemies"):
+		enemy = null

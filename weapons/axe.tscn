@@ -1,6 +1,7 @@
-[gd_scene load_steps=19 format=3 uid="uid://hfanbdpcg5ry"]
+[gd_scene load_steps=21 format=3 uid="uid://hfanbdpcg5ry"]
 
 [ext_resource type="Script" path="res://weapons/Axe/axe_2.gd" id="1_hjcmt"]
+[ext_resource type="Curve" uid="uid://vj3dx7inipbv" path="res://weapons/Axe/Axe_Curve.tres" id="2_2f3c4"]
 [ext_resource type="Texture2D" uid="uid://dl7t2kwhuhrv" path="res://weapons/Axe/axe/textures/Material__27_baseColor.jpeg" id="2_04ekk"]
 [ext_resource type="Texture2D" uid="uid://cg7h2bp3hv06j" path="res://weapons/Axe/axe/textures/Material__27_emissive.jpeg" id="3_bmvlb"]
 [ext_resource type="Texture2D" uid="uid://dhk6e51r7jpdn" path="res://weapons/Axe/axe/textures/Material__27_metallicRoughness.png" id="4_d43ff"]
@@ -139,15 +140,25 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_pneh6")
 
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_6yyff"]
+radius = 0.3
+height = 1.0
+
 [node name="Axe" type="CharacterBody3D"]
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
+collision_layer = 0
+collision_mask = 3
 script = ExtResource("1_hjcmt")
+recall_curve = ExtResource("2_2f3c4")
+throw_force = 30.0
 
 [node name="HandleShape" type="CollisionShape3D" parent="."]
 transform = Transform3D(-8.39196e-17, -1.65203e-08, -0.37794, -0.37794, -1.67839e-16, 8.39196e-17, -1.67839e-16, 0.37794, -1.65203e-08, -8.9407e-07, -4.41006e-07, -4.58209e-07)
 shape = SubResource("ConvexPolygonShape3D_46r7f")
 
 [node name="Area3D" type="Area3D" parent="."]
+collision_layer = 0
+collision_mask = 3
 
 [node name="HeadShape" type="CollisionShape3D" parent="Area3D"]
 transform = Transform3D(1, 0, 0, 0, 1.74739, 0, 0, 0, 0.0855141, 0.0719136, 0.265545, 0)
@@ -179,4 +190,14 @@ skeleton = NodePath("")
 mesh = SubResource("ArrayMesh_fym0x")
 skeleton = NodePath("")
 
+[node name="Area3D2" type="Area3D" parent="."]
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D2"]
+transform = Transform3D(0.5, 0, 0, 0, 0.916521, 0, 0, 0, 0.5, 0, 0.0541845, 0)
+shape = SubResource("CapsuleShape3D_6yyff")
+
 [connection signal="body_shape_entered" from="Area3D" to="." method="_on_area_3d_body_shape_entered"]
+[connection signal="body_entered" from="Area3D2" to="." method="_on_area_3d_2_body_entered"]
+[connection signal="body_exited" from="Area3D2" to="." method="_on_area_3d_2_body_exited"]

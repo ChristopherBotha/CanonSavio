@@ -1,4 +1,4 @@
-[gd_scene load_steps=70 format=3 uid="uid://cn4qndkuji4ls"]
+[gd_scene load_steps=69 format=3 uid="uid://cn4qndkuji4ls"]
 
 [ext_resource type="Script" path="res://Player/Player.gd" id="1_t7byk"]
 [ext_resource type="Script" path="res://Player/Camera_Orbit.gd" id="2_60t8r"]
@@ -9,7 +9,6 @@
 [ext_resource type="PackedScene" uid="uid://hfanbdpcg5ry" path="res://weapons/axe.tscn" id="6_4xs0f"]
 [ext_resource type="ArrayMesh" uid="uid://8m40bfpr1i3" path="res://weapons/Sword-0-Sword.obj" id="6_dphkx"]
 [ext_resource type="Texture2D" uid="uid://butna4rf3v77n" path="res://weapons/Sword-0-Sword.png" id="7_bk4g1"]
-[ext_resource type="Curve" path="res://weapons/Axe/Axe_Curve.tres" id="7_c0yms"]
 [ext_resource type="PackedScene" uid="uid://bgeptktrjpeup" path="res://weapons/chain.tscn" id="7_cliux"]
 [ext_resource type="Script" path="res://Player/Dash.gd" id="10_d7xi5"]
 [ext_resource type="Script" path="res://Player/Walk.gd" id="11_hf8yi"]
@@ -25,14 +24,14 @@
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_0wx0t"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_64tf8"]
-albedo_texture = ExtResource("7_bk4g1")
+[sub_resource type="BoxShape3D" id="BoxShape3D_0y4bp"]
+size = Vector3(1, 1, 0.122059)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_dj31n"]
 size = Vector3(0.3, 1.8, 0.2)
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_0y4bp"]
-size = Vector3(1, 1, 0.122059)
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_64tf8"]
+albedo_texture = ExtResource("7_bk4g1")
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_1ohue"]
 size = Vector3(2.29819, 1.74372, 1.57084)
@@ -247,20 +246,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.112669, 0.411911, -0.78143
 top_level = true
 script = ExtResource("2_a4i7v")
 
-[node name="Sword-0-sword" type="MeshInstance3D" parent="Body/Back/holsterSword"]
-transform = Transform3D(-0.031127, -0.508518, 0.480042, -0.0329044, 0.48105, 0.507453, -0.698533, 1.04308e-08, -0.0452945, 0.919651, -0.994198, 5.96046e-08)
-mesh = ExtResource("6_dphkx")
-skeleton = NodePath("../../../..")
-surface_material_override/0 = SubResource("StandardMaterial3D_64tf8")
-
-[node name="Area3D" type="Area3D" parent="Body/Back/holsterSword"]
-collision_mask = 4
-linear_damp_space_override = 1
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Body/Back/holsterSword/Area3D"]
-transform = Transform3D(0.693414, -0.720539, 0, 0.720539, 0.693414, -3.72529e-09, 0, -4.65661e-10, 1, 0.228489, -0.291688, -0.0611179)
-shape = SubResource("BoxShape3D_dj31n")
-
 [node name="Chain2" parent="Body" instance=ExtResource("7_cliux")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.573027)
 
@@ -273,10 +258,21 @@ collision_mask = 2
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.357233)
 shape = SubResource("BoxShape3D_0y4bp")
 
-[node name="RayCast3D" type="RayCast3D" parent="Body"]
+[node name="Area3D" type="Area3D" parent="Body/hand"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.112669, 0.411911, -1.85519)
 visible = false
-target_position = Vector3(0, 0, 1000)
-collision_mask = 3
+collision_mask = 4
+linear_damp_space_override = 1
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Body/hand/Area3D"]
+transform = Transform3D(0.693414, -0.720539, 0, 0.720539, 0.693414, -3.72529e-09, 0, -4.65661e-10, 1, 0.228489, -0.291688, -0.0611179)
+shape = SubResource("BoxShape3D_dj31n")
+
+[node name="Sword-0-sword" type="MeshInstance3D" parent="Body/hand"]
+transform = Transform3D(-0.031127, -0.508518, 0.480042, -0.0329044, 0.48105, 0.507453, -0.698533, 1.04308e-08, -0.0452945, 0.806982, -0.582287, -1.85519)
+mesh = ExtResource("6_dphkx")
+skeleton = NodePath("../../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_64tf8")
 
 [node name="hitBox" type="Area3D" parent="Body"]
 collision_layer = 0
@@ -293,10 +289,9 @@ disabled = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.700812, 0, 0.231215)
 
 [node name="Marker3D" type="Marker3D" parent="Body/SwordHand"]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -0.0753242, 0.320787, 0)
 
 [node name="Axe" parent="Body/SwordHand/Marker3D" node_paths=PackedStringArray("player") instance=ExtResource("6_4xs0f")]
-transform = Transform3D(-8.74228e-08, 0, -2, -0.62646, 1.89935, 2.73835e-08, 1.89935, 0.62646, -8.30234e-08, 0, 0.16432, 0)
-recall_curve = ExtResource("7_c0yms")
 player = NodePath("../../../..")
 
 [node name="Camera_Orbit" type="Node3D" parent="."]
@@ -307,16 +302,21 @@ script = ExtResource("2_60t8r")
 [node name="v" type="Node3D" parent="Camera_Orbit/h"]
 
 [node name="SpringArm3D" type="SpringArm3D" parent="Camera_Orbit/h/v"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.714036, 1.1514, 1.60137)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.61102, 0.989483, 3.92451)
 shape = SubResource("CapsuleShape3D_7wy4n")
-spring_length = 5.0
-margin = 0.2
+spring_length = 2.0
+margin = 1.0
 
 [node name="Camera3D" type="Camera3D" parent="Camera_Orbit/h/v/SpringArm3D"]
-transform = Transform3D(1, 0, 0, 0, 0.933755, 0.357912, 0, -0.357912, 0.933755, -0.14213, 0.633441, 2.02853)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
 projection = 2
 near = 0.8
 script = ExtResource("2_b20r0")
+
+[node name="RayCast3D" type="RayCast3D" parent="Camera_Orbit/h/v/SpringArm3D/Camera3D"]
+transform = Transform3D(1, 0, 0, 0, 0.994573, -0.104043, 0, 0.104043, 0.994573, -0.836979, -0.990569, -4.3411)
+target_position = Vector3(0, 0, -1000)
+collision_mask = 3
 
 [node name="lock_range" type="Area3D" parent="Camera_Orbit"]
 collision_layer = 0
