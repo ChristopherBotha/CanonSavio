@@ -2,29 +2,33 @@ extends CharacterBody3D
 class_name Player
 
 #@onready var bullet = preload("res://weapons/bullet_body.tscn")
-@onready var nozzle = $Body/nozzle
-@onready var axe = $Body/SwordHand/Marker3D/Axe
+@onready var nozzle : Node3D = $Body/nozzle
+@onready var axe : Node3D = $Body/SwordHand/Marker3D/Axe
+@onready var chainCast : RayCast3D = $Body/chainCast
+@onready var dust = $Body/dust/dust
 
 var direction # direction which player is facing
 
-var myEquip = { 
+var myEquip  : Dictionary = { 
 	0: "sword",
 	1: "gun"
 }
 
-var shot = false
+var shot : bool = false
 
-var guns = {
+var guns : Dictionary = {
 	"machineGun": machineGun(),
 	"magNum": magNum(),
 	"shotGun": shotGun()
 }
 
-var SPEED = 5.0
-var JUMP_VELOCITY = 4.5
-var dashSpeed = 200
-@onready var eyes = $eyes
+var SPEED : float = 5.0
+var JUMP_VELOCITY : float = 4.5
+var dashSpeed : int = 200
+
+@onready var eyes : Node3D = $eyes
 @onready var playback = $AnimationTree.get("parameters/playback")
+
 var dashing = false
 var sprinting : bool = false
 var jumping : bool = false
@@ -43,25 +47,28 @@ var health: float = 100:
 var maxSpeed : float = 15
 var minSpeed : float = 0.0
 var maxJumpHeight : float = 6
-var dir = Vector3.ZERO
+var dir : Vector3 = Vector3.ZERO
 var momentum : float = 0.1
 var friction : float = 0.05
 var airFriction : float = 0.07
 
-@onready var state_name = $State_Machine
+@onready var state_name : State_Machine = $State_Machine
 @onready var body = $Body
-@onready var back = $Body/Back
-@onready var camera = $Camera_Orbit/h/v/SpringArm3D/Camera3D
-@onready var cams = $Camera_Orbit
-@onready var hand = $Body/hand
-@onready var horRot = $Camera_Orbit/h
+@onready var back : Node3D = $Body/Back
+@onready var camera : Camera3D = $Camera_Orbit/h/v/SpringArm3D/Camera3D
+@onready var cams : Node3D = $Camera_Orbit
+@onready var hand : Node3D = $Body/hand
+@onready var horRot : Node3D = $Camera_Orbit/h
 
-var h_rot
+var h_rot : float
 
-func _physics_process(delta):
+func _physics_process(delta: float) -> void:
 	if !is_on_floor():
 		velocity.y -= gravity * delta
-		
+	
+	print($Camera_Orbit/h/v/SpringArm3D/Camera3D/RayCast3D.get_collision_point())
+	
+	chainCastCollide()
 	pushBack()
 	axeing()
 	shoot()
@@ -70,7 +77,7 @@ func _physics_process(delta):
 	handle_animaton()
 	move_and_slide()
 
-func handleInput(delta):
+func handleInput(delta: float) -> void:
 	
 	h_rot = $Camera_Orbit/h.global_transform.basis.get_euler().y
 	
@@ -78,6 +85,7 @@ func handleInput(delta):
 				Input.get_action_strength("down") - Input.get_action_strength("up")).rotated(Vector3.UP, h_rot).normalized()
 
 	dir = input_dir
+	dusting()
 	
 	#rotate body accroding to mouse input
 	if input_dir.z != 0 or input_dir.x != 0 :
@@ -86,42 +94,36 @@ func handleInput(delta):
 	
 	if input_dir and !is_on_floor():
 		velocity = velocity.lerp(Vector3(input_dir.x * SPEED, velocity.y, input_dir.z * SPEED), airFriction ) 
-		
 	elif !is_on_floor() :
 		velocity = velocity.lerp(Vector3(input_dir.x * SPEED, velocity.y, input_dir.z * SPEED), airFriction ) 
-		
 	elif input_dir and is_on_floor():
 		velocity = velocity.lerp(Vector3(input_dir.x,0.0,input_dir.z) * SPEED, momentum ) 
-		
 	elif is_on_floor() and input_dir == Vector3.ZERO:
 		velocity = velocity.lerp(Vector3(0.0, velocity.y, 0.0), friction ) 
 
-func sprint():
+func sprint() -> void:
 	if Input.is_action_pressed("sprint"):
 		SPEED = maxSpeed
 		camera.near = move_toward(camera.near, 0.5, 0.02)
 	elif Input.is_action_just_released("sprint"):
 		sprinting = false
 
-func sprintFalse():
+func sprintFalse() -> void:
 	if sprinting == false:
 		SPEED = 5.0
 		camera.near = move_toward(camera.near, 0.8, 0.02)
 
-func dash():
+func dash() -> void:
 	if dashing == true and is_on_floor():
 		SignalBus.emit_signal("delayChange")
+		var direction : Vector3 = _get_direction()
 		
-		var where = $Body/RayCast3D.get_collision_point()
-	
 		if dir != Vector3.ZERO:
-			velocity = velocity.direction_to(Vector3(where.x, 0.0, where.z)) * dashSpeed
+			velocity = Vector3(direction.x, 0.0, direction.z) * dashSpeed
 			velocity = velocity.lerp(Vector3.ZERO, 0.2 ) 
 		elif dir == Vector3.ZERO:
-			velocity = velocity.direction_to(Vector3(where.x, 0.0, where.z)) * (dashSpeed - 20)
+			velocity = Vector3(direction.x, 0.0, direction.z) * (dashSpeed - 20)
 			velocity = velocity.lerp(Vector3.ZERO, 1.3) 
-			
-		velocity = velocity.move_toward(Vector3.ZERO, 0.2 )
 
 		await get_tree().create_timer(1).timeout
 		dashing = false
@@ -136,11 +138,11 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("ui_cancel"):
 		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 
-func _on_hand_body_entered(body):
+func _on_hand_body_entered(body) -> void:
 	if body.is_in_group("Enemies"):
 		SignalBus.emit_signal("releaseVictim",null)
 
-func handle_animaton():
+func handle_animaton() -> void:
 	for j in state_name.get_children():
 		if state_name.state.name == j.get_name():
 			playback.travel(state_name.state.name)
@@ -161,7 +163,7 @@ func machineGun()-> void:
 
 func magNum() -> void:
 	if shot == true and aimCast.get_collider() != null and is_on_floor():
-		var DAMAGE = 50
+		var DAMAGE : float = 50
 		
 #		var bullets = bullet.instantiate()
 #		nozzle.add_child(bullets)
@@ -184,15 +186,33 @@ func shoot() -> void:
 		shot = false
 		pass
 
-func pushBack():
+func pushBack() -> void:
 	if aimCast.get_collider() != null:
 		var dir_x = (aimCast.get_collider().global_position.x - global_transform.origin.x)
 		var dir_z = (aimCast.get_collider().global_position.z - global_transform.origin.z)
 		direction = Vector3(dir_x,0.0, dir_z).normalized()
 
-func axeing():
+func axeing() -> void:
 	if Input.is_action_just_pressed("throw"):
 		axe.throw()
 		
 	if Input.is_action_just_pressed("recall"):
 		axe.recall()
+
+func _get_direction():
+
+	var collision = chainCast.get_collision_point()
+	
+	if collision:
+		return global_position.direction_to(collision)
+
+func chainCastCollide():
+	if chainCast.is_colliding():
+		SignalBus.emit_signal("chainCollision", chainCast.get_collider())
+		return 
+		
+func dusting()-> void:
+	if dir != Vector3.ZERO and is_on_floor():
+		dust.emitting = true
+	else:
+		dust.emitting = false

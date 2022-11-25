@@ -1,4 +1,4 @@
-[gd_scene load_steps=69 format=3 uid="uid://cn4qndkuji4ls"]
+[gd_scene load_steps=71 format=3 uid="uid://cn4qndkuji4ls"]
 
 [ext_resource type="Script" path="res://Player/Player.gd" id="1_t7byk"]
 [ext_resource type="Script" path="res://Player/Camera_Orbit.gd" id="2_60t8r"]
@@ -10,6 +10,7 @@
 [ext_resource type="ArrayMesh" uid="uid://8m40bfpr1i3" path="res://weapons/Sword-0-Sword.obj" id="6_dphkx"]
 [ext_resource type="Texture2D" uid="uid://butna4rf3v77n" path="res://weapons/Sword-0-Sword.png" id="7_bk4g1"]
 [ext_resource type="PackedScene" uid="uid://bgeptktrjpeup" path="res://weapons/chain.tscn" id="7_cliux"]
+[ext_resource type="PackedScene" uid="uid://uh4k8ebu7chu" path="res://effects/dust.tscn" id="7_pl5su"]
 [ext_resource type="Script" path="res://Player/Dash.gd" id="10_d7xi5"]
 [ext_resource type="Script" path="res://Player/Walk.gd" id="11_hf8yi"]
 [ext_resource type="Script" path="res://Player/Run.gd" id="12_3hqwf"]
@@ -19,6 +20,7 @@
 [ext_resource type="Script" path="res://Player/Fall.gd" id="16_v33u0"]
 [ext_resource type="Script" path="res://Player/Attack.gd" id="17_viaiu"]
 [ext_resource type="Script" path="res://Player/Glide.gd" id="18_wjb3j"]
+[ext_resource type="Script" path="res://Player/AirAttack.gd" id="20_iuwbf"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_5u2jp"]
 
@@ -286,13 +288,23 @@ disabled = true
 [node name="nozzle" type="Marker3D" parent="Body"]
 
 [node name="SwordHand" type="Node3D" parent="Body"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.700812, 0, 0.231215)
 
 [node name="Marker3D" type="Marker3D" parent="Body/SwordHand"]
-transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -0.0753242, 0.320787, 0)
+transform = Transform3D(1, 0, 0, 0, -0.760055, 0.649859, 0, -0.649859, -0.760055, -0.909017, 0.648113, 0.995296)
 
 [node name="Axe" parent="Body/SwordHand/Marker3D" node_paths=PackedStringArray("player") instance=ExtResource("6_4xs0f")]
 player = NodePath("../../../..")
+
+[node name="dust" type="Marker3D" parent="Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.927224, 0)
+
+[node name="dust" parent="Body/dust" instance=ExtResource("7_pl5su")]
+unique_name_in_owner = true
+emitting = false
+
+[node name="chainCast" type="RayCast3D" parent="Body"]
+target_position = Vector3(0, 0, 1000)
+collision_mask = 3
 
 [node name="Camera_Orbit" type="Node3D" parent="."]
 script = ExtResource("2_60t8r")
@@ -305,10 +317,9 @@ script = ExtResource("2_60t8r")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.61102, 0.989483, 3.92451)
 shape = SubResource("CapsuleShape3D_7wy4n")
 spring_length = 2.0
-margin = 1.0
+margin = 0.001
 
 [node name="Camera3D" type="Camera3D" parent="Camera_Orbit/h/v/SpringArm3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
 projection = 2
 near = 0.8
 script = ExtResource("2_b20r0")
@@ -359,6 +370,9 @@ script = ExtResource("17_viaiu")
 
 [node name="Glide" type="Node" parent="State_Machine"]
 script = ExtResource("18_wjb3j")
+
+[node name="AirAttack" type="Node" parent="State_Machine"]
+script = ExtResource("20_iuwbf")
 
 [node name="eyes" type="Node3D" parent="."]
 

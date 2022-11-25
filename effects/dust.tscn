@@ -1,0 +1,29 @@
+[gd_scene load_steps=6 format=3 uid="uid://uh4k8ebu7chu"]
+
+[ext_resource type="Script" path="res://scripts/dust.gd" id="1_3lu03"]
+
+[sub_resource type="Curve" id="Curve_42l0w"]
+_data = [Vector2(0.00526316, 0.963636), 0.0, 0.253333, 0, 0, Vector2(0.973684, 0.0181818), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_5dsl2"]
+curve = SubResource("Curve_42l0w")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_lqaos"]
+direction = Vector3(0, 1, 0)
+gravity = Vector3(0, 0, 0)
+initial_velocity_min = 2.0
+initial_velocity_max = 2.0
+scale_min = 0.1
+scale_max = 0.4
+scale_curve = SubResource("CurveTexture_5dsl2")
+
+[sub_resource type="BoxMesh" id="BoxMesh_1oa2q"]
+size = Vector3(0.5, 0.5, 0.5)
+
+[node name="dust" type="GPUParticles3D"]
+amount = 50
+lifetime = 0.51
+process_material = SubResource("ParticleProcessMaterial_lqaos")
+draw_pass_1 = SubResource("BoxMesh_1oa2q")
+script = ExtResource("1_3lu03")

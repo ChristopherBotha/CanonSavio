@@ -8,7 +8,9 @@ func enter(_msg := {}) -> void:
 	
 	
 func physics_update(_delta: float) -> void:
-
+	
+	if owner.attacking == true:
+		owner.velocity.y = 0.0
 			
 	if owner.is_on_floor() and owner.dir != Vector3.ZERO and Input.is_action_pressed("sprint"):
 		state_machine.transition_to("Run", {do_Run = true})

@@ -24,6 +24,9 @@ var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	global_position = parent.global_position
+	global_rotation = parent.global_rotation
+	$Area3D2/CollisionShape3D.disabled = true
 	pass # Replace with function body.
 
 func _physics_process(delta):	
@@ -32,14 +35,19 @@ func _physics_process(delta):
 	
 	if enemy != null:
 		global_position = enemy.global_position
-		global_rotation = enemy.global_rotation
+#		global_rotation = enemy.global_rotation
 	
+	if state == STATE.HELD:
+		$Area3D2/CollisionShape3D.disabled = true
+		
 	if state == STATE.THROWN:
+		$Area3D2/CollisionShape3D.disabled = false
 		if !is_on_floor():
 			velocity.y -= gravity * delta * 0.2
 		move_and_collide(velocity * delta)
 		
 	if state == STATE.RECALLED:
+		$Area3D2/CollisionShape3D.disabled = false
 		recall_progress += recall_speed * delta
 		
 		if abs(global_position.distance_to(parent.global_position)) < 0.1:
@@ -70,6 +78,7 @@ func _get_direction():
 	var to: Vector3 = from + camera.project_ray_normal(center) * 1000
 	var query := PhysicsRayQueryParameters3D.create(from, to)
 	var collision = get_world_3d().direct_space_state.intersect_ray(query)
+	
 	if collision:
 		return global_position.direction_to(collision.position)
 	else:

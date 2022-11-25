@@ -25,6 +25,7 @@ func _ready():
 		
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
+	$Label.text = str(Engine.get_frames_per_second())
 	
 	for i in spawnEnemies:
 		if i.get_children().size() <= 0 :
