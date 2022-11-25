@@ -4,11 +4,11 @@ extends Node3D
 @onready var player = preload("res://Player/Player.tscn")
 @onready var enemy = preload("res://Enemies/enemy.tscn")
 
-var spawnEnemies = []
-var player1 = null
+var spawnEnemies : Array = []
+var player1 : Object = null
 
 # Called when the node enters the scene tree for the first time.
-func _ready():
+func _ready() -> void:
 
 	if level:
 		var currentLevel = load(level).instantiate()
@@ -24,7 +24,7 @@ func _ready():
 		spawnEnemies = enemySpawner.get_children()
 		
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
+func _process(delta: float) -> void:
 	$Label.text = str(Engine.get_frames_per_second())
 	
 	for i in spawnEnemies:
@@ -34,5 +34,4 @@ func _process(delta):
 			
 	if player1 != null:
 		get_tree().call_group("Enemies","playerPos",player1)
-			
-	pass
+

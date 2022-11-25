@@ -46,21 +46,20 @@ func hurt(hurt_damage : float, pushBack, timeScale : float, hitstopDuration: flo
 	
 	await get_tree().create_timer(0.1).timeout
 	velocity = Vector3.ZERO
-	
 	dust.emitting = false
-	
+
 	if health <= 0:
 		queue_free()
 
 func playerPos(player : Player) -> void:
 	target = player
 
-func lookAtPlayer():
+func lookAtPlayer() -> void:
 	if target != null:
 		eyes.look_at(target.global_position, Vector3.UP )
 		rotate_y(deg_to_rad(eyes.rotation.y * TURN_SPEED))
 
-func pushBack():
+func pushBack() -> void:
 	dust.emitting = true
 	var dir_x = (target.global_position.x - global_transform.origin.x)
 	var dir_z = (target.global_position.z - global_transform.origin.z)
