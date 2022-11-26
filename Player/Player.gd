@@ -3,9 +3,12 @@ class_name Player
 
 #@onready var bullet = preload("res://weapons/bullet_body.tscn")
 @onready var nozzle : Node3D = $Body/nozzle
-@onready var axe : Node3D = $Body/SwordHand/Marker3D/Axe
+@onready var sword : Node3D = null
 @onready var chainCast : RayCast3D = $Body/chainCast
 @onready var dust = $Body/dust/dust
+
+@export var backSheathe : Node3D
+@export var equipSword : Node3D
 
 var direction # direction which player is facing
 
@@ -22,6 +25,7 @@ var guns : Dictionary = {
 	"shotGun": shotGun()
 }
 
+var sword_sheathed : bool = true
 var SPEED : float = 5.0
 var JUMP_VELOCITY : float = 4.5
 var dashSpeed : int = 200
@@ -61,11 +65,16 @@ var airFriction : float = 0.07
 
 var h_rot : float
 
+func _ready() -> void:
+	sword = $Body/Back/holsterSword/Axe
+
 func _physics_process(delta: float) -> void:
 	
 	if !is_on_floor():
 		velocity.y -= gravity * delta
-
+	print(state_name.state.name)
+	
+	_sheath()
 	chainCastCollide()
 	pushBack()
 	axeing()
@@ -203,10 +212,10 @@ func pushBack() -> void:
 
 func axeing() -> void:
 	if Input.is_action_just_pressed("throw"):
-		axe.throw()
+		sword.throw()
 		
-	if Input.is_action_just_pressed("recall") and axe.state != axe.STATE.HELD:
-		axe.recall()
+	if Input.is_action_just_pressed("recall") and sword.state != sword.STATE.HELD:
+		sword.recall()
 
 
 func _get_direction():
@@ -229,10 +238,34 @@ func dusting()-> void:
 	else:
 		dust.emitting = false
 		
-func catchAxe():
+func catchAxe()-> void:
 	
 #	pushBack() 
 	var direction : Vector3 = _get_direction()
 	
 	velocity = Vector3(direction.x, 0.0, direction.z) * 5
 	velocity = velocity.lerp(Vector3.ZERO, 1.3) 
+	
+func _reparent(child: Node, new_parent: Node)-> void:
+	var old_parent = child.get_parent()
+	old_parent.remove_child(child)
+	new_parent.add_child(child)
+	
+func _unsheath_weapon()-> void:
+	_reparent(backSheathe.get_child(0), 
+			equipSword)
+	sword = $Body/SwordHand/Marker3D/Axe
+	sword_sheathed = false
+	
+func _sheath_weapon()-> void:
+	_reparent(equipSword.get_child(0), 
+			backSheathe)
+	sword = $Body/Back/holsterSword/Axe
+	sword_sheathed = true
+
+func _sheath()-> void:
+	if Input.is_action_just_pressed("sheathe"):
+		if sword_sheathed == true:
+			_unsheath_weapon()
+		elif sword_sheathed == false:
+			_sheath_weapon()

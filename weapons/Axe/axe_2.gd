@@ -24,6 +24,9 @@ var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	if owner != null:
+		player = owner
+	
 	global_position = parent.global_position
 	global_rotation = parent.global_rotation
 	$Area3D2/CollisionShape3D.disabled = true
@@ -35,7 +38,7 @@ func _physics_process(delta):
 	
 	if enemy != null:
 		global_position = enemy.global_position
-#		global_rotation = enemy.global_rotation
+		global_rotation = enemy.global_rotation
 	
 	if state == STATE.HELD:
 		$Area3D2/CollisionShape3D.disabled = true
@@ -55,7 +58,8 @@ func _physics_process(delta):
 			global_position = parent.global_position
 			global_rotation = parent.global_rotation
 			SignalBus.emit_signal("trauma", 2, 0.2 )
-			owner.catchAxe()
+			
+			player.catchAxe()
 			state = STATE.HELD
 			emit_signal("returned")
 			top_level = false

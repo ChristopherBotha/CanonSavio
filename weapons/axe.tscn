@@ -13,8 +13,8 @@ size = Vector3(0.5, 0.1, 0.2)
 size = Vector3(0.1, 0.1, 0.1)
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_6yyff"]
-radius = 0.417735
-height = 1.30436
+radius = 0.205453
+height = 0.844125
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_22tgp"]
 albedo_texture = ExtResource("11_x5acn")
@@ -32,7 +32,7 @@ transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0, 1.1
 shape = SubResource("BoxShape3D_okk0c")
 
 [node name="Area3D" type="Area3D" parent="."]
-transform = Transform3D(-2.18557e-07, 0, -5, 0, 5, 0, 5, 0, -2.18557e-07, 0.0390791, -1.69435, -0.375638)
+transform = Transform3D(-2.18557e-07, 0, -2.428, 0, 4.31208, 0, 5, 0, -1.06131e-07, 0.0390791, -1.3559, -0.354701)
 collision_layer = 0
 collision_mask = 3
 
@@ -46,7 +46,7 @@ collision_layer = 0
 collision_mask = 2
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D2"]
-transform = Transform3D(0.5, 0, 0, 0, 0.916521, 0, 0, 0, 0.5, 0, 0.257472, 0)
+transform = Transform3D(0.5, 0, 0, 0, 0.916521, 0, 0, 0, 0.5, 0, 0.0742344, 0)
 shape = SubResource("CapsuleShape3D_6yyff")
 
 [node name="Sword-0-sword2" type="MeshInstance3D" parent="."]
