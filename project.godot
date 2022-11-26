@@ -147,8 +147,9 @@ config/icon="res://icon.svg"
 
 [autoload]
 
-SignalBus="*res://scripts/SignalBus.gd"
-Game="*res://scripts/Game.gd"
+Game="*res://globals/Game.gd"
+ReParent="*res://globals/reParent.gd"
+SignalBus="*res://globals/SignalBus.gd"
 
 [debug]
 

@@ -17,13 +17,14 @@ enum STATE {HELD, THROWN, LANDED, RECALLED}
 var state: STATE = STATE.HELD
 
 var enemy = null
-
+@onready var shootCollider = null
 var recall_start: Vector3
 var recall_progress: float = 0.0
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	
 	if owner != null:
 		player = owner
 	
@@ -32,7 +33,10 @@ func _ready():
 	$Area3D2/CollisionShape3D.disabled = true
 	pass # Replace with function body.
 
-func _physics_process(delta):	
+func _physics_process(delta: float):
+	
+	_get_direction()
+	
 	if state == STATE.THROWN || state == STATE.RECALLED:
 		rotate_object_local(Vector3.RIGHT, deg_to_rad(spin_speed))
 	
@@ -85,6 +89,9 @@ func _get_direction():
 	var to: Vector3 = from + camera.project_ray_normal(center) * 1000
 	var query := PhysicsRayQueryParameters3D.create(from, to)
 	var collision = get_world_3d().direct_space_state.intersect_ray(query)
+	
+	shootCollider = collision
+#	print(shootCollider)
 	
 	if collision:
 		return global_position.direction_to(collision.position)

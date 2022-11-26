@@ -4,7 +4,6 @@ var victim : Object = null
 var chained : bool = false
 
 func _ready():
-	SignalBus.connect("releaseVictim", releaseVic)
 	SignalBus.connect("chainCollision", collider)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -26,10 +25,7 @@ func _process(delta: float) -> void:
 			chained = false
 		else:
 			victim.global_position = victim.global_position.lerp(owner.global_position, 0.5)
-		
 
-func releaseVic(val) -> void:
-	victim = val
 
 func collider(val: Object) -> void:
 	if val.is_in_group("Enemies"):

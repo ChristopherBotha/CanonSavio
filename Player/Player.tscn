@@ -322,7 +322,6 @@ near = 0.8
 script = ExtResource("2_b20r0")
 
 [node name="RayCast3D" type="RayCast3D" parent="Camera_Orbit/h/v/SpringArm3D/Camera3D"]
-transform = Transform3D(1, 0, 0, 0, 0.994573, -0.104043, 0, 0.104043, 0.994573, -0.836979, -0.990569, -4.3411)
 target_position = Vector3(0, 0, -1000)
 collision_mask = 3
 
@@ -381,6 +380,7 @@ libraries = {
 [node name="AnimationTree" type="AnimationTree" parent="."]
 tree_root = SubResource("AnimationNodeStateMachine_1a7vi")
 anim_player = NodePath("../AnimationPlayer")
+active = true
 parameters/playback = SubResource("AnimationNodeStateMachinePlayback_g6350")
 
 [connection signal="body_entered" from="Body/hitBox" to="." method="_on_hit_box_body_entered"]

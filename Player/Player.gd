@@ -3,7 +3,6 @@ class_name Player
 
 #@onready var bullet = preload("res://weapons/bullet_body.tscn")
 @onready var nozzle : Node3D = $Body/nozzle
-@onready var sword : Node3D = null
 @onready var chainCast : RayCast3D = $Body/chainCast
 @onready var dust = $Body/dust/dust
 
@@ -56,6 +55,7 @@ var momentum : float = 0.1
 var friction : float = 0.05
 var airFriction : float = 0.07
 
+@onready var sword = $Body/Back/holsterSword/Axe
 @onready var state_name : State_Machine = $State_Machine
 @onready var body = $Body
 @onready var back : Node3D = $Body/Back
@@ -66,15 +66,15 @@ var airFriction : float = 0.07
 var h_rot : float
 
 func _ready() -> void:
-	sword = $Body/Back/holsterSword/Axe
+	
+	pass
 
 func _physics_process(delta: float) -> void:
 	
 	if !is_on_floor():
 		velocity.y -= gravity * delta
-	print(state_name.state.name)
+#	print(sword.shootCollider.get_collider())
 	
-	_sheath()
 	chainCastCollide()
 	pushBack()
 	axeing()
@@ -128,7 +128,7 @@ func dash() -> void:
 	if dashing == true and is_on_floor():
 		SignalBus.emit_signal("delayChange")
 		var direction : Vector3 = _get_direction()
-		
+
 		if dir != Vector3.ZERO:
 			velocity = Vector3(direction.x, 0.0, direction.z) * dashSpeed
 			velocity = velocity.lerp(Vector3.ZERO, 0.2 ) 
@@ -176,31 +176,27 @@ func machineGun()-> void:
 
 
 func magNum() -> void:
-	if shot == true and aimCast.get_collider() != null and is_on_floor():
-		var DAMAGE : float = 50
-		
-#		var bullets = bullet.instantiate()
-#		nozzle.add_child(bullets)
-#		bullets.look_at(aimCast.get_collision_point(), Vector3.UP)
-		
-		if aimCast.get_collider().is_in_group("Enemies"):
-			print(aimCast.get_collider())
-			if aimCast.get_collider().has_method("hurt"):
-				aimCast.get_collider().hurt(DAMAGE, -1, 0.1,0.01)
 
+	var DAMAGE : float = 50
+
+	if shot == true and aimCast.get_collider() != null:
+		if aimCast.get_collider().is_in_group("Enemies"):
+			if aimCast.get_collider() .has_method("hurt"):
+				aimCast.get_collider() .hurt(DAMAGE, -1, 0.1,0.01)
 
 func shotGun()-> void:
 	pass
 	
-	
+
 func shoot() -> void:
 
 	if Input.is_action_just_pressed("shoot") and shot == false:
 		shot = true
 		magNum()
-		await get_tree().create_timer(0.1).timeout
+		
+		await get_tree().create_timer(0.5).timeout
 		shot = false
-		pass
+		
 
 
 func pushBack() -> void:
@@ -221,14 +217,13 @@ func axeing() -> void:
 func _get_direction():
 
 	var collision = chainCast.get_collision_point()
-	
 	if collision:
 		return global_position.direction_to(collision)
 
 
 func chainCastCollide():
-	if chainCast.is_colliding():
-		SignalBus.emit_signal("chainCollision", chainCast.get_collider())
+	if aimCast.is_colliding():
+		SignalBus.emit_signal("chainCollision", aimCast.get_collider())
 		return 
 
 
@@ -237,7 +232,7 @@ func dusting()-> void:
 		dust.emitting = true
 	else:
 		dust.emitting = false
-		
+
 func catchAxe()-> void:
 	
 #	pushBack() 
@@ -246,26 +241,3 @@ func catchAxe()-> void:
 	velocity = Vector3(direction.x, 0.0, direction.z) * 5
 	velocity = velocity.lerp(Vector3.ZERO, 1.3) 
 	
-func _reparent(child: Node, new_parent: Node)-> void:
-	var old_parent = child.get_parent()
-	old_parent.remove_child(child)
-	new_parent.add_child(child)
-	
-func _unsheath_weapon()-> void:
-	_reparent(backSheathe.get_child(0), 
-			equipSword)
-	sword = $Body/SwordHand/Marker3D/Axe
-	sword_sheathed = false
-	
-func _sheath_weapon()-> void:
-	_reparent(equipSword.get_child(0), 
-			backSheathe)
-	sword = $Body/Back/holsterSword/Axe
-	sword_sheathed = true
-
-func _sheath()-> void:
-	if Input.is_action_just_pressed("sheathe"):
-		if sword_sheathed == true:
-			_unsheath_weapon()
-		elif sword_sheathed == false:
-			_sheath_weapon()
