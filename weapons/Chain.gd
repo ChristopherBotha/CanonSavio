@@ -21,8 +21,12 @@ func _process(delta: float) -> void:
 				chained = false
 
 	if victim != null and chained == true:
-		victim.global_position = victim.global_position.lerp(owner.hand.global_position, 0.5)
-
+		if abs(victim.global_position.distance_to(global_position)) < 3:
+			victim = null
+			chained = false
+		else:
+			victim.global_position = victim.global_position.lerp(owner.global_position, 0.5)
+		
 
 func releaseVic(val) -> void:
 	victim = val

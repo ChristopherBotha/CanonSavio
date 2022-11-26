@@ -57,7 +57,6 @@ var airFriction : float = 0.07
 @onready var back : Node3D = $Body/Back
 @onready var camera : Camera3D = $Camera_Orbit/h/v/SpringArm3D/Camera3D
 @onready var cams : Node3D = $Camera_Orbit
-@onready var hand : Node3D = $Body/hand
 @onready var horRot : Node3D = $Camera_Orbit/h
 
 var h_rot : float
@@ -143,12 +142,6 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("ui_cancel"):
 		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 
-
-func _on_hand_body_entered(body) -> void:
-	if body.is_in_group("Enemies"):
-		SignalBus.emit_signal("releaseVictim",null)
-
-
 func handle_animaton() -> void:
 	for j in state_name.get_children():
 		if state_name.state.name == j.get_name():
@@ -212,7 +205,7 @@ func axeing() -> void:
 	if Input.is_action_just_pressed("throw"):
 		axe.throw()
 		
-	if Input.is_action_just_pressed("recall"):
+	if Input.is_action_just_pressed("recall") and axe.state != axe.STATE.HELD:
 		axe.recall()
 
 
@@ -235,3 +228,11 @@ func dusting()-> void:
 		dust.emitting = true
 	else:
 		dust.emitting = false
+		
+func catchAxe():
+	
+#	pushBack() 
+	var direction : Vector3 = _get_direction()
+	
+	velocity = Vector3(direction.x, 0.0, direction.z) * 5
+	velocity = velocity.lerp(Vector3.ZERO, 1.3) 

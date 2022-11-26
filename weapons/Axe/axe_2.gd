@@ -47,17 +47,18 @@ func _physics_process(delta):
 		move_and_collide(velocity * delta)
 		
 	if state == STATE.RECALLED:
-		$Area3D2/CollisionShape3D.disabled = false
 		recall_progress += recall_speed * delta
 		
 		if abs(global_position.distance_to(parent.global_position)) < 0.5:
-			owner.velocity = Vector3.ZERO
+#			owner.velocity = Vector3.ZERO
+			$Area3D2/CollisionShape3D.disabled = false
 			global_position = parent.global_position
 			global_rotation = parent.global_rotation
-			top_level = false
 			SignalBus.emit_signal("trauma", 2, 0.2 )
+			owner.catchAxe()
 			state = STATE.HELD
 			emit_signal("returned")
+			top_level = false
 		else:
 			var x = recall_curve.sample_baked(recall_progress / recall_start.distance_to(parent.global_position))
 			var offset = player.transform.basis * Vector3(x, 0, 0)
@@ -104,9 +105,9 @@ func _on_area_3d_body_shape_entered(body_rid, body, body_shape_index, local_shap
 
 func _on_area_3d_2_body_entered(body):
 	if state == STATE.RECALLED:
-		return
+		body.hurt(150, -1, 0.1,0.01)
 		
-	if body.is_in_group("Enemies"):
+	elif body.is_in_group("Enemies"):
 		print("Hello")
 		velocity = Vector3.ZERO
 		enemy = body

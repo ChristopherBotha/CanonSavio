@@ -4,18 +4,18 @@
 [ext_resource type="PackedScene" uid="uid://ba2ghquf1d4fk" path="res://UI/enemyHealth_bar.tscn" id="2_jq8c0"]
 [ext_resource type="PackedScene" uid="uid://uh4k8ebu7chu" path="res://effects/dust.tscn" id="3_jy88k"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5ngju"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xt16a"]
 albedo_color = Color(1, 0, 0, 1)
 
-[sub_resource type="BoxMesh" id="BoxMesh_xuia7"]
+[sub_resource type="BoxMesh" id="BoxMesh_nvubn"]
 size = Vector3(1, 2, 1)
 
-[sub_resource type="BoxMesh" id="BoxMesh_lsaf0"]
+[sub_resource type="BoxMesh" id="BoxMesh_i1uh5"]
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_howye"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_0o6op"]
 size = Vector3(1, 2, 1)
 
-[sub_resource type="Animation" id="Animation_ju5xn"]
+[sub_resource type="Animation" id="Animation_xq2if"]
 length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -30,26 +30,26 @@ tracks/0/keys = {
 "values": [Vector3(0, 0, 0)]
 }
 
-[sub_resource type="Animation" id="Animation_837go"]
+[sub_resource type="Animation" id="Animation_rboih"]
 resource_name = "hit"
-length = 0.3
+length = 0.2
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/path = NodePath("MeshInstance3D:rotation")
-tracks/0/interp = 1
+tracks/0/interp = 2
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.05, 0.25, 0.275),
+"times": PackedFloat32Array(0, 0.0226318, 0.17528, 0.197674),
 "transitions": PackedFloat32Array(1, 1, 1, 1),
 "update": 0,
 "values": [Vector3(0, 0, 0), Vector3(0.169297, 0, 0), Vector3(0.169297, 0, 0), Vector3(0, 0, 0)]
 }
 
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_mvp4c"]
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_amikq"]
 _data = {
-"RESET": SubResource("Animation_ju5xn"),
-"hit": SubResource("Animation_837go")
+"RESET": SubResource("Animation_xq2if"),
+"hit": SubResource("Animation_rboih")
 }
 
 [node name="Enemy" type="CharacterBody3D" groups=["Enemies"]]
@@ -59,16 +59,16 @@ up_direction = Vector3(0, 0, -1)
 script = ExtResource("1_1tkjx")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-material_override = SubResource("StandardMaterial3D_5ngju")
-mesh = SubResource("BoxMesh_xuia7")
+material_override = SubResource("StandardMaterial3D_xt16a")
+mesh = SubResource("BoxMesh_nvubn")
 
 [node name="MeshInstance3D2" type="MeshInstance3D" parent="MeshInstance3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.329739, -0.520745)
-mesh = SubResource("BoxMesh_lsaf0")
+mesh = SubResource("BoxMesh_i1uh5")
 skeleton = NodePath("../..")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-shape = SubResource("BoxShape3D_howye")
+shape = SubResource("BoxShape3D_0o6op")
 
 [node name="eyes" type="Node3D" parent="."]
 
@@ -88,5 +88,5 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.00173, 0.580495)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
-"": SubResource("AnimationLibrary_mvp4c")
+"": SubResource("AnimationLibrary_amikq")
 }
