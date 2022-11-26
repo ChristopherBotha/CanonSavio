@@ -153,7 +153,6 @@ Game="*res://scripts/Game.gd"
 [debug]
 
 gdscript/warnings/unused_signal=0
-gdscript/warnings/return_value_discarded=0
 
 [editor_plugins]
 

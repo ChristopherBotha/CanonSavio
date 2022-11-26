@@ -4,18 +4,18 @@
 [ext_resource type="PackedScene" uid="uid://ba2ghquf1d4fk" path="res://UI/enemyHealth_bar.tscn" id="2_jq8c0"]
 [ext_resource type="PackedScene" uid="uid://uh4k8ebu7chu" path="res://effects/dust.tscn" id="3_jy88k"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_f6vnx"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5ngju"]
 albedo_color = Color(1, 0, 0, 1)
 
-[sub_resource type="BoxMesh" id="BoxMesh_fj42r"]
+[sub_resource type="BoxMesh" id="BoxMesh_xuia7"]
 size = Vector3(1, 2, 1)
 
-[sub_resource type="BoxMesh" id="BoxMesh_cujqi"]
+[sub_resource type="BoxMesh" id="BoxMesh_lsaf0"]
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_0som1"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_howye"]
 size = Vector3(1, 2, 1)
 
-[sub_resource type="Animation" id="Animation_ogbkb"]
+[sub_resource type="Animation" id="Animation_ju5xn"]
 length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -30,7 +30,7 @@ tracks/0/keys = {
 "values": [Vector3(0, 0, 0)]
 }
 
-[sub_resource type="Animation" id="Animation_v6362"]
+[sub_resource type="Animation" id="Animation_837go"]
 resource_name = "hit"
 length = 0.3
 tracks/0/type = "value"
@@ -46,10 +46,10 @@ tracks/0/keys = {
 "values": [Vector3(0, 0, 0), Vector3(0.169297, 0, 0), Vector3(0.169297, 0, 0), Vector3(0, 0, 0)]
 }
 
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_d4lp2"]
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_mvp4c"]
 _data = {
-"RESET": SubResource("Animation_ogbkb"),
-"hit": SubResource("Animation_v6362")
+"RESET": SubResource("Animation_ju5xn"),
+"hit": SubResource("Animation_837go")
 }
 
 [node name="Enemy" type="CharacterBody3D" groups=["Enemies"]]
@@ -59,16 +59,16 @@ up_direction = Vector3(0, 0, -1)
 script = ExtResource("1_1tkjx")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-material_override = SubResource("StandardMaterial3D_f6vnx")
-mesh = SubResource("BoxMesh_fj42r")
+material_override = SubResource("StandardMaterial3D_5ngju")
+mesh = SubResource("BoxMesh_xuia7")
 
 [node name="MeshInstance3D2" type="MeshInstance3D" parent="MeshInstance3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.329739, -0.520745)
-mesh = SubResource("BoxMesh_cujqi")
+mesh = SubResource("BoxMesh_lsaf0")
 skeleton = NodePath("../..")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-shape = SubResource("BoxShape3D_0som1")
+shape = SubResource("BoxShape3D_howye")
 
 [node name="eyes" type="Node3D" parent="."]
 
@@ -88,5 +88,5 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.00173, 0.580495)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
-"": SubResource("AnimationLibrary_d4lp2")
+"": SubResource("AnimationLibrary_mvp4c")
 }

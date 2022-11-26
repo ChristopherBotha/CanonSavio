@@ -50,10 +50,12 @@ func _physics_process(delta):
 		$Area3D2/CollisionShape3D.disabled = false
 		recall_progress += recall_speed * delta
 		
-		if abs(global_position.distance_to(parent.global_position)) < 0.1:
+		if abs(global_position.distance_to(parent.global_position)) < 0.5:
+			owner.velocity = Vector3.ZERO
 			global_position = parent.global_position
 			global_rotation = parent.global_rotation
 			top_level = false
+			SignalBus.emit_signal("trauma", 2, 0.2 )
 			state = STATE.HELD
 			emit_signal("returned")
 		else:
