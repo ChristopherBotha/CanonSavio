@@ -1,4 +1,4 @@
-[gd_scene load_steps=71 format=3 uid="uid://cn4qndkuji4ls"]
+[gd_scene load_steps=72 format=3 uid="uid://cn4qndkuji4ls"]
 
 [ext_resource type="Script" path="res://Player/Player.gd" id="1_t7byk"]
 [ext_resource type="Script" path="res://Player/Camera_Orbit.gd" id="2_60t8r"]
@@ -89,6 +89,22 @@ tracks/2/keys = {
 }]
 }
 
+[sub_resource type="Animation" id="Animation_3g0vc"]
+resource_name = "Catch"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.025, 0.175, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(-0.261799, 0, 0), Vector3(-0.261799, 0, 0), Vector3(0, 0, 0)]
+}
+
 [sub_resource type="Animation" id="Animation_7ni3p"]
 resource_name = "Dash"
 
@@ -118,6 +134,18 @@ tracks/0/keys = {
 "update": 1,
 "values": [true]
 }
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
 
 [sub_resource type="Animation" id="Animation_hcyf0"]
 resource_name = "Run"
@@ -129,6 +157,7 @@ resource_name = "Walk"
 _data = {
 "Aim": SubResource("Animation_y7n58"),
 "Attack": SubResource("Animation_yg3st"),
+"Catch": SubResource("Animation_3g0vc"),
 "Dash": SubResource("Animation_7ni3p"),
 "Fall": SubResource("Animation_0efdu"),
 "Glide": SubResource("Animation_lqjkk"),

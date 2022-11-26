@@ -28,5 +28,5 @@ func releaseVic(val) -> void:
 	victim = val
 
 func collider(val: Object) -> void:
-	if val:
+	if val.is_in_group("Enemies"):
 		victim = val
