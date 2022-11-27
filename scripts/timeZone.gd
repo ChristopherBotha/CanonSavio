@@ -9,7 +9,7 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	
+	# ze worlddddooooo
 	if Input.is_action_just_pressed("timeZone") and zoned == false:
 		zoned = true
 		$AnimationPlayer.play("grow")
