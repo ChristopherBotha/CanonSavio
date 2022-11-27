@@ -201,6 +201,15 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 26.0943, 75.2631, -25.4159)
 [node name="enemySpawn3" type="Marker3D" parent="enemySpawners"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.292753, 76.3064, -26.1909)
 
+[node name="enemySpawn4" type="Marker3D" parent="enemySpawners"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -24.8655, 77.8568, 25.9731)
+
+[node name="enemySpawn5" type="Marker3D" parent="enemySpawners"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 26.0943, 75.2631, 20.5148)
+
+[node name="enemySpawn6" type="Marker3D" parent="enemySpawners"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.292753, 76.3064, 19.7398)
+
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.933034, -77.9416)
 mesh = SubResource("PlaneMesh_d12x1")

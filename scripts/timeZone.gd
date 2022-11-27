@@ -21,3 +21,13 @@ func _on_area_entered(area: Area3D) -> void:
 func _on_area_exited(area: Area3D) -> void:
 	if area.is_in_group("Bullets"):
 		area.owner.freeze = false
+
+
+func _on_body_entered(body: Node3D) -> void:
+	print(body)
+	if body.is_in_group("Enemies"):
+		body.set_physics_process(false)
+
+func _on_body_exited(body: Node3D) -> void:
+	if body.is_in_group("Enemies"):
+		body.set_physics_process(true)

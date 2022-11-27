@@ -10,7 +10,7 @@ extends CharacterBody3D
 const SPEED : float = 5.0
 const JUMP_VELOCITY : float = 4.5
 var direction
-
+var witch_time = 1
 @onready var healthBar : ProgressBar = $healthBar/SubViewport/ProgressBar
 @onready var health : float = 200
 
@@ -22,6 +22,7 @@ var shot : bool = false
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 
 func _ready() -> void:
+
 	pass
 
 func _physics_process(delta: float) -> void:
@@ -32,8 +33,9 @@ func _physics_process(delta: float) -> void:
 		velocity.y = JUMP_VELOCITY
 	# Add the gravity.
 	if not is_on_floor():
-		velocity.y -= gravity * delta
-	
+		velocity.y -= gravity * delta * witch_time
+		
+	death()
 	shoot()
 	
 	lookAtPlayer()
@@ -54,6 +56,7 @@ func hurt(hurt_damage : float, pushBack, timeScale : float, hitstopDuration: flo
 	velocity = Vector3.ZERO
 	dust.emitting = false
 
+func death() -> void:
 	if health <= 0:
 		queue_free()
 
@@ -63,7 +66,7 @@ func playerPos(player : Player) -> void:
 func lookAtPlayer() -> void:
 	if target != null:
 		eyes.look_at(target.global_position, Vector3.UP )
-		rotate_y(deg_to_rad(eyes.rotation.y * TURN_SPEED))
+		rotate_y(deg_to_rad(eyes.rotation.y * TURN_SPEED) * witch_time)
 
 func pushBack() -> void:
 	dust.emitting = true
@@ -80,5 +83,5 @@ func shoot():
 		$MeshInstance3D/Nozzle.add_child(bullets)
 		bullets.global_position = global_position 
 		
-		await get_tree().create_timer(2).timeout
+		await get_tree().create_timer(2 ).timeout
 		shot = false
