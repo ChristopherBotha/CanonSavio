@@ -2,9 +2,9 @@
 
 [ext_resource type="Script" path="res://scripts/bullet.gd" id="1_s0jjt"]
 
-[sub_resource type="SphereShape3D" id="SphereShape3D_udgaq"]
+[sub_resource type="SphereShape3D" id="SphereShape3D_rxkhn"]
 
-[sub_resource type="SphereMesh" id="SphereMesh_w14e4"]
+[sub_resource type="SphereMesh" id="SphereMesh_lm71w"]
 
 [node name="bullet" type="RigidBody3D" groups=["Bullets"]]
 collision_layer = 2
@@ -17,9 +17,9 @@ collision_layer = 2
 collision_mask = 5
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
-shape = SubResource("SphereShape3D_udgaq")
+shape = SubResource("SphereShape3D_rxkhn")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Area3D"]
-mesh = SubResource("SphereMesh_w14e4")
+mesh = SubResource("SphereMesh_lm71w")
 
 [connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]

@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=3 uid="uid://cgvnhgorwk8mc"]
+[gd_scene load_steps=32 format=3 uid="uid://cgvnhgorwk8mc"]
 
 [ext_resource type="Shader" path="res://shaders/testingUV.gdshader" id="1_mrkt7"]
 [ext_resource type="Script" path="res://scripts/Tutorial.gd" id="1_pxheu"]
@@ -6,25 +6,29 @@
 [ext_resource type="Shader" path="res://shaders/water_spec.gdshader" id="3_24cnc"]
 [ext_resource type="Script" path="res://scripts/pitfall.gd" id="4_xxp8m"]
 [ext_resource type="Script" path="res://scripts/healarea.gd" id="5_rdcnw"]
+[ext_resource type="Material" uid="uid://bvmuqbtlp3wh1" path="res://textures/frostedGlass.tres" id="6_ec25n"]
 [ext_resource type="PackedScene" uid="uid://bys8nihkk0m07" path="res://levels/skybox.tscn" id="6_om4ls"]
 [ext_resource type="PackedScene" uid="uid://cduqfkt54u4sj" path="res://Enemies/enemyDestruct.tscn" id="8_8yfoj"]
+[ext_resource type="Shader" path="res://shaders/crtVHS.gdshader" id="10_ph0ut"]
 
 [sub_resource type="PhysicalSkyMaterial" id="PhysicalSkyMaterial_e57ql"]
+turbidity = 0.0
 
 [sub_resource type="Sky" id="Sky_kp03l"]
 sky_material = SubResource("PhysicalSkyMaterial_e57ql")
 
 [sub_resource type="Environment" id="Environment_4rb1d"]
 background_mode = 2
-background_energy_multiplier = 1.81
+background_energy_multiplier = 2.21
 sky = SubResource("Sky_kp03l")
+ambient_light_source = 3
+ambient_light_color = Color(1, 0, 0, 1)
+reflected_light_source = 2
 tonemap_mode = 3
 ssao_enabled = true
 ssil_enabled = true
 glow_enabled = true
 glow_intensity = 1.22
-volumetric_fog_enabled = true
-volumetric_fog_density = 0.0323
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_m88pb"]
 albedo_texture = ExtResource("2_0mgka")
@@ -102,6 +106,7 @@ shader_parameter/wave_frequency = Vector2(12, 12)
 shader_parameter/wave_strengh = Vector2(0.25, 0.01)
 
 [sub_resource type="BoxMesh" id="BoxMesh_3hpkn"]
+material = ExtResource("6_ec25n")
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_0fc6b"]
 size = Vector3(2.16348, 1.32238, 1.96786)
@@ -109,6 +114,30 @@ size = Vector3(2.16348, 1.32238, 1.96786)
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jccr4"]
 albedo_texture = ExtResource("2_0mgka")
 uv1_triplanar = true
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_2tkro"]
+shader = ExtResource("10_ph0ut")
+shader_parameter/aberration = 0.03
+shader_parameter/brightness = 1.4
+shader_parameter/clip_warp = false
+shader_parameter/discolor = true
+shader_parameter/distort_intensity = 0.05
+shader_parameter/grille_opacity = 0.3
+shader_parameter/noise_opacity = 0.4
+shader_parameter/noise_speed = 5.0
+shader_parameter/overlay = true
+shader_parameter/pixelate = true
+shader_parameter/resolution = Vector2(640, 480)
+shader_parameter/roll = true
+shader_parameter/roll_size = 15.0
+shader_parameter/roll_speed = 8.0
+shader_parameter/roll_variation = 1.8
+shader_parameter/scanlines_opacity = 0.4
+shader_parameter/scanlines_width = 0.25
+shader_parameter/static_noise_intensity = 0.06
+shader_parameter/vignette_intensity = 0.4
+shader_parameter/vignette_opacity = 0.5
+shader_parameter/warp_amount = 1.0
 
 [node name="Tutorial" type="Node3D"]
 script = ExtResource("1_pxheu")
@@ -210,6 +239,7 @@ script = ExtResource("4_xxp8m")
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Area3D"]
 transform = Transform3D(1, 1.49012e-08, 1.49012e-08, 0, 0.5711, 0.82088, 1.49012e-08, -0.82088, 0.5711, 0, 8.03578, 0)
 mesh = SubResource("BoxMesh_3hpkn")
+surface_material_override/0 = ExtResource("6_ec25n")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
 transform = Transform3D(1, 0, -1.49012e-08, 0, 1, 0, 1.49012e-08, 0, 1, 0, 7.82461, 0)
@@ -251,6 +281,14 @@ material = SubResource("StandardMaterial3D_jccr4")
 
 [node name="RigidBody3D" parent="." instance=ExtResource("8_8yfoj")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.24591, 78.564, -11.6389)
+
+[node name="ColorRect" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_2tkro")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [connection signal="body_entered" from="CSGBox3D4/Area3D" to="." method="_on_area_3d_body_entered"]
 [connection signal="body_entered" from="CSGBox3D7/Area3D" to="." method="_on_area_3d_body_entered"]

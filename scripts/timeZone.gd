@@ -1,16 +1,15 @@
-extends Node3D
-
+extends Area3D
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	$Area3D/MeshInstance3D.visible = false
+	$MeshInstance3D.visible = false
 #	$Area3D/CollisionShape3D.disabled = true
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	if Input.is_action_just_pressed("timeZone"):
 		$AnimationPlayer.play("grow")
-		$Area3D/MeshInstance3D.visible = true
+		$MeshInstance3D.visible = true
 #		$Area3D/CollisionShape3D.disabled = false
 
 
