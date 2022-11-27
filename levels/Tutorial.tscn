@@ -1,4 +1,4 @@
-[gd_scene load_steps=32 format=3 uid="uid://cgvnhgorwk8mc"]
+[gd_scene load_steps=31 format=3 uid="uid://cgvnhgorwk8mc"]
 
 [ext_resource type="Shader" path="res://shaders/testingUV.gdshader" id="1_mrkt7"]
 [ext_resource type="Script" path="res://scripts/Tutorial.gd" id="1_pxheu"]
@@ -9,7 +9,7 @@
 [ext_resource type="Material" uid="uid://bvmuqbtlp3wh1" path="res://textures/frostedGlass.tres" id="6_ec25n"]
 [ext_resource type="PackedScene" uid="uid://bys8nihkk0m07" path="res://levels/skybox.tscn" id="6_om4ls"]
 [ext_resource type="PackedScene" uid="uid://cduqfkt54u4sj" path="res://Enemies/enemyDestruct.tscn" id="8_8yfoj"]
-[ext_resource type="Shader" path="res://shaders/crtVHS.gdshader" id="10_ph0ut"]
+[ext_resource type="PackedScene" uid="uid://ch847wg8ssgdp" path="res://shaders/vhsCRT.tscn" id="10_ixg5t"]
 
 [sub_resource type="PhysicalSkyMaterial" id="PhysicalSkyMaterial_e57ql"]
 turbidity = 0.0
@@ -25,8 +25,6 @@ ambient_light_source = 3
 ambient_light_color = Color(1, 0, 0, 1)
 reflected_light_source = 2
 tonemap_mode = 3
-ssao_enabled = true
-ssil_enabled = true
 glow_enabled = true
 glow_intensity = 1.22
 
@@ -115,30 +113,6 @@ size = Vector3(2.16348, 1.32238, 1.96786)
 albedo_texture = ExtResource("2_0mgka")
 uv1_triplanar = true
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_2tkro"]
-shader = ExtResource("10_ph0ut")
-shader_parameter/aberration = 0.03
-shader_parameter/brightness = 1.4
-shader_parameter/clip_warp = false
-shader_parameter/discolor = true
-shader_parameter/distort_intensity = 0.05
-shader_parameter/grille_opacity = 0.3
-shader_parameter/noise_opacity = 0.4
-shader_parameter/noise_speed = 5.0
-shader_parameter/overlay = true
-shader_parameter/pixelate = true
-shader_parameter/resolution = Vector2(640, 480)
-shader_parameter/roll = true
-shader_parameter/roll_size = 15.0
-shader_parameter/roll_speed = 8.0
-shader_parameter/roll_variation = 1.8
-shader_parameter/scanlines_opacity = 0.4
-shader_parameter/scanlines_width = 0.25
-shader_parameter/static_noise_intensity = 0.06
-shader_parameter/vignette_intensity = 0.4
-shader_parameter/vignette_opacity = 0.5
-shader_parameter/warp_amount = 1.0
-
 [node name="Tutorial" type="Node3D"]
 script = ExtResource("1_pxheu")
 
@@ -178,27 +152,29 @@ size = Vector3(100, 1, 100)
 
 [node name="Area3D" type="Area3D" parent="CSGBox3D4"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 59.3143, 0, 374.931)
+collision_layer = 0
+collision_mask = 4
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="CSGBox3D4/Area3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -91.4737, -10.5658, 129.467)
 shape = SubResource("CylinderShape3D_dgue4")
 
 [node name="CSGBox3D5" type="CSGBox3D" parent="."]
-transform = Transform3D(-0.20335, 0, 0.0400952, 0, 1, 0, -0.0544874, 0, -0.149637, 6.26723, 124.385, -2.42424)
+transform = Transform3D(-0.20335, 0, 0.0400952, 0, 1, 0, -0.0544874, 0, -0.149637, -0.0126505, 118.59, -25.4449)
 material_override = SubResource("ShaderMaterial_1512c")
 material_overlay = SubResource("StandardMaterial3D_50kv6")
 use_collision = true
 size = Vector3(100, 1, 100)
 
 [node name="CSGBox3D6" type="CSGBox3D" parent="."]
-transform = Transform3D(-0.20335, 0, 0.0400952, 0, 1, 0, -0.0544874, 0, -0.149637, 10.2834, 124.385, 26.091)
+transform = Transform3D(-0.20335, 0, 0.0400952, 0, 1, 0, -0.0544874, 0, -0.149637, 4.00352, 118.59, 3.07029)
 material_override = SubResource("ShaderMaterial_1512c")
 material_overlay = SubResource("StandardMaterial3D_50kv6")
 use_collision = true
 size = Vector3(100, 1, 100)
 
 [node name="CSGBox3D7" type="CSGBox3D" parent="."]
-transform = Transform3D(-0.20335, 0, 0.0400952, 0, 1, 0, -0.0544874, 0, -0.149637, -16.7332, 138.721, 40.6164)
+transform = Transform3D(-0.20335, 0, 0.0400952, 0, 1, 0, -0.0544874, 0, -0.149637, -23.0131, 132.926, 17.5957)
 material_override = SubResource("ShaderMaterial_1512c")
 material_overlay = SubResource("StandardMaterial3D_50kv6")
 use_collision = true
@@ -282,13 +258,8 @@ material = SubResource("StandardMaterial3D_jccr4")
 [node name="RigidBody3D" parent="." instance=ExtResource("8_8yfoj")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.24591, 78.564, -11.6389)
 
-[node name="ColorRect" type="ColorRect" parent="."]
-material = SubResource("ShaderMaterial_2tkro")
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+[node name="ColorRect" parent="." instance=ExtResource("10_ixg5t")]
+visible = false
 
 [connection signal="body_entered" from="CSGBox3D4/Area3D" to="." method="_on_area_3d_body_entered"]
 [connection signal="body_entered" from="CSGBox3D7/Area3D" to="." method="_on_area_3d_body_entered"]

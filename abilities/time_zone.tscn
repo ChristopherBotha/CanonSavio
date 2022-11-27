@@ -16,20 +16,21 @@ shader_parameter/uv_offset = null
 shader_parameter/uv_scale = null
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_i6ob2"]
+radius = 1.3
 
 [sub_resource type="Animation" id="Animation_mun7k"]
 length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("timeZone:scale")
+tracks/0/path = NodePath(".:scale")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector3(1, 1, 1)]
+"values": [Vector3(7, 7, 7)]
 }
 
 [sub_resource type="Animation" id="Animation_065mp"]
@@ -37,21 +38,21 @@ resource_name = "grow"
 tracks/0/type = "scale_3d"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("timeZone")
+tracks/0/path = NodePath(".")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = PackedFloat32Array()
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("timeZone:scale")
-tracks/1/interp = 2
+tracks/1/path = NodePath(".:scale")
+tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.38),
+"times": PackedFloat32Array(0, 0.5),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Vector3(1, 1, 1), Vector3(10, 10, 10)]
+"values": [Vector3(1, 1, 1), Vector3(7, 7, 7)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_i2orx"]
@@ -60,21 +61,18 @@ _data = {
 "grow": SubResource("Animation_065mp")
 }
 
-[node name="timeZone" type="Node3D"]
-script = ExtResource("1_w2s1x")
-
-[node name="timeZone" type="Area3D" parent="."]
+[node name="timeZone" type="Area3D"]
+transform = Transform3D(7, 0, 0, 0, 7, 0, 0, 0, 7, 0, 0, 0)
 collision_layer = 4
 collision_mask = 2
+priority = 1.0
 script = ExtResource("1_w2s1x")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="timeZone"]
-transparency = 0.64
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 mesh = SubResource("SphereMesh_74rpx")
-skeleton = NodePath("../..")
 surface_material_override/0 = SubResource("ShaderMaterial_sdxbs")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="timeZone"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("SphereShape3D_i6ob2")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
@@ -82,4 +80,5 @@ libraries = {
 "": SubResource("AnimationLibrary_i2orx")
 }
 
-[connection signal="body_entered" from="timeZone" to="." method="_on_area_3d_body_entered"]
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]
+[connection signal="area_exited" from="." to="." method="_on_area_exited"]

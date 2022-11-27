@@ -2,6 +2,7 @@ extends CharacterBody3D
 class_name Player
 
 #@onready var bullet = preload("res://weapons/bullet_body.tscn")
+@onready var timeZone = $timeZone
 @onready var nozzle : Node3D = $Body/nozzle
 @onready var chainCast : RayCast3D = $Body/chainCast
 @onready var dust = $Body/dust/dust

@@ -1,25 +1,35 @@
-[gd_scene load_steps=4 format=3 uid="uid://cu8xd8vmhqvlg"]
+[gd_scene load_steps=5 format=3 uid="uid://cu8xd8vmhqvlg"]
 
 [ext_resource type="Script" path="res://scripts/bullet.gd" id="1_s0jjt"]
 
-[sub_resource type="SphereShape3D" id="SphereShape3D_rxkhn"]
+[sub_resource type="SphereShape3D" id="SphereShape3D_1fmi5"]
+radius = 0.613607
 
-[sub_resource type="SphereMesh" id="SphereMesh_lm71w"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_n1uko"]
+albedo_color = Color(1, 0, 0, 1)
+emission_enabled = true
+emission = Color(1, 0, 0, 1)
+emission_energy_multiplier = 16.0
+
+[sub_resource type="SphereMesh" id="SphereMesh_l0qyh"]
+material = SubResource("StandardMaterial3D_n1uko")
 
 [node name="bullet" type="RigidBody3D" groups=["Bullets"]]
 collision_layer = 2
 collision_mask = 5
+mass = 5.0
 gravity_scale = 0.0
+freeze_mode = 1
 script = ExtResource("1_s0jjt")
 
-[node name="Area3D" type="Area3D" parent="."]
+[node name="Area3D" type="Area3D" parent="." groups=["Bullets"]]
 collision_layer = 2
 collision_mask = 5
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
-shape = SubResource("SphereShape3D_rxkhn")
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" groups=["Bullets"]]
+shape = SubResource("SphereShape3D_1fmi5")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Area3D"]
-mesh = SubResource("SphereMesh_lm71w")
+mesh = SubResource("SphereMesh_l0qyh")
 
 [connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]

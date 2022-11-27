@@ -8,6 +8,7 @@ var shot
 
 func _ready():
 	set_as_top_level(true)
+	pass
 	
 func _physics_process(_delta):
 	apply_impulse(transform.basis.z, transform.basis.z * SPEED)
@@ -24,3 +25,4 @@ func _on_area_3d_body_entered(body):
 			self.queue_free()
 		else:
 			self.queue_free()
+	
