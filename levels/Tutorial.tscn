@@ -19,6 +19,12 @@ background_mode = 2
 background_energy_multiplier = 1.81
 sky = SubResource("Sky_kp03l")
 tonemap_mode = 3
+ssao_enabled = true
+ssil_enabled = true
+glow_enabled = true
+glow_intensity = 1.22
+volumetric_fog_enabled = true
+volumetric_fog_density = 0.0323
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_m88pb"]
 albedo_texture = ExtResource("2_0mgka")
@@ -148,6 +154,34 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 59.3143, 0, 374.931)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -91.4737, -10.5658, 129.467)
 shape = SubResource("CylinderShape3D_dgue4")
 
+[node name="CSGBox3D5" type="CSGBox3D" parent="."]
+transform = Transform3D(-0.20335, 0, 0.0400952, 0, 1, 0, -0.0544874, 0, -0.149637, 6.26723, 124.385, -2.42424)
+material_override = SubResource("ShaderMaterial_1512c")
+material_overlay = SubResource("StandardMaterial3D_50kv6")
+use_collision = true
+size = Vector3(100, 1, 100)
+
+[node name="CSGBox3D6" type="CSGBox3D" parent="."]
+transform = Transform3D(-0.20335, 0, 0.0400952, 0, 1, 0, -0.0544874, 0, -0.149637, 10.2834, 124.385, 26.091)
+material_override = SubResource("ShaderMaterial_1512c")
+material_overlay = SubResource("StandardMaterial3D_50kv6")
+use_collision = true
+size = Vector3(100, 1, 100)
+
+[node name="CSGBox3D7" type="CSGBox3D" parent="."]
+transform = Transform3D(-0.20335, 0, 0.0400952, 0, 1, 0, -0.0544874, 0, -0.149637, -16.7332, 138.721, 40.6164)
+material_override = SubResource("ShaderMaterial_1512c")
+material_overlay = SubResource("StandardMaterial3D_50kv6")
+use_collision = true
+size = Vector3(100, 1, 100)
+
+[node name="Area3D" type="Area3D" parent="CSGBox3D7"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 59.3143, 0, 374.931)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CSGBox3D7/Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -91.4737, -10.5658, 129.467)
+shape = SubResource("CylinderShape3D_dgue4")
+
 [node name="playerSpawn" type="Marker3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.1202, 76.3567, -20.7696)
 
@@ -164,7 +198,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.292753, 76.3064, -26.1909)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.933034, -77.9416)
-visible = false
 mesh = SubResource("PlaneMesh_d12x1")
 surface_material_override/0 = SubResource("ShaderMaterial_dcju8")
 
@@ -220,5 +253,6 @@ material = SubResource("StandardMaterial3D_jccr4")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.24591, 78.564, -11.6389)
 
 [connection signal="body_entered" from="CSGBox3D4/Area3D" to="." method="_on_area_3d_body_entered"]
+[connection signal="body_entered" from="CSGBox3D7/Area3D" to="." method="_on_area_3d_body_entered"]
 [connection signal="body_entered" from="Area3D" to="Area3D" method="_on_body_entered"]
 [connection signal="body_entered" from="Area3D2" to="Area3D2" method="_on_body_entered"]

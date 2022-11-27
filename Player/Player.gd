@@ -128,7 +128,7 @@ func dash() -> void:
 	if dashing == true and is_on_floor():
 		SignalBus.emit_signal("delayChange")
 		var direction : Vector3 = _get_direction()
-
+		camera.near = move_toward(camera.near, 0.5, 0.02)
 		if dir != Vector3.ZERO:
 			velocity = Vector3(direction.x, 0.0, direction.z) * dashSpeed
 			velocity = velocity.lerp(Vector3.ZERO, 0.2 ) 
@@ -137,6 +137,7 @@ func dash() -> void:
 			velocity = velocity.lerp(Vector3.ZERO, 1.3) 
 
 		await get_tree().create_timer(1).timeout
+		camera.near = move_toward(camera.near, 0.8, 0.02)
 		dashing = false
 		
 	else: 
@@ -157,8 +158,8 @@ func handle_animaton() -> void:
 			playback.travel(state_name.state.name)
 
 
-func hurt(damage)-> void:
-	health -= damage
+func hurt(hurt_damage : float, pushBack, timeScale : float, hitstopDuration: float)-> void:
+	health -= hurt_damage
 
 
 func _on_hit_box_body_entered(body):

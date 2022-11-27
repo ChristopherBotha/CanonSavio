@@ -1,0 +1,269 @@
+{
+  "accessors": [
+    {
+      "bufferView": 2,
+      "componentType": 5126,
+      "count": 42100,
+      "max": [
+        9.364808082580566,
+        198.4819793701172,
+        19.73532485961914
+      ],
+      "min": [
+        -10.084912300109863,
+        172.33470153808594,
+        -10.373406410217285
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 505200,
+      "componentType": 5126,
+      "count": 42100,
+      "max": [
+        0.9997357726097107,
+        0.999937891960144,
+        0.999853789806366
+      ],
+      "min": [
+        -0.9997357726097107,
+        -0.9999293684959412,
+        -0.999846875667572
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 1,
+      "componentType": 5126,
+      "count": 42100,
+      "max": [
+        0.8960000276565552,
+        -0.0012000000569969416
+      ],
+      "min": [
+        0.007699999958276749,
+        -0.9955999851226807
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 1,
+      "byteOffset": 336800,
+      "componentType": 5126,
+      "count": 42100,
+      "max": [
+        0.8960000276565552,
+        -0.0012000000569969416
+      ],
+      "min": [
+        0.007699999958276749,
+        -0.9955999851226807
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 1,
+      "byteOffset": 673600,
+      "componentType": 5126,
+      "count": 42100,
+      "max": [
+        0.8960000276565552,
+        -0.0012000000569969416
+      ],
+      "min": [
+        0.007699999958276749,
+        -0.9955999851226807
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 1,
+      "byteOffset": 1010400,
+      "componentType": 5126,
+      "count": 42100,
+      "max": [
+        0.8960000276565552,
+        -0.0012000000569969416
+      ],
+      "min": [
+        0.007699999958276749,
+        -0.9955999851226807
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 0,
+      "componentType": 5125,
+      "count": 44880,
+      "type": "SCALAR"
+    }
+  ],
+  "asset": {
+    "extras": {
+      "author": "MariusDatSenpai (https://sketchfab.com/MariusDatSenpai)",
+      "license": "CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)",
+      "source": "https://sketchfab.com/3d-models/jotaro-hat-a648b2d18ae546a8a5c44c9ad072d7e0",
+      "title": "Jotaro Hat"
+    },
+    "generator": "Sketchfab-12.68.0",
+    "version": "2.0"
+  },
+  "bufferViews": [
+    {
+      "buffer": 0,
+      "byteLength": 179520,
+      "name": "floatBufferViews",
+      "target": 34963
+    },
+    {
+      "buffer": 0,
+      "byteLength": 1347200,
+      "byteOffset": 179520,
+      "byteStride": 8,
+      "name": "floatBufferViews",
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteLength": 1010400,
+      "byteOffset": 1526720,
+      "byteStride": 12,
+      "name": "floatBufferViews",
+      "target": 34962
+    }
+  ],
+  "buffers": [
+    {
+      "byteLength": 2537120,
+      "uri": "scene.bin"
+    }
+  ],
+  "images": [
+    {
+      "uri": "textures/JotaroC__Users_Loris_Desktop_Jotaro_K1_baseColor.png"
+    }
+  ],
+  "materials": [
+    {
+      "doubleSided": true,
+      "name": "JotaroC__Users_Loris_Desktop_Jotaro_K1",
+      "pbrMetallicRoughness": {
+        "baseColorTexture": {
+          "index": 0
+        },
+        "metallicFactor": 0.0,
+        "roughnessFactor": 0.9110860294980538
+      }
+    }
+  ],
+  "meshes": [
+    {
+      "name": "Jotaro:_3jtr01t0_face__Jotaro:C__Users_Loris_Desktop_Jotaro_K1_0",
+      "primitives": [
+        {
+          "attributes": {
+            "NORMAL": 1,
+            "POSITION": 0,
+            "TEXCOORD_0": 2,
+            "TEXCOORD_1": 3,
+            "TEXCOORD_2": 4,
+            "TEXCOORD_3": 5
+          },
+          "indices": 6,
+          "material": 0,
+          "mode": 4
+        }
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "children": [
+        1
+      ],
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        2.220446049250313e-16,
+        -1.0,
+        0.0,
+        0.0,
+        1.0,
+        2.220446049250313e-16,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "name": "Sketchfab_model"
+    },
+    {
+      "children": [
+        2
+      ],
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        -1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "name": "JotaroHat.fbx"
+    },
+    {
+      "children": [
+        3
+      ],
+      "name": "RootNode"
+    },
+    {
+      "children": [
+        4
+      ],
+      "name": "Jotaro:_3jtr01t0_face_"
+    },
+    {
+      "mesh": 0,
+      "name": "Jotaro:_3jtr01t0_face__Jotaro:C__Users_Loris_Desktop_Jotaro_K1_0"
+    }
+  ],
+  "samplers": [
+    {
+      "magFilter": 9729,
+      "minFilter": 9987,
+      "wrapS": 10497,
+      "wrapT": 10497
+    }
+  ],
+  "scene": 0,
+  "scenes": [
+    {
+      "name": "Sketchfab_Scene",
+      "nodes": [
+        0
+      ]
+    }
+  ],
+  "textures": [
+    {
+      "sampler": 0,
+      "source": 0
+    }
+  ]
+}

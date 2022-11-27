@@ -4,6 +4,9 @@ extends CharacterBody3D
 @onready var eyes : Node3D = $eyes
 @onready var aimCast : RayCast3D = $eyes/RayCast3D
 
+
+@onready var bullet : PackedScene =  preload("res://weapons/bullet.tscn")
+
 const SPEED : float = 5.0
 const JUMP_VELOCITY : float = 4.5
 var direction
@@ -13,6 +16,7 @@ var direction
 
 var target
 var TURN_SPEED : float = 10
+var shot : bool = false
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
@@ -30,10 +34,12 @@ func _physics_process(delta: float) -> void:
 	if not is_on_floor():
 		velocity.y -= gravity * delta
 	
+	shoot()
+	
 	lookAtPlayer()
 	move_and_slide()
-
 	
+
 func hurt(hurt_damage : float, pushBack, timeScale : float, hitstopDuration: float) -> void:
 	
 	$AnimationPlayer.play("hit")
@@ -65,9 +71,14 @@ func pushBack() -> void:
 	var dir_z = (target.global_position.z - global_transform.origin.z)
 	direction = Vector3(dir_x,0.0, dir_z).normalized()
 	
-	
-#
-#func createDust():
-#	var dusty = dust.instantiate()
-#	spawnDust.add_child(dusty)
-#	dusty.global_transform = global_transform
+func shoot():
+	if shot == false: 
+		
+		shot = true
+		
+		var bullets = bullet.instantiate()
+		$MeshInstance3D/Nozzle.add_child(bullets)
+		bullets.global_position = global_position 
+		
+		await get_tree().create_timer(2).timeout
+		shot = false
