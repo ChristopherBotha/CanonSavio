@@ -16,6 +16,9 @@ signal returned
 enum STATE {HELD, THROWN, LANDED, RECALLED}
 var state: STATE = STATE.HELD
 
+var enemyRicochetPool : Array = []
+var ricochetPlease : bool = false
+
 var enemy = null
 @onready var shootCollider = null
 var recall_start: Vector3
@@ -34,8 +37,15 @@ func _ready():
 	pass # Replace with function body.
 
 func _physics_process(delta: float):
-	
+	print(state)
 	_get_direction()
+	
+	if ricochetPlease == true and state != STATE.HELD:
+		if enemyRicochetPool.front() != null:
+			ricochet()
+		else:
+			ricochetPlease = false
+			recall()
 	
 	if state == STATE.THROWN || state == STATE.RECALLED:
 		rotate_object_local(Vector3.RIGHT, deg_to_rad(spin_speed))
@@ -116,16 +126,22 @@ func _on_area_3d_body_shape_entered(body_rid, body, body_shape_index, local_shap
 
 func _on_area_3d_2_body_entered(body):
 	if state == STATE.RECALLED:
-		body.hurt(150, -1, 0.1,0.01)
+		body.hurt(5000, -1, 0.1,0.01)
 		
 	elif body.is_in_group("Enemies"):
 		print("Hello")
 		velocity = Vector3.ZERO
 		enemy = body
 		state = STATE.LANDED
-		body.hurt(150, -1, 0.1,0.01)
+		body.hurt(5000, -1, 0.1,0.01)
+		
 		if body.health <= 0:
-			recall()
+			if enemyRicochetPool.size() == 0:
+				ricochetPlease = false
+				recall()
+			else:
+				state = STATE.THROWN
+				ricochetPlease = true
 	else:
 		velocity = Vector3.ZERO
 		state = STATE.LANDED
@@ -134,3 +150,23 @@ func _on_area_3d_2_body_entered(body):
 func _on_area_3d_2_body_exited(body):
 	if body.is_in_group("Enemies"):
 		enemy = null
+
+
+func _on_ricochet_range_body_entered(body: Node3D) -> void:
+	if body.is_in_group("Enemies"):
+		enemyRicochetPool.append(body)
+
+func _on_ricochet_range_body_exited(body: Node3D) -> void:
+	if body.is_in_group("Enemies"):
+		for i in enemyRicochetPool:
+			if body == i:
+				enemyRicochetPool.erase(i)
+			else:
+				print("no")
+
+func ricochet():
+	top_level = true
+	var directionRicochet = global_position.direction_to(enemyRicochetPool.front().global_position)
+	transform = transform.looking_at(global_position + directionRicochet, Vector3.UP)
+	velocity = directionRicochet * throw_force
+	state = STATE.THROWN

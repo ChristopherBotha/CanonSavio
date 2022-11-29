@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://hfanbdpcg5ry"]
+[gd_scene load_steps=12 format=3 uid="uid://hfanbdpcg5ry"]
 
 [ext_resource type="Script" path="res://weapons/Axe/axe_2.gd" id="1_hjcmt"]
 [ext_resource type="Curve" uid="uid://vj3dx7inipbv" path="res://weapons/Axe/Axe_Curve.tres" id="2_2f3c4"]
@@ -18,6 +18,12 @@ height = 0.844125
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_22tgp"]
 albedo_texture = ExtResource("11_x5acn")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hcdai"]
+albedo_color = Color(0.0431373, 0.0431373, 0.0431373, 1)
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_vffg5"]
+radius = 10.0
 
 [node name="Axe" type="CharacterBody3D"]
 transform = Transform3D(1, 0, -1.06581e-14, 0, 1, 0, 1.06581e-14, 0, 1, 0, 0, 0)
@@ -57,7 +63,19 @@ surface_material_override/0 = SubResource("StandardMaterial3D_22tgp")
 
 [node name="dust" parent="." instance=ExtResource("5_6po5w")]
 transform = Transform3D(1, -9.31761e-22, -2.13162e-14, 9.31761e-22, -1, 8.74228e-08, -2.13162e-14, -8.74228e-08, -1, 0, 0, 0)
+material_override = SubResource("StandardMaterial3D_hcdai")
+lifetime = 2.09
+
+[node name="ricochetRange" type="Area3D" parent="."]
+collision_layer = 4
+collision_mask = 2
+monitorable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ricochetRange"]
+shape = SubResource("SphereShape3D_vffg5")
 
 [connection signal="body_shape_entered" from="Area3D" to="." method="_on_area_3d_body_shape_entered"]
 [connection signal="body_entered" from="Area3D2" to="." method="_on_area_3d_2_body_entered"]
 [connection signal="body_exited" from="Area3D2" to="." method="_on_area_3d_2_body_exited"]
+[connection signal="body_entered" from="ricochetRange" to="." method="_on_ricochet_range_body_entered"]
+[connection signal="body_exited" from="ricochetRange" to="." method="_on_ricochet_range_body_exited"]

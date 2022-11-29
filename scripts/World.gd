@@ -5,6 +5,7 @@ extends Node3D
 @onready var enemy = preload("res://Enemies/enemy.tscn")
 
 var spawnEnemies : Array = []
+var enemyPool = 6
 var player1 : Object = null
 
 # Called when the node enters the scene tree for the first time.
@@ -28,9 +29,10 @@ func _process(delta: float) -> void:
 	$Label.text = str(Engine.get_frames_per_second())
 	
 	for i in spawnEnemies:
-		if i.get_children().size() <= 0 :
+		if i.get_children().size() <= 0 and enemyPool != 0:
 			var enemies = enemy.instantiate()
 			i.add_child(enemies)
+			enemyPool -= 1
 			
 	if player1 != null:
 		get_tree().call_group("Enemies","playerPos",player1)

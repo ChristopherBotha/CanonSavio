@@ -32,8 +32,8 @@ func _physics_process(delta: float) -> void:
 	if is_on_floor():
 		velocity.y = JUMP_VELOCITY
 	# Add the gravity.
-	if not is_on_floor():
-		velocity.y -= gravity * delta * witch_time
+#	if not is_on_floor():
+#		velocity.y -= gravity * delta * witch_time
 		
 	death()
 	shoot()

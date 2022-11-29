@@ -131,22 +131,22 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.1202, 76.3567, -20.7696)
 [node name="enemySpawners" type="Node" parent="."]
 
 [node name="enemySpawn" type="Marker3D" parent="enemySpawners"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -24.8655, 77.8568, -19.9576)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -30.5181, 77.8568, -21.6672)
 
 [node name="enemySpawn2" type="Marker3D" parent="enemySpawners"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 26.0943, 75.2631, -25.4159)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -24.4254, 75.2631, -27.9543)
 
 [node name="enemySpawn3" type="Marker3D" parent="enemySpawners"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.292753, 76.3064, -26.1909)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18.7903, 76.3064, -24.5932)
 
 [node name="enemySpawn4" type="Marker3D" parent="enemySpawners"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -24.8655, 77.8568, 25.9731)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -28.4262, 77.8568, -17.5981)
 
 [node name="enemySpawn5" type="Marker3D" parent="enemySpawners"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 26.0943, 75.2631, 20.5148)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -24.1082, 75.2631, -22.735)
 
 [node name="enemySpawn6" type="Marker3D" parent="enemySpawners"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.292753, 76.3064, 19.7398)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -19.5317, 76.3064, -18.8277)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.933034, -77.9416)
