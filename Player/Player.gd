@@ -9,6 +9,7 @@ class_name Player
 @onready var colorEX = $ColorInvert
 @export var backSheathe : Node3D
 @export var equipSword : Node3D
+@onready var exTimer : Timer = $exTimer
 
 var direction # direction which player is facing
 
@@ -30,8 +31,7 @@ var SPEED : float = 5.0
 var JUMP_VELOCITY : float = 4.5
 var dashSpeed : int = 200
 
-var EX : bool = false
-var exVal : float = 0.0
+
 
 @onready var eyes : Node3D = $eyes
 @onready var playback = $AnimationTree.get("parameters/playback")
@@ -50,7 +50,14 @@ var health : float = 100:
 	set(new_value): 
 		health = clamp(new_value,0,100)
 		SignalBus.emit_signal("healthUpdated", health)
-		
+
+var EX : bool = false
+
+var exVal : float = 0.0:
+	set(new_value): 
+		exVal = clamp(new_value,0,100)
+		SignalBus.emit_signal("exBarValue", exVal)
+
 var maxSpeed : float = 15
 var minSpeed : float = 0.0
 var maxJumpHeight : float = 6
@@ -80,7 +87,6 @@ func _physics_process(delta: float) -> void:
 	if !is_on_floor():
 		velocity.y -= gravity * delta
 #	print(sword.shootCollider.get_collider())
-	print(EX)
 	
 	chainCastCollide()
 	pushBack()
@@ -249,25 +255,18 @@ func catchAxe()-> void:
 	velocity = Vector3(direction.x, 0.0, direction.z) * 5
 	velocity = velocity.lerp(Vector3.ZERO, 1.3) 
 	
-func exMode():
+func exMode() -> void:
 	if dir != Vector3.ZERO and EX == false and exVal <= 100:
 		exVal += 0.5
-		print(exVal)
-		SignalBus.emit_signal("exBarValue", exVal)
 		
 	if exVal >= 100 and EX == false:
 		if Input.is_action_just_pressed("EX"):
 			EX = true
-	elif EX == true:
+			
+	if EX == true:
+		exVal -= 0.2
 		$AnimationPlayer.play("ExMode")
-		$exTimer.start()
-
-
-func _on_ex_timer_timeout() -> void:
-	EX = false
-	$AnimationPlayer.play_backwards("ExMode")
-	exValCrash()
-	
-func exValCrash():
-	exVal = 0.0
+		if exVal <= 0:
+			EX = false
+			$ColorInvert.visible = false
 

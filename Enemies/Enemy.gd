@@ -5,7 +5,6 @@ extends CharacterBody3D
 @onready var aimCast : RayCast3D = $eyes/RayCast3D
 
 @onready var blood = preload("res://effects/blood.tscn")
-
 @onready var bullet : PackedScene =  preload("res://weapons/bullet.tscn")
 
 const SPEED : float = 5.0

@@ -19,6 +19,7 @@ offset_bottom = 40.0
 script = ExtResource("2_732ay")
 
 [node name="ProgressBar" type="ProgressBar" parent="playerUI"]
+layout_mode = 0
 offset_left = 59.0
 offset_top = 41.0
 offset_right = 274.0
@@ -27,6 +28,7 @@ value = 100.0
 rounded = true
 
 [node name="exBar" type="ProgressBar" parent="playerUI"]
+layout_mode = 0
 offset_left = 64.0
 offset_top = 79.0
 offset_right = 195.0
@@ -71,3 +73,19 @@ grow_horizontal = 0
 grow_vertical = 2
 scale = Vector2(0.3, 0.3)
 texture = ExtResource("4_atmf0")
+
+[node name="reSpawn" type="Button" parent="."]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -189.0
+offset_top = -91.0
+offset_right = -88.0
+offset_bottom = -60.0
+grow_horizontal = 0
+grow_vertical = 0
+text = "RESPAWN"
+
+[connection signal="pressed" from="reSpawn" to="." method="_on_re_spawn_pressed"]
