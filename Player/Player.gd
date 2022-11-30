@@ -80,7 +80,7 @@ func _physics_process(delta: float) -> void:
 	if !is_on_floor():
 		velocity.y -= gravity * delta
 #	print(sword.shootCollider.get_collider())
-	print(state_name.state.name)
+	print(EX)
 	
 	chainCastCollide()
 	pushBack()
@@ -250,13 +250,24 @@ func catchAxe()-> void:
 	velocity = velocity.lerp(Vector3.ZERO, 1.3) 
 	
 func exMode():
-	if dir != Vector3.ZERO and EX == false:
-		exVal += 0.1
+	if dir != Vector3.ZERO and EX == false and exVal <= 100:
+		exVal += 0.5
+		print(exVal)
 		SignalBus.emit_signal("exBarValue", exVal)
 		
-#	if exVal == 100 and EX == false:
-	if Input.is_action_just_pressed("EX"):
-		EX = true
-			
-	if EX == true:
+	if exVal >= 100 and EX == false:
+		if Input.is_action_just_pressed("EX"):
+			EX = true
+	elif EX == true:
 		$AnimationPlayer.play("ExMode")
+		$exTimer.start()
+
+
+func _on_ex_timer_timeout() -> void:
+	EX = false
+	$AnimationPlayer.play_backwards("ExMode")
+	exValCrash()
+	
+func exValCrash():
+	exVal = 0.0
+
