@@ -66,6 +66,11 @@ transform = Transform3D(1, -9.31761e-22, -2.13162e-14, 9.31761e-22, -1, 8.74228e
 material_override = SubResource("StandardMaterial3D_hcdai")
 lifetime = 2.09
 
+[node name="GPUParticlesAttractorSphere3D" type="GPUParticlesAttractorSphere3D" parent="dust"]
+transform = Transform3D(1, 9.31761e-22, -2.13162e-14, -9.31761e-22, -1, -8.74228e-08, -2.13162e-14, 8.74228e-08, -1, 0, 0, 0)
+strength = 8.94
+radius = 239.14
+
 [node name="ricochetRange" type="Area3D" parent="."]
 collision_layer = 4
 collision_mask = 2
@@ -73,6 +78,9 @@ monitorable = false
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="ricochetRange"]
 shape = SubResource("SphereShape3D_vffg5")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.342171, 0.470846, 3.64689e-15)
 
 [connection signal="body_shape_entered" from="Area3D" to="." method="_on_area_3d_body_shape_entered"]
 [connection signal="body_entered" from="Area3D2" to="." method="_on_area_3d_2_body_entered"]

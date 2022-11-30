@@ -1,0 +1,40 @@
+[gd_scene load_steps=9 format=3 uid="uid://dhtxab8pac8bj"]
+
+[ext_resource type="Script" path="res://effects/blood.gd" id="1_cgmj6"]
+
+[sub_resource type="Gradient" id="Gradient_wbq8i"]
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_uvf7r"]
+gradient = SubResource("Gradient_wbq8i")
+
+[sub_resource type="Curve" id="Curve_w7glq"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.989474, 0.0181818), 0.333333, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_2smj0"]
+curve = SubResource("Curve_w7glq")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_b7ecu"]
+spread = 180.0
+gravity = Vector3(0, 0, 0)
+initial_velocity_max = 3.0
+scale_min = 0.1
+scale_curve = SubResource("CurveTexture_2smj0")
+color = Color(1, 0.0117647, 0, 1)
+color_ramp = SubResource("GradientTexture1D_uvf7r")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_kqlqk"]
+shading_mode = 0
+vertex_color_use_as_albedo = true
+
+[sub_resource type="BoxMesh" id="BoxMesh_5dcu5"]
+material = SubResource("StandardMaterial3D_kqlqk")
+
+[node name="blood" type="GPUParticles3D"]
+emitting = false
+amount = 50
+one_shot = true
+explosiveness = 1.0
+process_material = SubResource("ParticleProcessMaterial_b7ecu")
+draw_pass_1 = SubResource("BoxMesh_5dcu5")
+script = ExtResource("1_cgmj6")

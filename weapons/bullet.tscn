@@ -2,17 +2,17 @@
 
 [ext_resource type="Script" path="res://scripts/bullet.gd" id="1_s0jjt"]
 
-[sub_resource type="SphereShape3D" id="SphereShape3D_2h5po"]
+[sub_resource type="SphereShape3D" id="SphereShape3D_nrdo6"]
 radius = 0.613607
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vts0m"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_78cgp"]
 albedo_color = Color(1, 0, 0, 1)
 emission_enabled = true
 emission = Color(1, 0, 0, 1)
 emission_energy_multiplier = 16.0
 
-[sub_resource type="SphereMesh" id="SphereMesh_kx4jt"]
-material = SubResource("StandardMaterial3D_vts0m")
+[sub_resource type="SphereMesh" id="SphereMesh_yaais"]
+material = SubResource("StandardMaterial3D_78cgp")
 
 [node name="bullet" type="RigidBody3D" groups=["Bullets"]]
 collision_layer = 2
@@ -27,9 +27,9 @@ collision_layer = 2
 collision_mask = 5
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" groups=["Bullets"]]
-shape = SubResource("SphereShape3D_2h5po")
+shape = SubResource("SphereShape3D_nrdo6")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Area3D"]
-mesh = SubResource("SphereMesh_kx4jt")
+mesh = SubResource("SphereMesh_yaais")
 
 [connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]

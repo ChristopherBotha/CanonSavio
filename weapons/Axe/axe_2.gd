@@ -2,6 +2,7 @@ extends CharacterBody3D
 
 signal returned
 
+var enemyPool = 0
 
 @export var recall_curve: Curve
 @export_flags_3d_physics var aim_collision_mask
@@ -37,11 +38,12 @@ func _ready():
 	pass # Replace with function body.
 
 func _physics_process(delta: float):
-	print(state)
+
 	_get_direction()
 	
 	if ricochetPlease == true and state != STATE.HELD:
-		if enemyRicochetPool.front() != null:
+		if enemyRicochetPool.front() != null and enemyPool != 0 and owner.EX == true:
+			state == STATE.THROWN
 			ricochet()
 		else:
 			ricochetPlease = false
@@ -85,6 +87,7 @@ func _physics_process(delta: float):
 	
 func throw():
 	if state == STATE.HELD:
+		enemyPool = 4
 		top_level = true
 		var direction = _get_direction()
 		transform = transform.looking_at(global_position + direction, Vector3.UP)
@@ -127,7 +130,7 @@ func _on_area_3d_body_shape_entered(body_rid, body, body_shape_index, local_shap
 func _on_area_3d_2_body_entered(body):
 	if state == STATE.RECALLED:
 		body.hurt(5000, -1, 0.1,0.01)
-		
+	
 	elif body.is_in_group("Enemies"):
 		print("Hello")
 		velocity = Vector3.ZERO
@@ -136,12 +139,15 @@ func _on_area_3d_2_body_entered(body):
 		body.hurt(5000, -1, 0.1,0.01)
 		
 		if body.health <= 0:
-			if enemyRicochetPool.size() == 0:
+			SignalBus.emit_signal("hitStop", 0.1, 0.05)
+			enemyPool -= 1
+			if enemyRicochetPool.size() != 0 or state != STATE.RECALLED :
+				ricochetPlease = true
+				state = STATE.THROWN
+			else:
 				ricochetPlease = false
 				recall()
-			else:
-				state = STATE.THROWN
-				ricochetPlease = true
+				
 	else:
 		velocity = Vector3.ZERO
 		state = STATE.LANDED
@@ -165,7 +171,10 @@ func _on_ricochet_range_body_exited(body: Node3D) -> void:
 				print("no")
 
 func ricochet():
+	
 	top_level = true
+	rotate_object_local(Vector3.RIGHT, deg_to_rad(spin_speed))
+	
 	var directionRicochet = global_position.direction_to(enemyRicochetPool.front().global_position)
 	transform = transform.looking_at(global_position + directionRicochet, Vector3.UP)
 	velocity = directionRicochet * throw_force

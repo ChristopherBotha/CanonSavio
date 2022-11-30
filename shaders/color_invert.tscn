@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://fpkckb1mtxte"]
+
+[ext_resource type="Shader" path="res://shaders/invertColor.gdshader" id="1_ivgus"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_xedsq"]
+shader = ExtResource("1_ivgus")
+shader_parameter/color = Color(1, 0, 0, 1)
+shader_parameter/hide = false
+shader_parameter/strength = 0.5
+
+[node name="ColorInvert" type="ColorRect"]
+material = SubResource("ShaderMaterial_xedsq")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2

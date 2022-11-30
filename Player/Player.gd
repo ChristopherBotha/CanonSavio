@@ -6,7 +6,7 @@ class_name Player
 @onready var nozzle : Node3D = $Body/nozzle
 @onready var chainCast : RayCast3D = $Body/chainCast
 @onready var dust = $Body/dust/dust
-
+@onready var colorEX = $ColorInvert
 @export var backSheathe : Node3D
 @export var equipSword : Node3D
 
@@ -29,6 +29,9 @@ var sword_sheathed : bool = true
 var SPEED : float = 5.0
 var JUMP_VELOCITY : float = 4.5
 var dashSpeed : int = 200
+
+var EX : bool = false
+var exVal : float = 0.0
 
 @onready var eyes : Node3D = $eyes
 @onready var playback = $AnimationTree.get("parameters/playback")
@@ -72,9 +75,12 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:
 	
+	exMode()
+			
 	if !is_on_floor():
 		velocity.y -= gravity * delta
 #	print(sword.shootCollider.get_collider())
+	print(state_name.state.name)
 	
 	chainCastCollide()
 	pushBack()
@@ -243,3 +249,14 @@ func catchAxe()-> void:
 	velocity = Vector3(direction.x, 0.0, direction.z) * 5
 	velocity = velocity.lerp(Vector3.ZERO, 1.3) 
 	
+func exMode():
+	if dir != Vector3.ZERO and EX == false:
+		exVal += 0.1
+		SignalBus.emit_signal("exBarValue", exVal)
+		
+#	if exVal == 100 and EX == false:
+	if Input.is_action_just_pressed("EX"):
+		EX = true
+			
+	if EX == true:
+		$AnimationPlayer.play("ExMode")

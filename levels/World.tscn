@@ -26,6 +26,12 @@ offset_bottom = 68.0
 value = 100.0
 rounded = true
 
+[node name="exBar" type="ProgressBar" parent="playerUI"]
+offset_left = 64.0
+offset_top = 79.0
+offset_right = 195.0
+offset_bottom = 106.0
+
 [node name="TextureRect" type="TextureRect" parent="."]
 anchors_preset = 8
 anchor_left = 0.5

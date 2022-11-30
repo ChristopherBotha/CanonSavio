@@ -4,6 +4,7 @@ extends CharacterBody3D
 @onready var eyes : Node3D = $eyes
 @onready var aimCast : RayCast3D = $eyes/RayCast3D
 
+@onready var blood = preload("res://effects/blood.tscn")
 
 @onready var bullet : PackedScene =  preload("res://weapons/bullet.tscn")
 
@@ -44,9 +45,14 @@ func _physics_process(delta: float) -> void:
 
 func hurt(hurt_damage : float, pushBack, timeScale : float, hitstopDuration: float) -> void:
 	
+	var bloody = blood.instantiate()
+	get_tree().get_root().add_child(bloody)
+	bloody.global_position = global_position 
+	bloody.global_rotation = global_rotation
+	
 	$AnimationPlayer.play("hit")
 	health -= hurt_damage
-	SignalBus.emit_signal("trauma", 0.5, 0.2)
+	SignalBus.emit_signal("trauma", 0.8, 0.2)
 #	SignalBus.emit_signal("hitStop",timeScale, hitstopDuration)
 	
 	pushBack()
@@ -56,8 +62,11 @@ func hurt(hurt_damage : float, pushBack, timeScale : float, hitstopDuration: flo
 	velocity = Vector3.ZERO
 	dust.emitting = false
 
+	
+	
 func death() -> void:
 	if health <= 0:
+		await get_tree().create_timer(0.1).timeout
 		queue_free()
 
 func playerPos(player : Player) -> void:

@@ -24,3 +24,5 @@ signal releaseVictim(val)
 signal delayChange(val)
 signal hitStop(val,time)
 signal chainCollision(val)
+
+signal exBarValue(val)
