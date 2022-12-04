@@ -1,3 +1,4 @@
+#@tool
 extends CharacterBody3D
 
 @onready var dust = $Marker3D/dust
@@ -32,8 +33,8 @@ func _physics_process(delta: float) -> void:
 	if is_on_floor():
 		velocity.y = JUMP_VELOCITY
 	# Add the gravity.
-#	if not is_on_floor():
-#		velocity.y -= gravity * delta * witch_time
+	if not is_on_floor():
+		velocity.y -= gravity * delta * witch_time
 		
 	death()
 	shoot()
@@ -88,8 +89,9 @@ func shoot():
 		shot = true
 		
 		var bullets = bullet.instantiate()
-		$MeshInstance3D/Nozzle.add_child(bullets)
-		bullets.global_position = global_position 
+		get_tree().get_root().add_child(bullets)
+		bullets.global_position = $MeshInstance3D/Nozzle.global_position 
+		bullets.global_rotation = $MeshInstance3D/Nozzle.global_rotation
 		
 		await get_tree().create_timer(2 ).timeout
 		shot = false

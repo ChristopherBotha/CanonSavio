@@ -11,11 +11,13 @@ func physics_update(_delta: float) -> void:
 	
 	if owner.attacking == true:
 		owner.velocity.y = 0.0
-			
-	if owner.is_on_floor() and owner.dir != Vector3.ZERO and Input.is_action_pressed("sprint"):
+	
+	if owner.velocity.y < 0:
+		state_machine.transition_to("Fall", {do_Fall = true})
+	elif owner.is_on_floor() and owner.dir != Vector3.ZERO and Input.is_action_pressed("sprint"):
 		state_machine.transition_to("Run", {do_Run = true})
 	elif owner.is_on_floor() and owner.dir != Vector3.ZERO :
-		state_machine.transition_to("Walk", {dp_walk = true})
+		state_machine.transition_to("Walk", {dp_Walk = true})
 		owner.sprinting = false
 		owner.sprintFalse()
 	elif owner.is_on_floor() and owner.dir == Vector3.ZERO:

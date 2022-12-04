@@ -86,7 +86,7 @@ func _physics_process(delta: float) -> void:
 			
 	if !is_on_floor():
 		velocity.y -= gravity * delta
-#	print(sword.shootCollider.get_collider())
+	print(state_name.state.name)
 	
 	chainCastCollide()
 	pushBack()
