@@ -6,7 +6,7 @@ func enter(_msg := {}) -> void:
 	
 func physics_update(delta: float) -> void:
 	owner.velocity = owner.velocity.lerp(Vector3.ZERO, owner.airFriction)
-	owner.velocity.y -= owner.gravity * delta * 2
+	owner.velocity.y -= owner.gravity * delta * 1.2
 	
 	if owner.is_on_floor() and owner.dir == Vector3.ZERO:
 		state_machine.transition_to("Idle", {do_Idle = true})
