@@ -76,8 +76,7 @@ var airFriction : float = 0.07
 var h_rot : float
 
 func _ready() -> void:
-	
-	pass
+	$TextureRect3.visible = false
 
 func _physics_process(delta: float) -> void:
 	
@@ -127,12 +126,14 @@ func sprint() -> void:
 		SPEED = maxSpeed
 		camera.near = move_toward(camera.near, 0.5, 0.02)
 	elif Input.is_action_just_released("sprint"):
+
 		sprinting = false
 
 
 func sprintFalse() -> void:
 	if sprinting == false:
 		SPEED = minSpeed
+		
 		camera.near = move_toward(camera.near, 0.8, 0.02)
 
 
@@ -263,9 +264,11 @@ func exMode() -> void:
 			EX = true
 			
 	if EX == true:
+		$TextureRect3.visible = true
 		exVal -= 0.2
 		$AnimationPlayer.play("ExMode")
 		if exVal <= 0:
+			$TextureRect3.visible = false
 			EX = false
 			$ColorInvert.visible = false
 

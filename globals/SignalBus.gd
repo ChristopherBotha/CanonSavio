@@ -26,3 +26,4 @@ signal hitStop(val,time)
 signal chainCollision(val)
 
 signal exBarValue(val)
+signal exTrue(val)
