@@ -1,4 +1,4 @@
-[gd_scene load_steps=32 format=3 uid="uid://cgvnhgorwk8mc"]
+[gd_scene load_steps=31 format=3 uid="uid://cgvnhgorwk8mc"]
 
 [ext_resource type="Shader" path="res://shaders/testingUV.gdshader" id="1_mrkt7"]
 [ext_resource type="Script" path="res://scripts/Tutorial.gd" id="1_pxheu"]
@@ -8,7 +8,6 @@
 [ext_resource type="Script" path="res://scripts/pitfall.gd" id="4_xxp8m"]
 [ext_resource type="Script" path="res://scripts/healarea.gd" id="5_rdcnw"]
 [ext_resource type="PackedScene" uid="uid://bys8nihkk0m07" path="res://levels/skybox.tscn" id="6_om4ls"]
-[ext_resource type="PackedScene" uid="uid://cduqfkt54u4sj" path="res://Enemies/enemyDestruct.tscn" id="8_8yfoj"]
 [ext_resource type="PackedScene" uid="uid://ch847wg8ssgdp" path="res://shaders/vhsCRT.tscn" id="10_ixg5t"]
 
 [sub_resource type="PhysicalSkyMaterial" id="PhysicalSkyMaterial_e57ql"]
@@ -198,9 +197,6 @@ size = Vector3(100, 50, 1)
 [node name="CSGBox3D7" type="CSGBox3D" parent="CSGCombiner3D"]
 transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -50.0591, 98.2631, 0.106144)
 size = Vector3(100, 50, 1)
-
-[node name="RigidBody3D" parent="." instance=ExtResource("8_8yfoj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.24591, 78.564, -11.6389)
 
 [node name="ColorRect" parent="." instance=ExtResource("10_ixg5t")]
 visible = false

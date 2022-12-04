@@ -32,7 +32,6 @@ var JUMP_VELOCITY : float = 4.5
 var dashSpeed : int = 200
 
 
-
 @onready var eyes : Node3D = $eyes
 @onready var playback = $AnimationTree.get("parameters/playback")
 
@@ -58,8 +57,8 @@ var exVal : float = 0.0:
 		exVal = clamp(new_value,0,100)
 		SignalBus.emit_signal("exBarValue", exVal)
 
-var maxSpeed : float = 15
-var minSpeed : float = 0.0
+@export var maxSpeed : float = 15.0
+@export var minSpeed : float = 5.0
 var maxJumpHeight : float = 6
 var dir : Vector3 = Vector3.ZERO
 var momentum : float = 0.1
@@ -86,7 +85,7 @@ func _physics_process(delta: float) -> void:
 			
 	if !is_on_floor():
 		velocity.y -= gravity * delta
-	print(state_name.state.name)
+	print(SPEED)
 	
 	chainCastCollide()
 	pushBack()
@@ -133,7 +132,7 @@ func sprint() -> void:
 
 func sprintFalse() -> void:
 	if sprinting == false:
-		SPEED = 5.0
+		SPEED = minSpeed
 		camera.near = move_toward(camera.near, 0.8, 0.02)
 
 
