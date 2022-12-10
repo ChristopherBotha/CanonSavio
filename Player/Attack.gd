@@ -7,9 +7,8 @@ func enter(_msg := {}) -> void:
 	
 	
 func physics_update(_delta: float) -> void:
-#	owner.velocity = owner.velocity.lerp(Vector3.ZERO, owner.airFriction)
-	
-	if owner.attacking == false:
+	owner.velocity = owner.velocity.lerp(Vector3.ZERO, owner.airFriction)
+	if owner.attacking == false and owner.is_on_floor():
 		state_machine.transition_to("Idle", {do_Idle = true})
 	
 	pass

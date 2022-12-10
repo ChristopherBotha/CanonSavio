@@ -129,7 +129,8 @@ func _on_area_3d_body_shape_entered(body_rid, body, body_shape_index, local_shap
 
 func _on_area_3d_2_body_entered(body):
 	if state == STATE.RECALLED:
-		body.hurt(5000, -1, 0.1,0.01)
+		if body.has_method("hurt"):
+			body.hurt(5000, -1, 0.1,0.01)
 	
 	elif body.is_in_group("Enemies"):
 		print("Hello")

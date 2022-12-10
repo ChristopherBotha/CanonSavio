@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=3 uid="uid://cgvnhgorwk8mc"]
+[gd_scene load_steps=33 format=3 uid="uid://cgvnhgorwk8mc"]
 
 [ext_resource type="Shader" path="res://shaders/testingUV.gdshader" id="1_mrkt7"]
 [ext_resource type="Script" path="res://scripts/Tutorial.gd" id="1_pxheu"]
@@ -113,6 +113,12 @@ uv1_world_triplanar = true
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_dgue4"]
 height = 15.008
 radius = 100.0
+
+[sub_resource type="BoxMesh" id="BoxMesh_ew7nw"]
+size = Vector3(100, 100, 100)
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_oxgtr"]
+data = PackedVector3Array(-50, 50, 50, 50, 50, 50, -50, -50, 50, 50, 50, 50, 50, -50, 50, -50, -50, 50, 50, 50, -50, -50, 50, -50, 50, -50, -50, -50, 50, -50, -50, -50, -50, 50, -50, -50, 50, 50, 50, 50, 50, -50, 50, -50, 50, 50, 50, -50, 50, -50, -50, 50, -50, 50, -50, 50, -50, -50, 50, 50, -50, -50, -50, -50, 50, 50, -50, -50, 50, -50, -50, -50, 50, 50, 50, -50, 50, 50, 50, 50, -50, -50, 50, 50, -50, 50, -50, 50, 50, -50, -50, -50, 50, 50, -50, 50, -50, -50, -50, 50, -50, 50, 50, -50, -50, -50, -50, -50)
 
 [node name="Tutorial" type="Node3D"]
 script = ExtResource("1_pxheu")
@@ -268,6 +274,17 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 59.3143, 0, 374.931)
 [node name="CollisionShape3D" type="CollisionShape3D" parent="CSGCombiner3D2/CSGBox3D7/Area3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -91.4737, -10.5658, 129.467)
 shape = SubResource("CylinderShape3D_dgue4")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 24.8175, 0)
+mesh = SubResource("BoxMesh_ew7nw")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="MeshInstance3D2"]
+collision_layer = 7
+collision_mask = 7
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="MeshInstance3D2/StaticBody3D"]
+shape = SubResource("ConcavePolygonShape3D_oxgtr")
 
 [connection signal="body_entered" from="Area3D" to="Area3D" method="_on_body_entered"]
 [connection signal="body_entered" from="Area3D2" to="Area3D2" method="_on_body_entered"]

@@ -131,9 +131,8 @@ func sprint() -> void:
 
 
 func sprintFalse() -> void:
-	if sprinting == false:
+	if sprinting == false or !Input.is_action_pressed("sprint"):
 		SPEED = minSpeed
-		
 		camera.near = move_toward(camera.near, 0.8, 0.02)
 
 
@@ -246,7 +245,7 @@ func dusting()-> void:
 		dust.emitting = true
 	else:
 		dust.emitting = false
-
+	
 func catchAxe()-> void:
 	
 #	pushBack() 
