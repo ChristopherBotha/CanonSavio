@@ -43,7 +43,7 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 	
 
-func hurt(hurt_damage : float, pushBack, timeScale : float, hitstopDuration: float) -> void:
+func hurt(hurt_damage : float, pushBack: float, timeScale : float, hitstopDuration: float) -> void:
 	
 	var bloody = blood.instantiate()
 	get_tree().get_root().add_child(bloody)

@@ -11,11 +11,12 @@ var enemyPool = 0
 @export var spin_speed: float = 50.0
 @export var recall_speed: float = 10.0
 
-@export var player: Node3D
 @onready var parent: Node3D = get_parent()
 
 enum STATE {HELD, THROWN, LANDED, RECALLED}
 var state: STATE = STATE.HELD
+
+var player : CharacterBody3D
 
 var enemyRicochetPool : Array = []
 var ricochetPlease : bool = false
@@ -29,20 +30,20 @@ var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	
-	if owner != null:
-		player = owner
-	
+	SignalBus.connect("playerID", getPlayer)
+
 	global_position = parent.global_position
 	global_rotation = parent.global_rotation
 	$Area3D2/CollisionShape3D.disabled = true
-	pass # Replace with function body.
+
 
 func _physics_process(delta: float):
-
+	SignalBus.emit_signal("swordState", STATE.keys()[state]) ########  Debug
+	
 	_get_direction()
 	
 	if ricochetPlease == true and state != STATE.HELD:
-		if enemyRicochetPool.front() != null and enemyPool != 0 and owner.EX == true:
+		if enemyRicochetPool.front() != null and enemyPool != 0 and player.EX == true:
 			state == STATE.THROWN
 			ricochet()
 		else:
@@ -78,6 +79,9 @@ func _physics_process(delta: float):
 			player.catchAxe()
 			state = STATE.HELD
 			emit_signal("returned")
+			if owner != null :
+				if owner.sword_sheathed == false:
+					owner._sheath_weapon()
 			top_level = false
 		else:
 			var x = recall_curve.sample_baked(recall_progress / recall_start.distance_to(parent.global_position))
@@ -119,6 +123,7 @@ func recall():
 	recall_progress = 0.0
 	state = STATE.RECALLED
 	velocity = Vector3.ZERO
+
 
 func _on_area_3d_body_shape_entered(body_rid, body, body_shape_index, local_shape_index):
 	if state == STATE.RECALLED:
@@ -180,3 +185,6 @@ func ricochet():
 	transform = transform.looking_at(global_position + directionRicochet, Vector3.UP)
 	velocity = directionRicochet * throw_force
 	state = STATE.THROWN
+	
+func getPlayer(val):
+	player = val

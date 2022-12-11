@@ -1,4 +1,6 @@
 extends Node
+
+signal playerID(val)
 #player changes
 signal updatePlayerHealth(val)
 signal updatePlayerMana(val)
@@ -27,3 +29,11 @@ signal chainCollision(val)
 
 signal exBarValue(val)
 signal exTrue(val)
+
+############debug
+signal swordState(val)
+signal speedUpdated(val)
+signal sprintingUpdated(val)
+signal swordSheathedUpdated(val)
+signal playerStateName(val)
+signal attackingUpdated(val)

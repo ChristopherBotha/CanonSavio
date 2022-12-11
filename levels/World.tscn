@@ -1,13 +1,17 @@
-[gd_scene load_steps=5 format=3 uid="uid://ch2agfg0jedp3"]
+[gd_scene load_steps=6 format=3 uid="uid://ch2agfg0jedp3"]
 
 [ext_resource type="Script" path="res://scripts/World.gd" id="1_kk85k"]
 [ext_resource type="Script" path="res://scripts/playerUI.gd" id="2_732ay"]
 [ext_resource type="Texture2D" uid="uid://bvdbhnxd0kmhf" path="res://UI/Crosshair.png" id="3_fl40m"]
 [ext_resource type="Texture2D" uid="uid://d4dsfanlkdvwl" path="res://UI/Controls.png" id="4_atmf0"]
+[ext_resource type="PackedScene" uid="uid://c24gwwe644h7v" path="res://UI/debug.tscn" id="5_gtumc"]
 
 [node name="World" type="Node3D"]
 script = ExtResource("1_kk85k")
 level = "res://levels/Tutorial.tscn"
+
+[node name="Debug" parent="." instance=ExtResource("5_gtumc")]
+mouse_force_pass_scroll_events = false
 
 [node name="Level" type="Node3D" parent="."]
 
@@ -58,6 +62,7 @@ offset_right = 54.0
 offset_bottom = 31.0
 
 [node name="TextureRect2" type="TextureRect" parent="."]
+visible = false
 anchors_preset = 6
 anchor_left = 1.0
 anchor_top = 0.5

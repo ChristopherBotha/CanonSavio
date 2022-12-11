@@ -1,5 +1,4 @@
-extends CharacterBody3D
-class_name Player
+extends Player
 
 #@onready var bullet = preload("res://weapons/bullet_body.tscn")
 @onready var timeZone = $timeZone
@@ -11,6 +10,8 @@ class_name Player
 @export var equipSword : Node3D
 @onready var exTimer : Timer = $exTimer
 
+
+var menu : bool = false
 var direction # direction which player is facing
 
 var myEquip  : Dictionary = { 
@@ -26,36 +27,14 @@ var guns : Dictionary = {
 	"shotGun": shotGun()
 }
 
-var sword_sheathed : bool = true
-var SPEED : float = 5.0
-var JUMP_VELOCITY : float = 4.5
-var dashSpeed : int = 200
-
 
 @onready var eyes : Node3D = $eyes
 @onready var playback = $AnimationTree.get("parameters/playback")
-
-var dashing : bool = false
-var sprinting : bool = false
-var jumping : bool = false
-var attacking : bool = false
 
 @onready var aimCast : RayCast3D= $Camera_Orbit/h/v/SpringArm3D/Camera3D/RayCast3D
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
-
-var health : float = 100:
-	set(new_value): 
-		health = clamp(new_value,0,100)
-		SignalBus.emit_signal("healthUpdated", health)
-
-var EX : bool = false
-
-var exVal : float = 0.0:
-	set(new_value): 
-		exVal = clamp(new_value,0,100)
-		SignalBus.emit_signal("exBarValue", exVal)
 
 @export var maxSpeed : float = 15.0
 @export var minSpeed : float = 5.0
@@ -76,16 +55,26 @@ var airFriction : float = 0.07
 var h_rot : float
 
 func _ready() -> void:
+	SignalBus.emit_signal("attackingUpdated", attacking)
+	SignalBus.emit_signal("swordSheathedUpdated", sword_sheathed)
+	SignalBus.emit_signal("speedUpdated", SPEED)
+	SignalBus.emit_signal("playerStateName", state_name.state.name)
+	SignalBus.emit_signal("speedUpdated", SPEED)
+	
 	$TextureRect3.visible = false
 
 func _physics_process(delta: float) -> void:
 	
+	SignalBus.emit_signal("playerStateName", state_name.state.name)
+	
 	exMode()
-			
+	
+	print(attacking)
+	
 	if !is_on_floor():
 		velocity.y -= gravity * delta
-	print(SPEED)
-	
+		
+	_sheath()
 	chainCastCollide()
 	pushBack()
 	axeing()
@@ -159,12 +148,16 @@ func dash() -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
 		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
-
-
 	if event.is_action_pressed("ui_cancel"):
-		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
-
+		if menu == false:
+			menu = true
+			Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+		elif menu == true:
+			menu = false
+			Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+			
 func handle_animaton() -> void:
+	
 	for j in state_name.get_children():
 		if state_name.state.name == j.get_name():
 			playback.travel(state_name.state.name)
@@ -177,7 +170,7 @@ func hurt(hurt_damage : float, pushBack, timeScale : float, hitstopDuration: flo
 func _on_hit_box_body_entered(body):
 	if body.is_in_group("Enemies"):
 		if body.has_method("hurt"):
-			body.hurt(50, -5, 0.1,0.1)
+			body.hurt(50, -15, 0.1,0.1)
 
 
 func attackingFalse()-> void:
@@ -195,7 +188,7 @@ func magNum() -> void:
 	if shot == true and aimCast.get_collider() != null:
 		if aimCast.get_collider().is_in_group("Enemies"):
 			if aimCast.get_collider() .has_method("hurt"):
-				aimCast.get_collider() .hurt(DAMAGE, -1, 0.1,0.01)
+				aimCast.get_collider() .hurt(DAMAGE, -15, 0.1,0.01)
 
 func shotGun()-> void:
 	pass
@@ -270,4 +263,30 @@ func exMode() -> void:
 			$TextureRect3.visible = false
 			EX = false
 			$ColorInvert.visible = false
+			
+func _reparent(child: Node, new_parent: Node)-> void:
+	var old_parent = child.get_parent()
+	old_parent.remove_child(child)
+	new_parent.add_child(child)
+	
+func _unsheath_weapon() -> void:
+	if sword.state == sword.STATE.HELD:
+		_reparent(get_node("Body/Back/holsterSword").get_child(0), 
+				get_node("Body/cherry/Armature/Skeleton3D/hand/hand"))
+		sword = $Body/cherry/Armature/Skeleton3D/hand/hand/Axe
+		sword_sheathed = false
+	
+func _sheath_weapon()-> void:
+	if sword.state == sword.STATE.HELD:
+		_reparent(get_node("Body/cherry/Armature/Skeleton3D/hand/hand").get_child(0), 
+				get_node("Body/Back/holsterSword"))
+		sword = $Body/Back/holsterSword/Axe
+		sword_sheathed = true
 
+func _sheath()-> void:
+	if Input.is_action_just_pressed("sheathe") and !attacking:
+		if sword_sheathed == true:
+			_unsheath_weapon()
+		elif sword_sheathed == false:
+			_sheath_weapon()
+			
