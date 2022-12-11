@@ -12,6 +12,7 @@ grow_vertical = 2
 script = ExtResource("1_qypu7")
 
 [node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 1
 anchors_preset = 6
 anchor_left = 1.0
 anchor_top = 0.5
@@ -26,6 +27,7 @@ grow_vertical = 2
 color = Color(0.152941, 0.152941, 0.152941, 1)
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
 anchors_preset = 6
 anchor_left = 1.0
 anchor_top = 0.5
@@ -39,67 +41,64 @@ grow_horizontal = 0
 grow_vertical = 2
 
 [node name="State" type="Label" parent="VBoxContainer"]
-offset_right = 121.0
-offset_bottom = 26.0
+layout_mode = 2
 text = "State:"
 horizontal_alignment = 2
 
 [node name="Attacking" type="Label" parent="VBoxContainer"]
-offset_top = 30.0
-offset_right = 121.0
-offset_bottom = 56.0
+layout_mode = 2
 text = "Attacking: 
 "
 horizontal_alignment = 2
 
 [node name="JUmping" type="Label" parent="VBoxContainer"]
 visible = false
+layout_mode = 2
 text = "Jumping:"
 horizontal_alignment = 2
 
 [node name="SPrinting" type="Label" parent="VBoxContainer"]
 visible = false
+layout_mode = 2
 text = "Sprinting:"
 horizontal_alignment = 2
 
 [node name="SPeed" type="Label" parent="VBoxContainer"]
-offset_top = 60.0
-offset_right = 121.0
-offset_bottom = 86.0
+layout_mode = 2
 text = "Speed:"
 horizontal_alignment = 2
 
 [node name="Falling" type="Label" parent="VBoxContainer"]
 visible = false
+layout_mode = 2
 text = "Falling"
 horizontal_alignment = 2
 
 [node name="SwordState" type="Label" parent="VBoxContainer"]
-offset_top = 90.0
-offset_right = 121.0
-offset_bottom = 116.0
+layout_mode = 2
 text = "Sword State:"
 horizontal_alignment = 2
 
 [node name="seatheState" type="Label" parent="VBoxContainer"]
-offset_top = 120.0
-offset_right = 121.0
-offset_bottom = 146.0
+layout_mode = 2
 text = "Sheathe State:"
 horizontal_alignment = 2
 
 [node name="running" type="Label" parent="VBoxContainer"]
 visible = false
+layout_mode = 2
 text = "Running:"
 horizontal_alignment = 2
 
 [node name="hurt" type="Label" parent="VBoxContainer"]
 visible = false
+layout_mode = 2
 text = "Hurt:
 "
 horizontal_alignment = 2
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="."]
+layout_mode = 1
 anchors_preset = 6
 anchor_left = 1.0
 anchor_top = 0.5
@@ -113,52 +112,48 @@ grow_horizontal = 0
 grow_vertical = 2
 
 [node name="State" type="Label" parent="VBoxContainer2"]
-offset_right = 130.0
-offset_bottom = 26.0
+layout_mode = 2
 text = "State:"
 
 [node name="Attacking" type="Label" parent="VBoxContainer2"]
-offset_top = 30.0
-offset_right = 130.0
-offset_bottom = 56.0
+layout_mode = 2
 text = "Attacking: 
 "
 
 [node name="JUmping" type="Label" parent="VBoxContainer2"]
 visible = false
+layout_mode = 2
 text = "Jumping:"
 
 [node name="SPrinting" type="Label" parent="VBoxContainer2"]
 visible = false
+layout_mode = 2
 text = "Sprinting:"
 
 [node name="SPeed" type="Label" parent="VBoxContainer2"]
-offset_top = 60.0
-offset_right = 130.0
-offset_bottom = 86.0
+layout_mode = 2
 text = "Speed:"
 
 [node name="Falling" type="Label" parent="VBoxContainer2"]
 visible = false
+layout_mode = 2
 text = "Falling"
 
 [node name="SwordState" type="Label" parent="VBoxContainer2"]
-offset_top = 90.0
-offset_right = 130.0
-offset_bottom = 116.0
+layout_mode = 2
 text = "Sword State:"
 
 [node name="seatheState" type="Label" parent="VBoxContainer2"]
-offset_top = 120.0
-offset_right = 130.0
-offset_bottom = 146.0
+layout_mode = 2
 text = "Sheathe State:"
 
 [node name="running" type="Label" parent="VBoxContainer2"]
 visible = false
+layout_mode = 2
 text = "Running:"
 
 [node name="hurt" type="Label" parent="VBoxContainer2"]
 visible = false
+layout_mode = 2
 text = "Hurt:
 "
