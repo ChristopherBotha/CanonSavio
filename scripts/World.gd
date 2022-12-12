@@ -38,6 +38,7 @@ func _process(delta: float) -> void:
 	
 	if player1 != null:
 		get_tree().call_group("Enemies","playerPos",player1)
+		get_tree().call_group("Enemies","update_target_location",player1.global_transform.origin)
 
 func _on_re_spawn_pressed() -> void:
 	if enemyPool == 0:

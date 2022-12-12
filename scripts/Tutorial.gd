@@ -14,8 +14,8 @@ func _physics_process(delta):
 
 func tweeingThemApples():
 	var tween = get_tree().create_tween().set_loops()
-	tween.tween_property($CSGCombiner3D2/CSGBox3D4, "position:y", 20, 2).as_relative()
-	tween.tween_property($CSGCombiner3D2/CSGBox3D4, "position:y", -20, 2).as_relative()
+	tween.tween_property($NavigationRegion3D/CSGCombiner3D2/CSGBox3D4, "position:y", 20, 2).as_relative()
+	tween.tween_property($NavigationRegion3D/CSGCombiner3D2/CSGBox3D4, "position:y", -20, 2).as_relative()
 
 
 

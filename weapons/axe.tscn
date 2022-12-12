@@ -2,22 +2,28 @@
 
 [ext_resource type="Script" path="res://weapons/Axe/axe_2.gd" id="1_hjcmt"]
 [ext_resource type="Curve" uid="uid://vj3dx7inipbv" path="res://weapons/Axe/Axe_Curve.tres" id="2_2f3c4"]
+[ext_resource type="ArrayMesh" uid="uid://cj7vx14qxbip2" path="res://Models/Sword/Black_sword-0-Sword.obj" id="3_72yt8"]
+[ext_resource type="Texture2D" uid="uid://dsh6vakuuygak" path="res://Models/Sword/Black_sword-0-Sword.png" id="4_5vwva"]
 [ext_resource type="PackedScene" uid="uid://uh4k8ebu7chu" path="res://effects/dust.tscn" id="5_6po5w"]
-[ext_resource type="ArrayMesh" uid="uid://8m40bfpr1i3" path="res://weapons/Sword-0-Sword.obj" id="10_n8atm"]
-[ext_resource type="Texture2D" uid="uid://butna4rf3v77n" path="res://weapons/Sword-0-Sword.png" id="11_x5acn"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_okk0c"]
 size = Vector3(0.5, 0.1, 0.2)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_7ew0e"]
-size = Vector3(0.1, 0.1, 0.1)
+size = Vector3(0.0826398, 0.1, 0.1)
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_6yyff"]
 radius = 0.205453
 height = 0.844125
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_22tgp"]
-albedo_texture = ExtResource("11_x5acn")
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xcxx7"]
+albedo_texture = ExtResource("4_5vwva")
+metallic = 0.74
+metallic_specular = 0.33
+roughness = 0.26
+emission_energy_multiplier = 2.35
+emission_operator = 1
+rim_enabled = true
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hcdai"]
 albedo_color = Color(0.0431373, 0.0431373, 0.0431373, 1)
@@ -38,16 +44,16 @@ transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0, 1.1
 shape = SubResource("BoxShape3D_okk0c")
 
 [node name="Area3D" type="Area3D" parent="."]
-transform = Transform3D(-2.18557e-07, 0, -2.428, 0, 4.31208, 0, 5, 0, -1.06131e-07, 0.0390791, -1.3559, -0.354701)
+transform = Transform3D(-2.18557e-07, 0, -2.428, 0, 4.31208, 0, 5, 0, -1.06131e-07, 0.0390791, -1.2991, -0.354701)
 collision_layer = 0
 collision_mask = 3
 
 [node name="HeadShape" type="CollisionShape3D" parent="Area3D"]
-transform = Transform3D(1, 0, 0, 0, 1.74739, 0, -7.10543e-14, 0, 0.0855141, 0.0719136, 0.265545, -9.31323e-10)
+transform = Transform3D(1, 0, -4.44089e-16, 0, 1.74739, 0, -7.81597e-14, 0, 0.0855141, 0.0714478, 0.269501, 0)
 shape = SubResource("BoxShape3D_7ew0e")
 
 [node name="Area3D2" type="Area3D" parent="."]
-transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2.5, 0, -0.222956, 0)
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2.5, 0, -0.000387728, 0)
 collision_layer = 0
 collision_mask = 2
 
@@ -55,11 +61,10 @@ collision_mask = 2
 transform = Transform3D(0.5, 0, 0, 0, 0.916521, 0, 0, 0, 0.5, 0, 0.0742344, 0)
 shape = SubResource("CapsuleShape3D_6yyff")
 
-[node name="Sword-0-sword2" type="MeshInstance3D" parent="."]
-transform = Transform3D(0.7, 0, 0, 0, 0.7, 0, 0, 0, 0.7, 0, -0.810211, 0)
-mesh = ExtResource("10_n8atm")
-skeleton = NodePath("../../../..")
-surface_material_override/0 = SubResource("StandardMaterial3D_22tgp")
+[node name="BlackSword-0-sword" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0, -0.69425, 0)
+mesh = ExtResource("3_72yt8")
+surface_material_override/0 = SubResource("StandardMaterial3D_xcxx7")
 
 [node name="dust" parent="." instance=ExtResource("5_6po5w")]
 transform = Transform3D(1, -9.31761e-22, -2.13162e-14, 9.31761e-22, -1, 8.74228e-08, -2.13162e-14, -8.74228e-08, -1, 0, 0, 0)

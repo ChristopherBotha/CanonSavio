@@ -1,6 +1,7 @@
 #@tool
 extends CharacterBody3D
 
+
 @onready var dust = $Marker3D/dust
 @onready var eyes : Node3D = $eyes
 @onready var aimCast : RayCast3D = $eyes/RayCast3D
@@ -19,6 +20,16 @@ var target
 var TURN_SPEED : float = 10
 var shot : bool = false
 
+@onready var nav_agent = $NavigationAgent3D
+var next_location := Vector3.ZERO
+var new_velocity := Vector3.ZERO
+var current_location := Vector3.ZERO
+
+var player_in_range : bool = false
+var player_hit : bool = false
+var enemyhurt : bool = false
+var player 
+
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 
@@ -30,11 +41,20 @@ func _physics_process(delta: float) -> void:
 	
 	healthBar.value = health
 	
-	if is_on_floor():
-		velocity.y = JUMP_VELOCITY
+#	if is_on_floor():
+#		velocity.y = JUMP_VELOCITY
 	# Add the gravity.
 	if not is_on_floor():
 		velocity.y -= gravity * delta * witch_time
+		
+	if self != null: #d enemyhurt == false:
+		if nav_agent.is_target_reachable() :
+			current_location = global_position
+			next_location = nav_agent.get_next_location()
+			new_velocity = (next_location - current_location).normalized() * SPEED
+			nav_agent.set_velocity(new_velocity)
+		else:
+			nav_agent.set_velocity(Vector3.ZERO)
 		
 	death()
 	shoot()
@@ -70,6 +90,7 @@ func death() -> void:
 		queue_free()
 
 func playerPos(player : Player) -> void:
+
 	target = player
 
 func lookAtPlayer() -> void:
@@ -95,3 +116,23 @@ func shoot():
 		
 		await get_tree().create_timer(2 ).timeout
 		shot = false
+
+
+func _on_navigation_agent_3d_navigation_finished():
+	pass # Replace with function body.
+
+
+func _on_navigation_agent_3d_velocity_computed(safe_velocity):
+	if enemyhurt == false:
+		velocity = velocity.move_toward(safe_velocity,0.25)
+		print(safe_velocity)
+
+
+func _on_navigation_agent_3d_target_reached():
+	if enemyhurt == false:
+		print("hello!!!!!!!")
+		velocity = Vector3.ZERO
+
+func update_target_location(target_location):
+	if enemyhurt == false:
+		nav_agent.set_target_location(target_location)

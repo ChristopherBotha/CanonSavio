@@ -111,11 +111,10 @@ func handleInput(delta: float) -> void:
 
 
 func sprint() -> void:
-	if Input.is_action_pressed("sprint"):
+	if Input.is_action_pressed("sprint") and dir != Vector3.ZERO:
 		SPEED = maxSpeed
 		camera.near = move_toward(camera.near, 0.5, 0.02)
-	elif Input.is_action_just_released("sprint"):
-
+	else :
 		sprinting = false
 
 
@@ -274,13 +273,19 @@ func _unsheath_weapon() -> void:
 		_reparent(get_node("Body/Back/holsterSword").get_child(0), 
 				get_node("Body/cherry/Armature/Skeleton3D/hand/hand"))
 		sword = $Body/cherry/Armature/Skeleton3D/hand/hand/Axe
+		sword.global_position = $Body/cherry/Armature/Skeleton3D/hand/hand.global_position
+		sword.global_rotation = $Body/cherry/Armature/Skeleton3D/hand/hand.global_rotation
+		
 		sword_sheathed = false
-	
+		
 func _sheath_weapon()-> void:
 	if sword.state == sword.STATE.HELD:
 		_reparent(get_node("Body/cherry/Armature/Skeleton3D/hand/hand").get_child(0), 
 				get_node("Body/Back/holsterSword"))
 		sword = $Body/Back/holsterSword/Axe
+		sword.global_position = $Body/Back/holsterSword.global_position
+		sword.global_rotation = $Body/Back/holsterSword.global_rotation
+		
 		sword_sheathed = true
 
 func _sheath()-> void:

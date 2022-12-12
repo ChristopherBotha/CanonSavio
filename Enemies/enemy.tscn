@@ -4,33 +4,33 @@
 [ext_resource type="PackedScene" uid="uid://ba2ghquf1d4fk" path="res://UI/enemyHealth_bar.tscn" id="2_jq8c0"]
 [ext_resource type="PackedScene" uid="uid://uh4k8ebu7chu" path="res://effects/dust.tscn" id="3_jy88k"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7obwg"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gxbno"]
 albedo_color = Color(1, 0, 0, 1)
 
-[sub_resource type="BoxMesh" id="BoxMesh_ssn8s"]
+[sub_resource type="BoxMesh" id="BoxMesh_fvcbt"]
 size = Vector3(1, 2, 1)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8581x"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2n82x"]
 shading_mode = 0
 
-[sub_resource type="BoxMesh" id="BoxMesh_cibui"]
+[sub_resource type="BoxMesh" id="BoxMesh_mbpj7"]
 size = Vector3(0.2, 1, 0.2)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_eop3y"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ht5e6"]
 shading_mode = 0
 albedo_color = Color(1, 0, 0, 1)
 refraction_scale = -0.34
 
-[sub_resource type="BoxMesh" id="BoxMesh_tr1cx"]
+[sub_resource type="BoxMesh" id="BoxMesh_md81t"]
 size = Vector3(0.2, 0.8, 0.2)
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_4etbg"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_t0cy3"]
 size = Vector3(1, 2, 1)
 
-[sub_resource type="Animation" id="Animation_hek4a"]
+[sub_resource type="Animation" id="Animation_0tahc"]
 length = 0.001
 
-[sub_resource type="Animation" id="Animation_mvhg4"]
+[sub_resource type="Animation" id="Animation_kf6og"]
 resource_name = "hit"
 length = 0.2
 tracks/0/type = "value"
@@ -46,10 +46,10 @@ tracks/0/keys = {
 "values": [Vector3(0, 0, 0), Vector3(0.169297, 0, 0), Vector3(0.169297, 0, 0), Vector3(0, 0, 0)]
 }
 
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_po7ih"]
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_4g1a4"]
 _data = {
-"RESET": SubResource("Animation_hek4a"),
-"hit": SubResource("Animation_mvhg4")
+"RESET": SubResource("Animation_0tahc"),
+"hit": SubResource("Animation_kf6og")
 }
 
 [node name="Enemy" type="CharacterBody3D" groups=["Enemies"]]
@@ -59,40 +59,40 @@ up_direction = Vector3(0, 0, -1)
 script = ExtResource("1_1tkjx")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-material_override = SubResource("StandardMaterial3D_7obwg")
-mesh = SubResource("BoxMesh_ssn8s")
+material_override = SubResource("StandardMaterial3D_gxbno")
+mesh = SubResource("BoxMesh_fvcbt")
 
 [node name="Nozzle" type="Marker3D" parent="MeshInstance3D"]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0.596429, -1.48125)
 
 [node name="MeshInstance3D2" type="MeshInstance3D" parent="MeshInstance3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.192308, 0.40412, -0.538538)
-material_override = SubResource("StandardMaterial3D_8581x")
-mesh = SubResource("BoxMesh_cibui")
+material_override = SubResource("StandardMaterial3D_2n82x")
+mesh = SubResource("BoxMesh_mbpj7")
 skeleton = NodePath("../..")
-surface_material_override/0 = SubResource("StandardMaterial3D_eop3y")
+surface_material_override/0 = SubResource("StandardMaterial3D_ht5e6")
 
 [node name="MeshInstance3D3" type="MeshInstance3D" parent="MeshInstance3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.175362, 0.396091, -0.538538)
-material_override = SubResource("StandardMaterial3D_8581x")
-mesh = SubResource("BoxMesh_cibui")
+material_override = SubResource("StandardMaterial3D_2n82x")
+mesh = SubResource("BoxMesh_mbpj7")
 skeleton = NodePath("../..")
-surface_material_override/0 = SubResource("StandardMaterial3D_eop3y")
+surface_material_override/0 = SubResource("StandardMaterial3D_ht5e6")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="MeshInstance3D"]
 transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0, 0.688215, -0.48194)
-material_override = SubResource("StandardMaterial3D_8581x")
-mesh = SubResource("BoxMesh_tr1cx")
-surface_material_override/0 = SubResource("StandardMaterial3D_eop3y")
+material_override = SubResource("StandardMaterial3D_2n82x")
+mesh = SubResource("BoxMesh_md81t")
+surface_material_override/0 = SubResource("StandardMaterial3D_ht5e6")
 
 [node name="MeshInstance3D4" type="MeshInstance3D" parent="MeshInstance3D"]
 transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0, 0.194679, -0.48194)
-material_override = SubResource("StandardMaterial3D_8581x")
-mesh = SubResource("BoxMesh_tr1cx")
-surface_material_override/0 = SubResource("StandardMaterial3D_eop3y")
+material_override = SubResource("StandardMaterial3D_2n82x")
+mesh = SubResource("BoxMesh_md81t")
+surface_material_override/0 = SubResource("StandardMaterial3D_ht5e6")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-shape = SubResource("BoxShape3D_4etbg")
+shape = SubResource("BoxShape3D_t0cy3")
 
 [node name="eyes" type="Node3D" parent="."]
 
@@ -103,7 +103,11 @@ collision_mask = 4
 [node name="healthBar" parent="." instance=ExtResource("2_jq8c0")]
 
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
+path_desired_distance = 2.0
+target_desired_distance = 2.0
 avoidance_enabled = true
+max_neighbors = 30
+max_speed = 20.0
 
 [node name="Marker3D" type="Marker3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.00173, 0.580495)
@@ -112,5 +116,9 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.00173, 0.580495)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
-"": SubResource("AnimationLibrary_po7ih")
+"": SubResource("AnimationLibrary_4g1a4")
 }
+
+[connection signal="navigation_finished" from="NavigationAgent3D" to="." method="_on_navigation_agent_3d_navigation_finished"]
+[connection signal="target_reached" from="NavigationAgent3D" to="." method="_on_navigation_agent_3d_target_reached"]
+[connection signal="velocity_computed" from="NavigationAgent3D" to="." method="_on_navigation_agent_3d_velocity_computed"]
