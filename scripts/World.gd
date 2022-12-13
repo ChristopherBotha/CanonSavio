@@ -4,6 +4,7 @@ var radius = 20
 var angle 
 var x 
 var y 
+var spwn 
 
 @export_file("*.tscn") var level
 @onready var player = preload("res://Player/Player.tscn")
@@ -17,7 +18,8 @@ var player1 : Object = null
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-
+	SignalBus.connect("spawnEnemy", spawnEnemy)
+	
 	if level:
 		var currentLevel = load(level).instantiate()
 		$Level.add_child(currentLevel)
@@ -32,24 +34,31 @@ func _ready() -> void:
 		spawnEnemies = enemySpawner.get_children()
 		var spanerTest = true
 		
+#		for i in spawnEnemies:
+#			if i.get_children().size() <= 0 and enemyPool != 0:
+#				var enemies = enemy.instantiate()
+#				i.add_child(enemies)
+#
+				
 		if spanerTest == true:
-			for i in 5:
-				var spwn = spawner.instantiate()
+			for i in enemyPool:
+				spwn = spawner.instantiate()
 				enemySpawner.add_child(spwn)
 				spawnRandom()
 				spwn.global_position = Vector3(x,player1.global_position.y,y)
 				print("i sapwened")
+				enemyPool -= 1
 			spanerTest = false
 			
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	$Label.text = str(Engine.get_frames_per_second())
 	
-	for i in spawnEnemies:
-		if i.get_children().size() <= 0 and enemyPool != 0:
-			var enemies = enemy.instantiate()
-			i.add_child(enemies)
-			enemyPool -= 1
+#	for i in spawnEnemies:
+#		if i.get_children().size() <= 0 and enemyPool != 0:
+#			var enemies = enemy.instantiate()
+#			i.add_child(enemies)
+#			enemyPool -= 1
 			
 	SignalBus.emit_signal("playerID", player1)
 	
@@ -62,10 +71,14 @@ func _on_re_spawn_pressed() -> void:
 		enemyPool = 6
 		
 func spawnRandom():
-
 	# Generate a random angle between 0 and 2 * pi
 	angle = randf_range(0, 2 * PI)
 
 	# Use the angle and radius to calculate the x and y coordinates of the point
 	x = radius * cos(angle)
 	y = radius * sin(angle)
+
+func spawnEnemy(val):
+	var enemies = enemy.instantiate()
+	spwn.add_child(enemies)
+	enemies.global_position = val

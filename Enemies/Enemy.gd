@@ -57,7 +57,7 @@ func _physics_process(delta: float) -> void:
 			nav_agent.set_velocity(Vector3.ZERO)
 		
 	death()
-	shoot()
+	#shoot()
 	
 	lookAtPlayer()
 	move_and_slide()

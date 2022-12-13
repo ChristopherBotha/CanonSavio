@@ -8,7 +8,7 @@ var shot
 
 func _ready():
 	set_as_top_level(true)
-	pass
+	queueFree()
 	
 func _physics_process(_delta):
 	apply_impulse(transform.basis.z, transform.basis.z * SPEED)

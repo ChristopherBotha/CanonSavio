@@ -37,3 +37,7 @@ signal sprintingUpdated(val)
 signal swordSheathedUpdated(val)
 signal playerStateName(val)
 signal attackingUpdated(val)
+signal exBarUpdated(val)
+
+signal spawnEnemy(val)
+
