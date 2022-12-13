@@ -125,12 +125,10 @@ func _on_navigation_agent_3d_navigation_finished():
 func _on_navigation_agent_3d_velocity_computed(safe_velocity):
 	if enemyhurt == false:
 		velocity = velocity.move_toward(safe_velocity,0.25)
-		print(safe_velocity)
 
 
 func _on_navigation_agent_3d_target_reached():
 	if enemyhurt == false:
-		print("hello!!!!!!!")
 		velocity = Vector3.ZERO
 
 func update_target_location(target_location):

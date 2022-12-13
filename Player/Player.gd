@@ -289,7 +289,7 @@ func _sheath_weapon()-> void:
 		sword_sheathed = true
 
 func _sheath()-> void:
-	if Input.is_action_just_pressed("sheathe") and !attacking:
+	if Input.is_action_just_pressed("sheathe"):
 		if sword_sheathed == true:
 			_unsheath_weapon()
 		elif sword_sheathed == false:

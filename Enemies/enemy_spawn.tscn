@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://mqtgmyjwyptv"]
+
+[ext_resource type="Script" path="res://Enemies/enemy_spawn.gd" id="1_2cgp1"]
+
+[node name="enemySpawn7" type="Marker3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -30.5181, 77.8568, -21.6672)
+script = ExtResource("1_2cgp1")
