@@ -71,6 +71,7 @@ func _on_re_spawn_pressed() -> void:
 		enemyPool = 6
 		
 func spawnRandom():
+	
 	# Generate a random angle between 0 and 2 * pi
 	angle = randf_range(0, 2 * PI)
 
@@ -79,6 +80,7 @@ func spawnRandom():
 	y = radius * sin(angle)
 
 func spawnEnemy(val):
+	
 	var enemies = enemy.instantiate()
 	spwn.add_child(enemies)
 	enemies.global_position = val

@@ -1,7 +1,6 @@
 #@tool
 extends CharacterBody3D
 
-
 @onready var dust = $Marker3D/dust
 @onready var eyes : Node3D = $eyes
 @onready var aimCast : RayCast3D = $eyes/RayCast3D
@@ -57,7 +56,7 @@ func _physics_process(delta: float) -> void:
 			nav_agent.set_velocity(Vector3.ZERO)
 		
 	death()
-	#shoot()
+	shoot()
 	
 	lookAtPlayer()
 	move_and_slide()

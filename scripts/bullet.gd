@@ -1,5 +1,7 @@
 extends RigidBody3D
 
+@export var curving : Curve
+
 var shoot = false
 const SPEED = 100
 const DAMAGE = 20
@@ -11,6 +13,7 @@ func _ready():
 	queueFree()
 	
 func _physics_process(_delta):
+	print(curving)
 	apply_impulse(transform.basis.z, transform.basis.z * SPEED)
 
 func queueFree():
