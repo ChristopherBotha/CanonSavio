@@ -138,7 +138,6 @@ func _on_area_3d_2_body_entered(body):
 			body.hurt(5000, -1, 0.1,0.01)
 	
 	elif body.is_in_group("Enemies"):
-		print("Hello")
 		velocity = Vector3.ZERO
 		enemy = body
 		state = STATE.LANDED

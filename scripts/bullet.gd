@@ -13,7 +13,6 @@ func _ready():
 	queueFree()
 	
 func _physics_process(_delta):
-	print(curving)
 	apply_impulse(transform.basis.z, transform.basis.z * SPEED)
 
 func queueFree():

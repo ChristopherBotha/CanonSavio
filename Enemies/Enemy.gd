@@ -8,6 +8,8 @@ extends CharacterBody3D
 @onready var blood = preload("res://effects/blood.tscn")
 @onready var bullet : PackedScene =  preload("res://weapons/bullet.tscn")
 
+@onready var juggleState: bool = false
+
 const SPEED : float = 5.0
 const JUMP_VELOCITY : float = 4.5
 var direction
@@ -43,7 +45,9 @@ func _physics_process(delta: float) -> void:
 #	if is_on_floor():
 #		velocity.y = JUMP_VELOCITY
 	# Add the gravity.
-	if not is_on_floor():
+	if juggleState == true and not is_on_floor():
+		velocity.y -= gravity * 0.2 * delta * witch_time
+	elif not is_on_floor():
 		velocity.y -= gravity * delta * witch_time
 		
 	if self != null: #d enemyhurt == false:
@@ -72,7 +76,7 @@ func hurt(hurt_damage : float, pushBack: float, timeScale : float, hitstopDurati
 	$AnimationPlayer.play("hit")
 	health -= hurt_damage
 	SignalBus.emit_signal("trauma", 0.8, 0.2)
-#	SignalBus.emit_signal("hitStop",timeScale, hitstopDuration)
+	SignalBus.emit_signal("hitStop",timeScale, hitstopDuration)
 	
 	pushBack()
 	velocity = velocity.lerp(direction * 5, pushBack)

@@ -46,7 +46,6 @@ func _ready() -> void:
 				enemySpawner.add_child(spwn)
 				spawnRandom()
 				spwn.global_position = Vector3(x,player1.global_position.y,y)
-				print("i sapwened")
 				enemyPool -= 1
 			spanerTest = false
 			

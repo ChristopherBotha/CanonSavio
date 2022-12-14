@@ -51,6 +51,7 @@ var airFriction : float = 0.07
 @onready var camera : Camera3D = $Camera_Orbit/h/v/SpringArm3D/Camera3D
 @onready var cams : Node3D = $Camera_Orbit
 @onready var horRot : Node3D = $Camera_Orbit/h
+@onready var hitbox = $Body/hitBox/CollisionShape3D
 
 var h_rot : float
 
@@ -69,7 +70,7 @@ func _physics_process(delta: float) -> void:
 	
 	exMode()
 	
-	print(attacking)
+	print(hitbox.disabled)
 	
 	if !is_on_floor():
 		velocity.y -= gravity * delta
@@ -169,13 +170,16 @@ func hurt(hurt_damage : float, pushBack, timeScale : float, hitstopDuration: flo
 func _on_hit_box_body_entered(body):
 	if body.is_in_group("Enemies"):
 		if body.has_method("hurt"):
-			body.hurt(50, -15, 0.1,0.1)
+			body.hurt(50, -5, 0.1,0.1)
 
 
 func attackingFalse()-> void:
 	attacking = false
 
-
+func hitboxFalse()-> void:
+	hitbox.disabled = false
+	
+	
 func machineGun()-> void:
 	pass
 
@@ -229,7 +233,6 @@ func _get_direction():
 func chainCastCollide():
 	if aimCast.is_colliding():
 		SignalBus.emit_signal("chainCollision", aimCast.get_collider())
-		return 
 
 
 func dusting()-> void:
