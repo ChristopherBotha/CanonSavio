@@ -177,7 +177,6 @@ func hurt(hurt_damage : float, pushBack, timeScale : float, hitstopDuration: flo
 func _on_hit_box_body_entered(body):
 	if body.is_in_group("Enemies"):
 		if body.has_method("hurt"):
-			$Timers/combo_timer.start()
 			SignalBus.emit_signal("attackLanded")
 			body.hurt(50, -5, 0.1,0.1)
 

@@ -18,6 +18,9 @@ enum Rank{
 func attack_landed():
 	# Increment combo counter
 	combo_count += 1
+	# reset timer
+	$"../Timers/combo_timer".start()
+	
 	# Determine rank based on combo count
 	if combo_count <= 6:
 		rank = Rank.keys()[combo_count]
@@ -48,7 +51,6 @@ func _on_player_player_hurt() -> void:
 
 
 func _ready()-> void:
-	print(Rank.keys()[0])
 	SignalBus.connect("attackLanded", attack_landed)
 	SignalBus.connect("player_damaged", player_damaged)
 	SignalBus.connect("comboTimeout", combo_timeout)
