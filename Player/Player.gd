@@ -8,8 +8,9 @@ extends Player
 @onready var colorEX = $ColorInvert
 @export var backSheathe : Node3D
 @export var equipSword : Node3D
-@onready var exTimer : Timer = $exTimer
 
+# Timer to track how long the player has to continue their combo
+@onready var exTimer : Timer = $Timers/exTimer
 
 var menu : bool = false
 var direction # direction which player is facing
@@ -53,6 +54,9 @@ var airFriction : float = 0.07
 @onready var horRot : Node3D = $Camera_Orbit/h
 @onready var hitbox = $Body/hitBox/CollisionShape3D
 
+var ranked = 0
+var comboCount = 0
+
 var h_rot : float
 
 func _ready() -> void:
@@ -61,6 +65,7 @@ func _ready() -> void:
 	SignalBus.emit_signal("speedUpdated", SPEED)
 	SignalBus.emit_signal("playerStateName", state_name.state.name)
 	SignalBus.emit_signal("speedUpdated", SPEED)
+	SignalBus.connect("comboRankCount", updateComboScore)
 	
 	$TextureRect3.visible = false
 
@@ -70,11 +75,13 @@ func _physics_process(delta: float) -> void:
 	
 	exMode()
 	
+	$combo.text = "Combo: " + str(comboCount) + "\nRank: " + str(ranked)
+	
 	print(hitbox.disabled)
 	
 	if !is_on_floor():
 		velocity.y -= gravity * delta
-		
+	
 	_sheath()
 	chainCastCollide()
 	pushBack()
@@ -165,11 +172,13 @@ func handle_animaton() -> void:
 
 func hurt(hurt_damage : float, pushBack, timeScale : float, hitstopDuration: float)-> void:
 	health -= hurt_damage
-
+	SignalBus.emit_signal("attackLanded")
 
 func _on_hit_box_body_entered(body):
 	if body.is_in_group("Enemies"):
 		if body.has_method("hurt"):
+			$Timers/combo_timer.start()
+			SignalBus.emit_signal("attackLanded")
 			body.hurt(50, -5, 0.1,0.1)
 
 
@@ -191,6 +200,8 @@ func magNum() -> void:
 	if shot == true and aimCast.get_collider() != null:
 		if aimCast.get_collider().is_in_group("Enemies"):
 			if aimCast.get_collider() .has_method("hurt"):
+				$Timers/combo_timer.start()
+				SignalBus.emit_signal("attackLanded")
 				aimCast.get_collider() .hurt(DAMAGE, -15, 0.1,0.01)
 
 func shotGun()-> void:
@@ -298,3 +309,12 @@ func _sheath()-> void:
 		elif sword_sheathed == false:
 			_sheath_weapon()
 			
+
+
+func _on_combo_timer_timeout() -> void:
+	SignalBus.emit_signal("comboTimeout")
+
+func updateComboScore(rank, combo_count):
+	ranked = rank
+	comboCount = combo_count                                                                                                                                          
+	

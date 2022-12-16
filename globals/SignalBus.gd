@@ -41,3 +41,8 @@ signal exBarUpdated(val)
 
 signal spawnEnemy(val)
 
+signal attackLanded()
+signal player_damaged()
+signal comboTimeout()
+
+signal comboRankCount(rank, combo_count)

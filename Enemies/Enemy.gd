@@ -117,6 +117,11 @@ func shoot():
 		bullets.global_position = $MeshInstance3D/Nozzle.global_position 
 		bullets.global_rotation = $MeshInstance3D/Nozzle.global_rotation
 		
+		var bloody = blood.instantiate()
+		get_tree().get_root().add_child(bloody)
+		bloody.global_position = global_position 
+		bloody.global_rotation = global_rotation
+		
 		await get_tree().create_timer(2 ).timeout
 		shot = false
 
