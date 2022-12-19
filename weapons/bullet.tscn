@@ -2,21 +2,21 @@
 
 [ext_resource type="Script" path="res://scripts/bullet.gd" id="1_s0jjt"]
 
-[sub_resource type="Curve" id="Curve_ykw2u"]
+[sub_resource type="Curve" id="Curve_rqqih"]
 _data = [Vector2(0, 0), 0.0, 1.0, 0, 1, Vector2(1, 1), 1.0, 0.0, 1, 0]
 point_count = 2
 
-[sub_resource type="SphereShape3D" id="SphereShape3D_g6rbu"]
+[sub_resource type="SphereShape3D" id="SphereShape3D_vwiqd"]
 radius = 0.613607
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fnruj"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tjsl6"]
 albedo_color = Color(1, 0, 0, 1)
 emission_enabled = true
 emission = Color(1, 0, 0, 1)
 emission_energy_multiplier = 16.0
 
-[sub_resource type="SphereMesh" id="SphereMesh_h0g8j"]
-material = SubResource("StandardMaterial3D_fnruj")
+[sub_resource type="SphereMesh" id="SphereMesh_a36sd"]
+material = SubResource("StandardMaterial3D_tjsl6")
 
 [node name="bullet" type="RigidBody3D" groups=["Bullets"]]
 collision_layer = 2
@@ -26,16 +26,16 @@ mass = 5.0
 gravity_scale = 0.0
 freeze_mode = 1
 script = ExtResource("1_s0jjt")
-curving = SubResource("Curve_ykw2u")
+curving = SubResource("Curve_rqqih")
 
 [node name="Area3D" type="Area3D" parent="." groups=["Bullets"]]
 collision_layer = 2
 collision_mask = 5
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" groups=["Bullets"]]
-shape = SubResource("SphereShape3D_g6rbu")
+shape = SubResource("SphereShape3D_vwiqd")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Area3D"]
-mesh = SubResource("SphereMesh_h0g8j")
+mesh = SubResource("SphereMesh_a36sd")
 
 [connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]

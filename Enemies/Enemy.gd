@@ -1,5 +1,6 @@
 #@tool
 extends CharacterBody3D
+class_name Enemy
 
 @onready var dust = $Marker3D/dust
 @onready var eyes : Node3D = $eyes
@@ -39,14 +40,14 @@ var attack_damage = 10 # The damage that the enemy does
 var attack_speed = 1 # The enemy's attack speed, in attacks per second
 var movement_speed = 400 # The enemy's movement speed
 var state # The enemy's current state
+var currentState = "idle"
 
 var states = {
 	"idle": idle,
-	"patrol": patrol,
-	"attack": attack,
+#	"patrol": patrol,
+	"action": action,
 	"stunned": stunned,
 	"juggle": juggle,
-	"flee": flee,
 	"persue": persue
 }
 
@@ -57,7 +58,43 @@ var attack_cooldown = 1.0 / attack_speed # The amount of time that the enemy wil
 @onready var stun_timer = $Timers/stunTimer # A timer for tracking the duration of the enemy's stun state
 var stun_duration = 1.0 # The amount of time that the enemy will be stunned
 
+##############################################################################################
+# Constants for the weights of the different actions
+const WEIGHT_ATTACK = 10
+const WEIGHT_HEAL = 5
+const WEIGHT_DEFEND = 7
+const WEIGHT_FLEE = 3
+
+# The enemy's current health and maximum health
+var max_health = 100
+
+# The enemy's current position and the player's position
+var enemy_pos
+var player_pos
+
+# The distance between the enemy and the player
+var distance
+
+# The enemy's attack power and defense
+var attack_power = 10
+var defense = 5
+
+# The enemy's current state (attacking, defending, etc.)
+var actionState = {
+	"attacking": attack,
+	"healing": heal,
+	"defending": defend,
+	"fleeing": flee
+}
+@onready var funcStates = []
+
+var attack_utility 
+var heal_utility 
+var defend_utility 
+var flee_utility
+
 func _ready() -> void:
+	actionState = null
 	# Set up the attack timer
 	attack_timer.wait_time = attack_cooldown
 	attack_timer.connect("timeout", _on_attack_timeout)
@@ -67,16 +104,19 @@ func _ready() -> void:
   
   # Set the initial state to idle
 	set_state("idle")
-
+	
 func _process(delta):
-	attack_timer.start()
-	stun_timer.start()
-	# Execute the enemy's current state
-	states[state]
-	print(state)
+	
+#	# Execute the enemy's current state
+#	states[state]
+#	print(state)
+	pass
 	
 func _physics_process(delta: float) -> void:
-
+	
+		# Execute the enemy's current state
+	states[state].call(delta)
+	print(state)
 	healthBar.value = health
 
 	if juggleState == true and not is_on_floor():
@@ -111,9 +151,9 @@ func hurt(hurt_damage : float, pushBack: float, timeScale : float, hitstopDurati
 	SignalBus.emit_signal("trauma", 0.8, 0.2)
 	SignalBus.emit_signal("hitStop",timeScale, hitstopDuration)
 
-
-	pushBack()
-	velocity = velocity.lerp(direction * 5, pushBack)
+	if target:
+		pushBack()
+		velocity = velocity.lerp(direction * 5, pushBack)
 	
 	await get_tree().create_timer(0.1).timeout
 	velocity = Vector3.ZERO
@@ -127,15 +167,16 @@ func death() -> void:
 		queue_free()
 
 func lookAtPlayer() -> void:
-	if target != null:
+	if target:
 		eyes.look_at(target.global_position, Vector3.UP )
 		rotate_y(deg_to_rad(eyes.rotation.y * TURN_SPEED) * witch_time)
 
 func pushBack() -> void:
 	dust.emitting = true
-	var dir_x = (target.global_position.x - global_transform.origin.x)
-	var dir_z = (target.global_position.z - global_transform.origin.z)
-	direction = Vector3(dir_x,0.0, dir_z).normalized()
+	if target:
+		var dir_x = (target.global_position.x - global_transform.origin.x)
+		var dir_z = (target.global_position.z - global_transform.origin.z)
+		direction = Vector3(dir_x,0.0, dir_z).normalized()
 	
 func shoot():
 	if shot == false: 
@@ -163,7 +204,7 @@ func _on_navigation_agent_3d_velocity_computed(safe_velocity):
 func _on_navigation_agent_3d_target_reached():
 	if enemyhurt == false:
 		velocity = Vector3.ZERO
-		set_state("attack")
+		set_state("action")
 
 func update_target_location(target_location):
 	if enemyhurt == false:
@@ -173,33 +214,33 @@ func update_target_location(target_location):
 func set_state(new_state):
   # Set the enemy's state and reset any relevant timers or variables
 	state = new_state
+#	print(state)
 	if state == "idle":
 		attack_timer.stop()
-	elif state == "attack":
+	elif state == "action":
 		attack_timer.stop()
 	elif state == "stunned":
 		stun_timer.start()
 	elif state == "dead":
 		death()
 	elif state == "flee":
-		# Set a random target position and start moving towards it
-		target_position = global_transform.origin + Vector3(randi_range(-100, 100), 0, randi_range(-100, 100))
-		move_and_slide()
-	elif state == "pursue":
 		pass
+#		# Set a random target position and start moving towards it
+#		target_position = global_transform.origin + Vector3(randi_range(-100, 100), 0, randi_range(-100, 100))
+#		move_and_slide()
 
-		
-		
+
 func idle(delta):
   # Check if the player is within range
-	var dir = player.global_transform.origin - global_transform.origin
-	var distance = dir.length()
-	if distance < attack_range:
-		set_state("attack")
-	else:
-	# Set a random target position and transition to the patrol state
-		target_position = global_transform.origin + Vector3(randi_range(-100, 100), 0, randi_range(-100, 100))
-		set_state("patrol")
+	if target:
+		var dir = target.global_position - global_position
+		var distance = dir.length()
+		if distance < attack_range:
+			set_state("action")
+#	else:
+#	# Set a random target position and transition to the patrol state
+#		target = lerp(global_position, Vector3(randi_range(-100, 100), 0, randi_range(-100, 100)), 0.2)
+#		set_state("patrol")
 
 func persue(delta)-> void:
 	pass
@@ -212,15 +253,9 @@ func patrol(delta):
 	else:
 		move_and_slide()
 
-func attack(delta):
-  # Attack the player if they are within range and the attack timer is not on cooldown
-	if attack_timer.time_left == 0:
-		var dir = player.global_transform.origin - global_transform.origin
-		var distance = dir.length()
-		if distance < attack_range:
-			if target.has_method("hurt"):
-				target.hurt(50, -5, 0.1,0.1)
-				attack_timer.start()
+func action(delta):
+	decide_action()
+	print("hello")
 
 func stunned(delta) -> void:
   # Do nothing while the enemy is stunned
@@ -244,9 +279,6 @@ func take_damage(damage) -> void:
 
 func juggle(delta) -> void:
 	pass
-	
-func flee(delta)-> void:
-	pass
 
 
 func _on_area_detect_body_entered(body: Node3D) -> void:
@@ -259,3 +291,44 @@ func _on_area_detect_body_exited(body: Node3D) -> void:
 	if body.is_in_group("Player"):
 		target = null
 		set_state("idle")
+
+
+func decide_action():
+		# Calculate the utility of each action
+	attack_utility = WEIGHT_ATTACK * (attack_power / target.defense)
+	heal_utility = WEIGHT_HEAL * (max_health - health) / max_health
+	defend_utility = WEIGHT_DEFEND * defense / target.attack_power
+#	flee_utility = WEIGHT_FLEE / distance
+
+	# Select the action with the highest utility
+	if attack_utility > heal_utility and attack_utility > defend_utility and attack_utility > flee_utility:
+		attack()
+	elif heal_utility > attack_utility and heal_utility > defend_utility and heal_utility > flee_utility:
+		heal()
+	elif defend_utility > attack_utility and defend_utility > heal_utility and defend_utility > flee_utility:
+		defend()
+#	else:
+#		flee()
+
+func attack():
+	# Set the enemy's state to attacking and reduce the player's health
+	actionState = "attacking"
+	player.health -= attack_power
+	print("i am attacking")
+
+func heal():
+	# Set the enemy's state to healing and increase the enemy's health
+	actionState = "healing"
+	health += max_health * 0.1
+	print("i am healing")
+
+func defend():
+	# Set the enemy's state to defending
+	actionState = "defending"
+	print("i am defending")
+	
+func flee():
+	# Set the enemy's state to fleeing and move the enemy away from the player
+	actionState = "fleeing"
+#	enemy_pos = enemy_pos + (enemy_pos - player_pos).normalized() * 5
+	print("i am fleeing")

@@ -9,6 +9,11 @@ extends Player
 @export var backSheathe : Node3D
 @export var equipSword : Node3D
 
+
+@onready var attack_power = 50
+@onready var defense = 60
+
+
 # Timer to track how long the player has to continue their combo
 @onready var exTimer : Timer = $Timers/exTimer
 
@@ -76,9 +81,7 @@ func _physics_process(delta: float) -> void:
 	exMode()
 	
 	$combo.text = "Combo: " + str(comboCount) + "\nRank: " + str(ranked)
-	
-	print(hitbox.disabled)
-	
+
 	if !is_on_floor():
 		velocity.y -= gravity * delta
 	

@@ -59,6 +59,11 @@ _global_script_classes=[{
 "language": &"GDScript",
 "path": "res://addons/beehave/nodes/decorators/decorator.gd"
 }, {
+"base": "CharacterBody3D",
+"class": &"Enemy",
+"language": &"GDScript",
+"path": "res://Enemies/Enemy.gd"
+}, {
 "base": "Resource",
 "class": &"FolderListResource",
 "language": &"GDScript",
@@ -130,6 +135,7 @@ _global_script_class_icons={
 "Composite": "res://addons/beehave/icons/category_composite.svg",
 "ConditionLeaf": "res://addons/beehave/icons/condition.svg",
 "Decorator": "res://addons/beehave/icons/category_decorator.svg",
+"Enemy": "",
 "FolderListResource": "",
 "InverterDecorator": "res://addons/beehave/icons/inverter.svg",
 "Leaf": "res://addons/beehave/icons/action.svg",
