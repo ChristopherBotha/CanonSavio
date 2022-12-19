@@ -10,8 +10,8 @@ extends Player
 @export var equipSword : Node3D
 
 
-@onready var attack_power = 50
-@onready var defense = 60
+@onready var attack_power = 5
+@onready var defense = 3
 
 
 # Timer to track how long the player has to continue their combo

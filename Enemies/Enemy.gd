@@ -35,7 +35,7 @@ var player
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 
-var attack_range = 50 # The distance at which the enemy will attack the player
+var attack_range = 2 # The distance at which the enemy will attack the player
 var attack_damage = 10 # The damage that the enemy does
 var attack_speed = 1 # The enemy's attack speed, in attacks per second
 var movement_speed = 400 # The enemy's movement speed
@@ -61,9 +61,8 @@ var stun_duration = 1.0 # The amount of time that the enemy will be stunned
 ##############################################################################################
 # Constants for the weights of the different actions
 const WEIGHT_ATTACK = 10
-const WEIGHT_HEAL = 5
-const WEIGHT_DEFEND = 7
-const WEIGHT_FLEE = 3
+const WEIGHT_HEAL = 10
+const WEIGHT_DEFEND = 10
 
 # The enemy's current health and maximum health
 var max_health = 100
@@ -116,7 +115,7 @@ func _physics_process(delta: float) -> void:
 	
 		# Execute the enemy's current state
 	states[state].call(delta)
-	print(state)
+	print(state, velocity)
 	healthBar.value = health
 
 	if juggleState == true and not is_on_floor():
@@ -124,14 +123,14 @@ func _physics_process(delta: float) -> void:
 	elif not is_on_floor():
 		velocity.y -= gravity * delta * witch_time
 
-	if self != null and target != null: #d enemyhurt == false:
-		if nav_agent.is_target_reachable() :
-			current_location = global_position
-			next_location = nav_agent.get_next_location()
-			new_velocity = (next_location - current_location).normalized() * SPEED
-			nav_agent.set_velocity(new_velocity)
-		else:
-			nav_agent.set_velocity(Vector3.ZERO)
+#	if self != null and target != null: #d enemyhurt == false:
+#		if nav_agent.is_target_reachable() :
+#			current_location = global_position
+#			next_location = nav_agent.get_next_location()
+#			new_velocity = (next_location - current_location).normalized() * SPEED
+#			nav_agent.set_velocity(new_velocity)
+#		else:
+#			nav_agent.set_velocity(Vector3.ZERO)
 
 	death()
 	shoot()
@@ -225,25 +224,26 @@ func set_state(new_state):
 		death()
 	elif state == "flee":
 		pass
-#		# Set a random target position and start moving towards it
-#		target_position = global_transform.origin + Vector3(randi_range(-100, 100), 0, randi_range(-100, 100))
-#		move_and_slide()
 
 
 func idle(delta):
   # Check if the player is within range
-	if target:
-		var dir = target.global_position - global_position
-		var distance = dir.length()
-		if distance < attack_range:
-			set_state("action")
-#	else:
+	if !target:
+		velocity= Vector3.ZERO
 #	# Set a random target position and transition to the patrol state
 #		target = lerp(global_position, Vector3(randi_range(-100, 100), 0, randi_range(-100, 100)), 0.2)
 #		set_state("patrol")
 
 func persue(delta)-> void:
-	pass
+	if self != null and target != null: #d enemyhurt == false:
+		if nav_agent.is_target_reachable() :
+			current_location = global_position
+			next_location = nav_agent.get_next_location()
+			new_velocity = (next_location - current_location).normalized() * SPEED
+			nav_agent.set_velocity(new_velocity)
+		else:
+			nav_agent.set_velocity(Vector3.ZERO)
+	move_and_slide()
 
 func patrol(delta):
   # Move towards the target position
@@ -254,8 +254,14 @@ func patrol(delta):
 		move_and_slide()
 
 func action(delta):
-	decide_action()
-	print("hello")
+	
+	if target:
+		var dir = target.global_position - global_position
+		var distance = dir.length()
+		if distance < attack_range:
+			decide_action()
+		else:
+			set_state("persue")
 
 func stunned(delta) -> void:
   # Do nothing while the enemy is stunned
@@ -294,26 +300,26 @@ func _on_area_detect_body_exited(body: Node3D) -> void:
 
 
 func decide_action():
+	
 		# Calculate the utility of each action
 	attack_utility = WEIGHT_ATTACK * (attack_power / target.defense)
 	heal_utility = WEIGHT_HEAL * (max_health - health) / max_health
 	defend_utility = WEIGHT_DEFEND * defense / target.attack_power
 #	flee_utility = WEIGHT_FLEE / distance
-
+	print(attack_utility," ",heal_utility," ", defend_utility)
 	# Select the action with the highest utility
-	if attack_utility > heal_utility and attack_utility > defend_utility and attack_utility > flee_utility:
+	if attack_utility > heal_utility and attack_utility > defend_utility :
 		attack()
-	elif heal_utility > attack_utility and heal_utility > defend_utility and heal_utility > flee_utility:
+	elif heal_utility > attack_utility and heal_utility > defend_utility:
 		heal()
-	elif defend_utility > attack_utility and defend_utility > heal_utility and defend_utility > flee_utility:
+	elif defend_utility > attack_utility and defend_utility > heal_utility :
 		defend()
-#	else:
-#		flee()
+
 
 func attack():
 	# Set the enemy's state to attacking and reduce the player's health
 	actionState = "attacking"
-	player.health -= attack_power
+	target.health -= attack_power
 	print("i am attacking")
 
 func heal():

@@ -13,7 +13,7 @@ var spwn
 @onready var spawner = preload("res://Enemies/enemy_spawn.tscn")
 
 var spawnEnemies : Array = []
-var enemyPool = 10
+var enemyPool = 1
 var player1 : Object = null
 
 # Called when the node enters the scene tree for the first time.
