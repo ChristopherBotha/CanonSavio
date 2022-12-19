@@ -119,6 +119,14 @@ libraries = {
 "": SubResource("AnimationLibrary_rajyw")
 }
 
+[node name="Timers" type="Node" parent="."]
+
+[node name="attackTimer" type="Timer" parent="Timers"]
+autostart = true
+
+[node name="stunTimer" type="Timer" parent="Timers"]
+autostart = true
+
 [connection signal="navigation_finished" from="NavigationAgent3D" to="." method="_on_navigation_agent_3d_navigation_finished"]
 [connection signal="target_reached" from="NavigationAgent3D" to="." method="_on_navigation_agent_3d_target_reached"]
 [connection signal="velocity_computed" from="NavigationAgent3D" to="." method="_on_navigation_agent_3d_velocity_computed"]

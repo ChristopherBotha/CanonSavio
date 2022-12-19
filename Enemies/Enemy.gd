@@ -40,27 +40,24 @@ var movement_speed = 400 # The enemy's movement speed
 var state # The enemy's current state
 
 var states = {
-  "idle": idle,
-  "patrol": patrol,
-  "attack": attack,
-  "stunned": stunned,
+	"idle": idle,
+	"patrol": patrol,
+	"attack": attack,
+	"stunned": stunned,
+	"juggle": juggle
 }
 
 var target_position # The enemy's target position
-var attack_timer # A timer for tracking the duration of the enemy's attacks
+@onready var attack_timer = $Timers/attackTimer # A timer for tracking the duration of the enemy's attacks
 var attack_cooldown = 1.0 / attack_speed # The amount of time that the enemy will wait between attacks
-var stun_timer # A timer for tracking the duration of the enemy's stun state
+@onready var stun_timer = $Timers/stunTimer # A timer for tracking the duration of the enemy's stun state
 var stun_duration = 1.0 # The amount of time that the enemy will be stunned
 
 func _ready() -> void:
 	# Set up the attack timer
-	attack_timer = Timer.new()
-
 	attack_timer.wait_time = attack_cooldown
 	attack_timer.connect("timeout", _on_attack_timeout)
 
-	# Set up the stun timer
-	stun_timer = Timer.new()
 	stun_timer.wait_time = stun_duration
 	stun_timer.connect("timeout", _on_stun_timeout)
   
@@ -68,7 +65,8 @@ func _ready() -> void:
 	set_state("idle")
 
 func _process(delta):
-
+	attack_timer.start()
+	stun_timer.start()
 	# Execute the enemy's current state
 	states[state]
 	print(state)
@@ -228,6 +226,7 @@ func attack(delta):
 
 func stunned(delta):
   # Do nothing while the enemy is stunned
+	player = null
 	pass
 
 func _on_attack_timeout():
@@ -246,3 +245,5 @@ func take_damage(damage):
 	else:
 		set_state("stunned")
 
+func juggle(delta):
+	pass
