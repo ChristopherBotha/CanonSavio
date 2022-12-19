@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://weapons/Axe/axe_2.gd" id="1_hjcmt"]
 [ext_resource type="Curve" uid="uid://vj3dx7inipbv" path="res://weapons/Axe/Axe_Curve.tres" id="2_2f3c4"]
 [ext_resource type="ArrayMesh" uid="uid://cj7vx14qxbip2" path="res://Models/Sword/Black_sword-0-Sword.obj" id="3_72yt8"]
-[ext_resource type="Texture2D" uid="uid://dsh6vakuuygak" path="res://Models/Sword/Black_sword-0-Sword.png" id="4_5vwva"]
+[ext_resource type="Texture2D" uid="uid://brdrsj5qy450o" path="res://Models/Sword/Black_sword-0-Swordssss.png" id="4_r03h3"]
 [ext_resource type="PackedScene" uid="uid://uh4k8ebu7chu" path="res://effects/dust.tscn" id="5_6po5w"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_okk0c"]
@@ -16,14 +16,8 @@ size = Vector3(0.0826398, 0.1, 0.1)
 radius = 0.205453
 height = 0.844125
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xcxx7"]
-albedo_texture = ExtResource("4_5vwva")
-metallic = 0.74
-metallic_specular = 0.33
-roughness = 0.26
-emission_energy_multiplier = 2.35
-emission_operator = 1
-rim_enabled = true
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fhsi0"]
+albedo_texture = ExtResource("4_r03h3")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hcdai"]
 albedo_color = Color(0.0431373, 0.0431373, 0.0431373, 1)
@@ -64,7 +58,7 @@ shape = SubResource("CapsuleShape3D_6yyff")
 [node name="BlackSword-0-sword" type="MeshInstance3D" parent="."]
 transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0, -0.69425, 0)
 mesh = ExtResource("3_72yt8")
-surface_material_override/0 = SubResource("StandardMaterial3D_xcxx7")
+surface_material_override/0 = SubResource("StandardMaterial3D_fhsi0")
 
 [node name="dust" parent="." instance=ExtResource("5_6po5w")]
 transform = Transform3D(1, -9.31761e-22, -2.13162e-14, 9.31761e-22, -1, 8.74228e-08, -2.13162e-14, -8.74228e-08, -1, 0, 0, 0)
