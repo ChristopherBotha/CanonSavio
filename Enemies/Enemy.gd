@@ -11,7 +11,6 @@ extends CharacterBody3D
 @onready var juggleState: bool = false
 
 const SPEED : float = 5.0
-const JUMP_VELOCITY : float = 4.5
 var direction
 var witch_time = 1
 @onready var healthBar : ProgressBar = $healthBar/SubViewport/ProgressBar
@@ -34,23 +33,56 @@ var player
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 
+var attack_range = 50 # The distance at which the enemy will attack the player
+var attack_damage = 10 # The damage that the enemy does
+var attack_speed = 1 # The enemy's attack speed, in attacks per second
+var movement_speed = 400 # The enemy's movement speed
+var state # The enemy's current state
+
+var states = {
+  "idle": idle,
+  "patrol": patrol,
+  "attack": attack,
+  "stunned": stunned,
+}
+
+var target_position # The enemy's target position
+var attack_timer # A timer for tracking the duration of the enemy's attacks
+var attack_cooldown = 1.0 / attack_speed # The amount of time that the enemy will wait between attacks
+var stun_timer # A timer for tracking the duration of the enemy's stun state
+var stun_duration = 1.0 # The amount of time that the enemy will be stunned
+
 func _ready() -> void:
+	# Set up the attack timer
+	attack_timer = Timer.new()
 
-	pass
+	attack_timer.wait_time = attack_cooldown
+	attack_timer.connect("timeout", _on_attack_timeout)
 
+	# Set up the stun timer
+	stun_timer = Timer.new()
+	stun_timer.wait_time = stun_duration
+	stun_timer.connect("timeout", _on_stun_timeout)
+  
+  # Set the initial state to idle
+	set_state("idle")
+
+func _process(delta):
+
+	# Execute the enemy's current state
+	states[state]
+	print(state)
+	
 func _physics_process(delta: float) -> void:
 	
 	healthBar.value = health
 	
-#	if is_on_floor():
-#		velocity.y = JUMP_VELOCITY
-	# Add the gravity.
 	if juggleState == true and not is_on_floor():
 		velocity.y -= gravity * 0.2 * delta * witch_time
 	elif not is_on_floor():
 		velocity.y -= gravity * delta * witch_time
 		
-	if self != null: #d enemyhurt == false:
+	if self != null and player != null: #d enemyhurt == false:
 		if nav_agent.is_target_reachable() :
 			current_location = global_position
 			next_location = nav_agent.get_next_location()
@@ -78,15 +110,16 @@ func hurt(hurt_damage : float, pushBack: float, timeScale : float, hitstopDurati
 	SignalBus.emit_signal("trauma", 0.8, 0.2)
 	SignalBus.emit_signal("hitStop",timeScale, hitstopDuration)
 	
+
 	pushBack()
 	velocity = velocity.lerp(direction * 5, pushBack)
 	
 	await get_tree().create_timer(0.1).timeout
 	velocity = Vector3.ZERO
 	dust.emitting = false
+	
+	set_state("stunned")
 
-	
-	
 func death() -> void:
 	if health <= 0:
 		await get_tree().create_timer(0.1).timeout
@@ -116,12 +149,7 @@ func shoot():
 		get_tree().get_root().add_child(bullets)
 		bullets.global_position = $MeshInstance3D/Nozzle.global_position 
 		bullets.global_rotation = $MeshInstance3D/Nozzle.global_rotation
-		
-		var bloody = blood.instantiate()
-		get_tree().get_root().add_child(bloody)
-		bloody.global_position = global_position 
-		bloody.global_rotation = global_rotation
-		
+
 		await get_tree().create_timer(2 ).timeout
 		shot = false
 
@@ -138,7 +166,83 @@ func _on_navigation_agent_3d_velocity_computed(safe_velocity):
 func _on_navigation_agent_3d_target_reached():
 	if enemyhurt == false:
 		velocity = Vector3.ZERO
+		set_state("attack")
 
 func update_target_location(target_location):
 	if enemyhurt == false:
 		nav_agent.set_target_location(target_location)
+		player = target_location
+
+func set_state(new_state):
+  # Set the enemy's state and reset any relevant timers or variables
+	state = new_state
+	if state == "idle":
+		attack_timer.stop()
+	elif state == "attack":
+		attack_timer.stop()
+	elif state == "stunned":
+		stun_timer.start()
+	elif state == "dead":
+	# Perform any necessary cleanup or animation when the enemy dies
+		pass
+	elif state == "flee":
+		# Set a random target position and start moving towards it
+		target_position = global_transform.origin + Vector3(randi_range(-100, 100), 0, randi_range(-100, 100))
+		move_and_slide()
+	elif state == "pursue":
+		# Set the target position to the player's current position and start moving towards it
+		target_position = player.global_transform.origin
+		move_and_slide()
+		
+func idle(delta):
+  # Check if the player is within range
+	var dir = player.global_transform.origin - global_transform.origin
+	var distance = dir.length()
+	if distance < attack_range:
+		set_state("attack")
+	else:
+	# Set a random target position and transition to the patrol state
+		target_position = global_transform.origin + Vector3(randi_range(-100, 100), 0, randi_range(-100, 100))
+		set_state("patrol")
+
+func persue(delta)-> void:
+	
+	pass
+
+func patrol(delta):
+  # Move towards the target position
+	var dir = target_position - global_transform.origin
+	if dir.length() < movement_speed * delta:
+		set_state("idle")
+	else:
+		move_and_slide()
+
+func attack(delta):
+  # Attack the player if they are within range and the attack timer is not on cooldown
+	if attack_timer.time_left == 0:
+		var dir = player.global_transform.origin - global_transform.origin
+		var distance = dir.length()
+		if distance < attack_range:
+			player.take_damage(attack_damage)
+			attack_timer.start()
+
+func stunned(delta):
+  # Do nothing while the enemy is stunned
+	pass
+
+func _on_attack_timeout():
+  # Return to the idle state when the attack timer runs out
+	set_state("idle")
+
+func _on_stun_timeout():
+  # Return to the idle state when the stun timer runs out
+	set_state("idle")
+
+func take_damage(damage):
+  # Decrement the enemy's health and enter the stun state if necessary
+	health -= damage
+	if health <= 0:
+		queue_free()
+	else:
+		set_state("stunned")
+
