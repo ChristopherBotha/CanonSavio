@@ -1,0 +1,29 @@
+[remap]
+
+importer="scene"
+importer_version=1
+type="PackedScene"
+uid="uid://cbgq8qne75u2m"
+path="res://.godot/imported/right strafe walk.fbx-872892b7a5df42f8ab5e7eb513420454.scn"
+
+[deps]
+
+source_file="res://Animations/Female Locomotion Pack/right strafe walk.fbx"
+dest_files=["res://.godot/imported/right strafe walk.fbx-872892b7a5df42f8ab5e7eb513420454.scn"]
+
+[params]
+
+nodes/root_type="Node3D"
+nodes/root_name="Scene Root"
+nodes/apply_root_scale=true
+nodes/root_scale=1.0
+meshes/ensure_tangents=true
+meshes/generate_lods=true
+meshes/create_shadow_meshes=true
+meshes/light_baking=1
+meshes/lightmap_texel_size=0.2
+skins/use_named_skins=true
+animation/import=true
+animation/fps=30
+import_script/path=""
+_subresources={}

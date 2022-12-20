@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://cd8im25opaq0t"]
+
+[node name="hand" type="BoneAttachment3D"]
+bone_name = "Hand_R"
+bone_idx = 95
+
+[node name="hand" type="Marker3D" parent="."]
+transform = Transform3D(-0.0936639, 0.994538, -0.0460384, -0.133397, -0.058361, -0.989342, -0.986627, -0.0865242, 0.138135, -0.753253, 0.129348, 0.0606142)
