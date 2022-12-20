@@ -23,6 +23,7 @@ offset_bottom = 40.0
 script = ExtResource("2_732ay")
 
 [node name="ProgressBar" type="ProgressBar" parent="playerUI"]
+layout_mode = 0
 offset_left = 59.0
 offset_top = 41.0
 offset_right = 274.0
@@ -31,6 +32,7 @@ value = 100.0
 rounded = true
 
 [node name="exBar" type="ProgressBar" parent="playerUI"]
+layout_mode = 0
 offset_left = 64.0
 offset_top = 79.0
 offset_right = 195.0

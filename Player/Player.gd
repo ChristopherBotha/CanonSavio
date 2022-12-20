@@ -99,26 +99,24 @@ func _physics_process(delta: float) -> void:
 func handleInput(delta: float) -> void:
 	
 	h_rot = $Camera_Orbit/h.global_transform.basis.get_euler().y
-	
 	var input_dir = Vector3(Input.get_action_strength("right") - Input.get_action_strength("left"),0,
 				Input.get_action_strength("down") - Input.get_action_strength("up")).rotated(Vector3.UP, h_rot).normalized()
 
 	dir = input_dir
 	dusting()
 	
-	#rotate body accroding to mouse input
-	if input_dir.z != 0 or input_dir.x != 0 :
+	#rotate body according to mouse input
+	if input_dir.length() > 0:
 		body.rotation.y = lerp_angle(body.rotation.y, atan2(input_dir.x, input_dir.z), delta * 10)
 
-
-	if input_dir and !is_on_floor():
-		velocity = velocity.lerp(Vector3(input_dir.x * SPEED, velocity.y, input_dir.z * SPEED), airFriction ) 
-	elif !is_on_floor() :
-		velocity = velocity.lerp(Vector3(input_dir.x * SPEED, velocity.y, input_dir.z * SPEED), airFriction ) 
-	elif input_dir and is_on_floor():
-		velocity = velocity.lerp(Vector3(input_dir.x,0.0,input_dir.z) * SPEED, momentum ) 
-	elif is_on_floor() and input_dir == Vector3.ZERO:
-		velocity = velocity.lerp(Vector3(0.0, velocity.y, 0.0), friction ) 
+	if input_dir.length() > 0 and !is_on_floor():
+		velocity = velocity.lerp(Vector3(input_dir.x * SPEED, velocity.y, input_dir.z * SPEED), airFriction)
+	elif !is_on_floor():
+		velocity = velocity.lerp(Vector3(input_dir.x * SPEED, velocity.y, input_dir.z * SPEED), airFriction)
+	elif input_dir.length() > 0 and is_on_floor():
+		velocity = velocity.lerp(Vector3(input_dir.x, 0.0, input_dir.z) * SPEED, momentum)
+	elif is_on_floor():
+		velocity = velocity.lerp(Vector3(0.0, velocity.y, 0.0), friction)
 
 
 func sprint() -> void:
@@ -138,13 +136,19 @@ func sprintFalse() -> void:
 func dash() -> void:
 	if dashing == true and is_on_floor():
 		SignalBus.emit_signal("delayChange")
-		var direction : Vector3 = _get_direction()
+		
+		# Calculate the dash direction
+		var dash_direction : Vector3 = _get_direction()
+		
+		# Adjust the camera near plane
 		camera.near = move_toward(camera.near, 0.5, 0.02)
-		if dir != Vector3.ZERO:
-			velocity = Vector3(direction.x, 0.0, direction.z) * dashSpeed
+		
+		# Update the character's velocity based on the dash direction
+		if dir.length() > 0:
+			velocity = Vector3(dash_direction.x, 0.0, dash_direction.z) * dashSpeed
 			velocity = velocity.lerp(Vector3.ZERO, 0.2 ) 
-		elif dir == Vector3.ZERO:
-			velocity = Vector3(direction.x, 0.0, direction.z) * (dashSpeed - 20)
+		else:
+			velocity = Vector3(dash_direction.x, 0.0, dash_direction.z) * (dashSpeed - 20)
 			velocity = velocity.lerp(Vector3.ZERO, 1.3) 
 
 		await get_tree().create_timer(1).timeout
@@ -152,6 +156,7 @@ func dash() -> void:
 		dashing = false
 		
 	else: 
+		# Set the character's speed to a default value
 		SPEED = 5.0
 
 
@@ -218,8 +223,6 @@ func shoot() -> void:
 		
 		await get_tree().create_timer(0.5).timeout
 		shot = false
-		
-
 
 func pushBack() -> void:
 	if aimCast.get_collider() != null:
@@ -239,6 +242,7 @@ func axeing() -> void:
 func _get_direction():
 
 	var collision = chainCast.get_collision_point()
+	# Return the direction to the collision point, or null if there is no collision
 	if collision:
 		return global_position.direction_to(collision)
 

@@ -5,6 +5,7 @@ var angle
 var x 
 var y 
 var spwn 
+var distance
 
 @export_file("*.tscn") var level
 @onready var player = preload("res://Player/Player.tscn")
@@ -52,13 +53,6 @@ func _ready() -> void:
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	$Label.text = str(Engine.get_frames_per_second())
-	
-#	for i in spawnEnemies:
-#		if i.get_children().size() <= 0 and enemyPool != 0:
-#			var enemies = enemy.instantiate()
-#			i.add_child(enemies)
-#			enemyPool -= 1
-			
 	SignalBus.emit_signal("playerID", player1)
 	
 	if player1 != null:
@@ -72,11 +66,12 @@ func _on_re_spawn_pressed() -> void:
 func spawnRandom():
 	
 	# Generate a random angle between 0 and 2 * pi
-	angle = randf_range(0, 2 * PI)
-
+	angle = randf() * 2 * PI
+	distance = radius * sqrt(randf())
+	
 	# Use the angle and radius to calculate the x and y coordinates of the point
-	x = radius * cos(angle)
-	y = radius * sin(angle)
+	x = distance * cos(angle)
+	y = distance * sin(angle)
 
 func spawnEnemy(val):
 	

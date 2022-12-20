@@ -63,9 +63,13 @@ var stun_duration = 1.0 # The amount of time that the enemy will be stunned
 
 ##############################################################################################
 # Constants for the weights of the different actions
-const WEIGHT_ATTACK = 10
-const WEIGHT_HEAL = 10
-const WEIGHT_DEFEND = 10
+var weight_attack = 1.0
+var weight_heal = 0.5
+var weight_defend = 0.75
+
+var attack_utility 
+var heal_utility 
+var defend_utility 
 
 # The enemy's current health and maximum health
 var max_health = 100
@@ -90,9 +94,6 @@ var actionState = {
 }
 @onready var funcStates = []
 
-var attack_utility 
-var heal_utility 
-var defend_utility 
 var flee_utility
 
 func _ready() -> void:
@@ -203,17 +204,20 @@ func update_target_location(target_location):
 func set_state(new_state):
   # Set the enemy's state and reset any relevant timers or variables
 	state = new_state
-#	print(state)
-	if state == "idle":
-		attack_timer.stop()
-	elif state == "action":
-		attack_timer.stop()
-	elif state == "stunned":
-		stun_timer.start()
-	elif state == "dead":
-		death()
-	elif state == "flee":
-		pass
+	
+	# Handle the new state using a switch statement
+	match new_state: 
+		"idle":
+			attack_timer.stop()
+		"action":
+			attack_timer.stop()
+		"stunned":
+			stun_timer.start()
+		"dead":
+			death()
+		"flee":
+			# add code here to handle the flee state
+			pass
 
 
 func idle(delta):
@@ -300,22 +304,24 @@ func _on_area_detect_body_exited(body: Node3D) -> void:
 func decide_action(delta):
 	
 		# Calculate the utility of each action
-	attack_utility = WEIGHT_ATTACK * (attack_power / target.defense)
-	heal_utility = WEIGHT_HEAL * (max_health - health) / max_health
-	defend_utility = WEIGHT_DEFEND * defense / target.attack_power
+	# calculate the attack utility
+	attack_utility = weight_attack * (attack_power / target.defense)
+# calculate the heal utility
+	heal_utility = weight_heal * (max_health - health) / max_health
+# calculate the defend utility
+	defend_utility = weight_defend * defense / target.attack_power
 #	flee_utility = WEIGHT_FLEE / distance
 
-	# Select the action with the highest utility
-	if attack_utility > heal_utility and attack_utility > defend_utility :
+# select the action with the highest utility
+	if attack_utility > heal_utility and attack_utility > defend_utility:
 		attack(delta)
-	elif heal_utility > attack_utility and heal_utility > defend_utility:
+	elif heal_utility > defend_utility:
 		heal()
-	elif defend_utility > attack_utility and defend_utility > heal_utility :
+	else:
 		defend()
 
 
 func attack(delta):
-	jump.update(delta)
 	# Set the enemy's state to attacking and reduce the player's health
 	actionState = "attacking"
 	target.health -= attack_power
