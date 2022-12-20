@@ -25,7 +25,7 @@ var jump_curve = Curve.new()
 
 # Set up the jump curve
 func _ready():
-	
+	player = self
 	print("jumping")
 	jump_curve.add_point(Vector2(0, 0), 0)
 	jump_curve.add_point(Vector2(0, jump_height), jump_duration / 3)
@@ -34,7 +34,8 @@ func _ready():
 
 func _physics_process(delta: float) -> void:
 	if owner.target:
-		player = owner.target
+		enemy_node = owner.target
+	
 # A function to make the enemy jump to the player's position
 
 func jump():
@@ -65,11 +66,11 @@ func update_jump(delta):
 # A function to update the enemy's movement
 func update_movement(delta):
 	# Calculate the distance between the enemy and the player
-	var distance = player.position - enemy_node.position
+	var distance = owner.global_position - owner.target.global_position
 	# Calculate the direction of the enemy's movement
 	var direction = distance.normalized()
 	# Update the enemy's position based on its movement speed and direction
-	enemy_node.position += direction * speed * delta
+	owner.target.global_position += direction * speed * delta
 
 # A function to update the enemy
 func update(delta):

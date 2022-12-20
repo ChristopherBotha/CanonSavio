@@ -315,7 +315,7 @@ func decide_action(delta):
 
 
 func attack(delta):
-	jump.jump()
+	jump.update(delta)
 	# Set the enemy's state to attacking and reduce the player's health
 	actionState = "attacking"
 	target.health -= attack_power
