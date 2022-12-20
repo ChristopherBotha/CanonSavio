@@ -204,7 +204,7 @@ func magNum() -> void:
 			if aimCast.get_collider() .has_method("hurt"):
 				$Timers/combo_timer.start()
 				SignalBus.emit_signal("attackLanded")
-				aimCast.get_collider() .hurt(DAMAGE, -15, 0.1,0.01)
+				aimCast.get_collider() .hurt(DAMAGE, -2, 0.1,0.01)
 
 func shotGun()-> void:
 	pass

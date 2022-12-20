@@ -1,36 +1,42 @@
-[gd_scene load_steps=15 format=3 uid="uid://y254o22e0jur"]
+[gd_scene load_steps=17 format=3 uid="uid://y254o22e0jur"]
 
 [ext_resource type="Script" path="res://Enemies/Enemy.gd" id="1_1tkjx"]
 [ext_resource type="PackedScene" uid="uid://ba2ghquf1d4fk" path="res://UI/enemyHealth_bar.tscn" id="2_jq8c0"]
 [ext_resource type="PackedScene" uid="uid://uh4k8ebu7chu" path="res://effects/dust.tscn" id="3_jy88k"]
+[ext_resource type="Script" path="res://Enemies/jumpAttack.gd" id="4_slya6"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5yhxi"]
+[sub_resource type="Curve" id="Curve_0fyom"]
+max_value = 2.0
+_data = [Vector2(0, 0), 0.0, 2.8, 0, 0, Vector2(0.508021, 1.01818), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_64fw5"]
 albedo_color = Color(1, 0, 0, 1)
 
-[sub_resource type="BoxMesh" id="BoxMesh_mormv"]
+[sub_resource type="BoxMesh" id="BoxMesh_bvwgq"]
 size = Vector3(1, 2, 1)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_loirq"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_m1dof"]
 shading_mode = 0
 
-[sub_resource type="BoxMesh" id="BoxMesh_fm65j"]
+[sub_resource type="BoxMesh" id="BoxMesh_emcm4"]
 size = Vector3(0.2, 1, 0.2)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wo410"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_m6f4d"]
 shading_mode = 0
 albedo_color = Color(1, 0, 0, 1)
 refraction_scale = -0.34
 
-[sub_resource type="BoxMesh" id="BoxMesh_jdhh7"]
+[sub_resource type="BoxMesh" id="BoxMesh_ml66b"]
 size = Vector3(0.2, 0.8, 0.2)
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_dhjp5"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_gs8bg"]
 size = Vector3(1, 2, 1)
 
-[sub_resource type="Animation" id="Animation_tw42q"]
+[sub_resource type="Animation" id="Animation_suh12"]
 length = 0.001
 
-[sub_resource type="Animation" id="Animation_28nfd"]
+[sub_resource type="Animation" id="Animation_udimr"]
 resource_name = "hit"
 length = 0.2
 tracks/0/type = "value"
@@ -46,14 +52,14 @@ tracks/0/keys = {
 "values": [Vector3(0, 0, 0), Vector3(0.169297, 0, 0), Vector3(0.169297, 0, 0), Vector3(0, 0, 0)]
 }
 
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_rj3jx"]
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_mrbwr"]
 _data = {
-"RESET": SubResource("Animation_tw42q"),
-"hit": SubResource("Animation_28nfd")
+"RESET": SubResource("Animation_suh12"),
+"hit": SubResource("Animation_udimr")
 }
 
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_ydb1i"]
-height = 3.0
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_xph3b"]
+height = 10.0
 radius = 25.0
 
 [node name="Enemy" type="CharacterBody3D" groups=["Enemies"]]
@@ -61,47 +67,48 @@ collision_layer = 2
 collision_mask = 5
 up_direction = Vector3(0, 0, -1)
 script = ExtResource("1_1tkjx")
+jumpCurve = SubResource("Curve_0fyom")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-material_override = SubResource("StandardMaterial3D_5yhxi")
-mesh = SubResource("BoxMesh_mormv")
+material_override = SubResource("StandardMaterial3D_64fw5")
+mesh = SubResource("BoxMesh_bvwgq")
 
 [node name="Nozzle" type="Marker3D" parent="MeshInstance3D"]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0.596429, -1.48125)
 
 [node name="MeshInstance3D2" type="MeshInstance3D" parent="MeshInstance3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.192308, 0.40412, -0.538538)
-material_override = SubResource("StandardMaterial3D_loirq")
-mesh = SubResource("BoxMesh_fm65j")
+material_override = SubResource("StandardMaterial3D_m1dof")
+mesh = SubResource("BoxMesh_emcm4")
 skeleton = NodePath("../..")
-surface_material_override/0 = SubResource("StandardMaterial3D_wo410")
+surface_material_override/0 = SubResource("StandardMaterial3D_m6f4d")
 
 [node name="MeshInstance3D3" type="MeshInstance3D" parent="MeshInstance3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.175362, 0.396091, -0.538538)
-material_override = SubResource("StandardMaterial3D_loirq")
-mesh = SubResource("BoxMesh_fm65j")
+material_override = SubResource("StandardMaterial3D_m1dof")
+mesh = SubResource("BoxMesh_emcm4")
 skeleton = NodePath("../..")
-surface_material_override/0 = SubResource("StandardMaterial3D_wo410")
+surface_material_override/0 = SubResource("StandardMaterial3D_m6f4d")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="MeshInstance3D"]
 transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0, 0.688215, -0.48194)
-material_override = SubResource("StandardMaterial3D_loirq")
-mesh = SubResource("BoxMesh_jdhh7")
-surface_material_override/0 = SubResource("StandardMaterial3D_wo410")
+material_override = SubResource("StandardMaterial3D_m1dof")
+mesh = SubResource("BoxMesh_ml66b")
+surface_material_override/0 = SubResource("StandardMaterial3D_m6f4d")
 
 [node name="MeshInstance3D4" type="MeshInstance3D" parent="MeshInstance3D"]
 transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0, 0.194679, -0.48194)
-material_override = SubResource("StandardMaterial3D_loirq")
-mesh = SubResource("BoxMesh_jdhh7")
-surface_material_override/0 = SubResource("StandardMaterial3D_wo410")
+material_override = SubResource("StandardMaterial3D_m1dof")
+mesh = SubResource("BoxMesh_ml66b")
+surface_material_override/0 = SubResource("StandardMaterial3D_m6f4d")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-shape = SubResource("BoxShape3D_dhjp5")
+shape = SubResource("BoxShape3D_gs8bg")
 
 [node name="eyes" type="Node3D" parent="."]
 
 [node name="RayCast3D" type="RayCast3D" parent="eyes"]
-target_position = Vector3(0, 0, -1000)
+target_position = Vector3(0, 0, -25)
 collision_mask = 4
 
 [node name="healthBar" parent="." instance=ExtResource("2_jq8c0")]
@@ -120,21 +127,26 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.00173, 0.580495)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
-"": SubResource("AnimationLibrary_rj3jx")
+"": SubResource("AnimationLibrary_mrbwr")
 }
 
 [node name="Timers" type="Node" parent="."]
 
 [node name="attackTimer" type="Timer" parent="Timers"]
+autostart = true
 
 [node name="stunTimer" type="Timer" parent="Timers"]
+autostart = true
 
 [node name="AreaDetect" type="Area3D" parent="."]
 collision_layer = 0
 collision_mask = 4
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="AreaDetect"]
-shape = SubResource("CylinderShape3D_ydb1i")
+shape = SubResource("CylinderShape3D_xph3b")
+
+[node name="jumpAttack" type="Node" parent="."]
+script = ExtResource("4_slya6")
 
 [connection signal="navigation_finished" from="NavigationAgent3D" to="." method="_on_navigation_agent_3d_navigation_finished"]
 [connection signal="target_reached" from="NavigationAgent3D" to="." method="_on_navigation_agent_3d_target_reached"]
