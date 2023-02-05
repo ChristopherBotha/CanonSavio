@@ -8,148 +8,6 @@
 
 config_version=5
 
-_global_script_classes=[{
-"base": "Leaf",
-"class": &"ActionLeaf",
-"language": &"GDScript",
-"path": "res://addons/beehave/nodes/leaves/action.gd"
-}, {
-"base": "Decorator",
-"class": &"AlwaysFailDecorator",
-"language": &"GDScript",
-"path": "res://addons/beehave/nodes/decorators/failer.gd"
-}, {
-"base": "Decorator",
-"class": &"AlwaysSucceedDecorator",
-"language": &"GDScript",
-"path": "res://addons/beehave/nodes/decorators/succeeder.gd"
-}, {
-"base": "BeehaveTree",
-"class": &"BeehaveNode",
-"language": &"GDScript",
-"path": "res://addons/beehave/nodes/beehave_node.gd"
-}, {
-"base": "BeehaveTree",
-"class": &"BeehaveRoot",
-"language": &"GDScript",
-"path": "res://addons/beehave/nodes/beehave_root.gd"
-}, {
-"base": "Node",
-"class": &"BeehaveTree",
-"language": &"GDScript",
-"path": "res://addons/beehave/nodes/beehave_tree.gd"
-}, {
-"base": "RefCounted",
-"class": &"Blackboard",
-"language": &"GDScript",
-"path": "res://addons/beehave/blackboard.gd"
-}, {
-"base": "BeehaveNode",
-"class": &"Composite",
-"language": &"GDScript",
-"path": "res://addons/beehave/nodes/composites/composite.gd"
-}, {
-"base": "Leaf",
-"class": &"ConditionLeaf",
-"language": &"GDScript",
-"path": "res://addons/beehave/nodes/leaves/condition.gd"
-}, {
-"base": "BeehaveNode",
-"class": &"Decorator",
-"language": &"GDScript",
-"path": "res://addons/beehave/nodes/decorators/decorator.gd"
-}, {
-"base": "CharacterBody3D",
-"class": &"Enemy",
-"language": &"GDScript",
-"path": "res://Enemies/Enemy.gd"
-}, {
-"base": "Resource",
-"class": &"FolderListResource",
-"language": &"GDScript",
-"path": "res://scripts/FolderListResource.gd"
-}, {
-"base": "Decorator",
-"class": &"InverterDecorator",
-"language": &"GDScript",
-"path": "res://addons/beehave/nodes/decorators/inverter.gd"
-}, {
-"base": "BeehaveNode",
-"class": &"Leaf",
-"language": &"GDScript",
-"path": "res://addons/beehave/nodes/leaves/leaf.gd"
-}, {
-"base": "Decorator",
-"class": &"LimiterDecorator",
-"language": &"GDScript",
-"path": "res://addons/beehave/nodes/decorators/limiter.gd"
-}, {
-"base": "CharacterBody3D",
-"class": &"Player",
-"language": &"GDScript",
-"path": "res://Player/PlayerVariables.gd"
-}, {
-"base": "State",
-"class": &"PlayerState",
-"language": &"GDScript",
-"path": "res://Player/Player_State.gd"
-}, {
-"base": "Composite",
-"class": &"SelectorComposite",
-"language": &"GDScript",
-"path": "res://addons/beehave/nodes/composites/selector.gd"
-}, {
-"base": "Composite",
-"class": &"SelectorStarComposite",
-"language": &"GDScript",
-"path": "res://addons/beehave/nodes/composites/selector_star.gd"
-}, {
-"base": "Composite",
-"class": &"SequenceComposite",
-"language": &"GDScript",
-"path": "res://addons/beehave/nodes/composites/sequence.gd"
-}, {
-"base": "Composite",
-"class": &"SequenceStarComposite",
-"language": &"GDScript",
-"path": "res://addons/beehave/nodes/composites/sequence_star.gd"
-}, {
-"base": "Node",
-"class": &"State",
-"language": &"GDScript",
-"path": "res://Player/State.gd"
-}, {
-"base": "Node",
-"class": &"State_Machine",
-"language": &"GDScript",
-"path": "res://Player/State_Machine.gd"
-}]
-_global_script_class_icons={
-"ActionLeaf": "res://addons/beehave/icons/action.svg",
-"AlwaysFailDecorator": "res://addons/beehave/icons/fail.svg",
-"AlwaysSucceedDecorator": "res://addons/beehave/icons/succeed.svg",
-"BeehaveNode": "res://addons/beehave/icons/action.svg",
-"BeehaveRoot": "res://addons/beehave/icons/tree.svg",
-"BeehaveTree": "res://addons/beehave/icons/icon.svg",
-"Blackboard": "",
-"Composite": "res://addons/beehave/icons/category_composite.svg",
-"ConditionLeaf": "res://addons/beehave/icons/condition.svg",
-"Decorator": "res://addons/beehave/icons/category_decorator.svg",
-"Enemy": "",
-"FolderListResource": "",
-"InverterDecorator": "res://addons/beehave/icons/inverter.svg",
-"Leaf": "res://addons/beehave/icons/action.svg",
-"LimiterDecorator": "res://addons/beehave/icons/limiter.svg",
-"Player": "",
-"PlayerState": "",
-"SelectorComposite": "res://addons/beehave/icons/selector.svg",
-"SelectorStarComposite": "res://addons/beehave/icons/selector_star.svg",
-"SequenceComposite": "res://addons/beehave/icons/sequencer.svg",
-"SequenceStarComposite": "res://addons/beehave/icons/sequencer_star.svg",
-"State": "",
-"State_Machine": ""
-}
-
 [application]
 
 config/name="CanonSavio"
@@ -178,37 +36,37 @@ enabled=PackedStringArray("res://addons/beehave/plugin.cfg")
 
 sprint={
 "deadzone": 0.5,
-"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":4194325,"unicode":0,"echo":false,"script":null)
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":4194325,"key_label":0,"unicode":0,"echo":false,"script":null)
 ]
 }
 left={
 "deadzone": 0.5,
-"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":65,"unicode":0,"echo":false,"script":null)
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":65,"key_label":0,"unicode":0,"echo":false,"script":null)
 ]
 }
 right={
 "deadzone": 0.5,
-"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":68,"unicode":0,"echo":false,"script":null)
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":68,"key_label":0,"unicode":0,"echo":false,"script":null)
 ]
 }
 up={
 "deadzone": 0.5,
-"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":87,"unicode":0,"echo":false,"script":null)
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":87,"key_label":0,"unicode":0,"echo":false,"script":null)
 ]
 }
 down={
 "deadzone": 0.5,
-"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":83,"unicode":0,"echo":false,"script":null)
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":83,"key_label":0,"unicode":0,"echo":false,"script":null)
 ]
 }
 jump={
 "deadzone": 0.5,
-"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":32,"unicode":0,"echo":false,"script":null)
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":32,"key_label":0,"unicode":0,"echo":false,"script":null)
 ]
 }
 chain={
 "deadzone": 0.5,
-"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":70,"unicode":0,"echo":false,"script":null)
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":70,"key_label":0,"unicode":0,"echo":false,"script":null)
 ]
 }
 aim={
@@ -218,17 +76,17 @@ aim={
 }
 dash={
 "deadzone": 0.5,
-"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":67,"unicode":0,"echo":false,"script":null)
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":67,"key_label":0,"unicode":0,"echo":false,"script":null)
 ]
 }
 lock={
 "deadzone": 0.5,
-"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":71,"unicode":0,"echo":false,"script":null)
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":71,"key_label":0,"unicode":0,"echo":false,"script":null)
 ]
 }
 attack={
 "deadzone": 0.5,
-"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":69,"unicode":0,"echo":false,"script":null)
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":69,"key_label":0,"unicode":0,"echo":false,"script":null)
 ]
 }
 shoot={
@@ -238,37 +96,37 @@ shoot={
 }
 throw={
 "deadzone": 0.5,
-"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":81,"unicode":0,"echo":false,"script":null)
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":81,"key_label":0,"unicode":0,"echo":false,"script":null)
 ]
 }
 recall={
 "deadzone": 0.5,
-"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":82,"unicode":0,"echo":false,"script":null)
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":82,"key_label":0,"unicode":0,"echo":false,"script":null)
 ]
 }
 EX={
 "deadzone": 0.5,
-"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":4194306,"unicode":0,"echo":false,"script":null)
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":4194306,"key_label":0,"unicode":0,"echo":false,"script":null)
 ]
 }
 timeZone={
 "deadzone": 0.5,
-"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":4194328,"unicode":0,"echo":false,"script":null)
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":4194328,"key_label":0,"unicode":0,"echo":false,"script":null)
 ]
 }
 attack2={
 "deadzone": 0.5,
-"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":84,"unicode":0,"echo":false,"script":null)
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":84,"key_label":0,"unicode":0,"echo":false,"script":null)
 ]
 }
 equip={
 "deadzone": 0.5,
-"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":72,"unicode":0,"echo":false,"script":null)
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":72,"key_label":0,"unicode":0,"echo":false,"script":null)
 ]
 }
 sheathe={
 "deadzone": 0.5,
-"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":72,"unicode":0,"echo":false,"script":null)
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":72,"key_label":0,"unicode":0,"echo":false,"script":null)
 ]
 }
 

@@ -198,7 +198,7 @@ func _on_navigation_agent_3d_target_reached():
 
 func update_target_location(target_location):
 	if enemyhurt == false:
-		nav_agent.set_target_location(target_location)
+		nav_agent.target_position = target_location
 		playerPos = target_location
 
 func set_state(new_state):
@@ -236,7 +236,7 @@ func persue(delta)-> void:
 	if self != null and target != null: #d enemyhurt == false:
 		if nav_agent.is_target_reachable() :
 			current_location = global_position
-			next_location = nav_agent.get_next_location()
+			next_location = nav_agent.get_next_path_position()
 			new_velocity = (next_location - current_location).normalized() * SPEED
 			nav_agent.set_velocity(new_velocity)
 		else:

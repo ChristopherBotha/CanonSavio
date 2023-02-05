@@ -9,11 +9,11 @@
 render_priority = 0
 shader = ExtResource("2_icy64")
 shader_parameter/albedo = Color(1, 0, 0, 1)
-shader_parameter/emission_amount = 11.28
 shader_parameter/emission_color = Color(1, 0, 0, 1)
+shader_parameter/emission_amount = 11.28
 shader_parameter/rim_steepness = 3.0
-shader_parameter/uv_offset = null
 shader_parameter/uv_scale = null
+shader_parameter/uv_offset = null
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_i6ob2"]
 

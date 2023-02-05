@@ -28,9 +28,9 @@ var myEquip  : Dictionary = {
 var shot : bool = false
 
 var guns : Dictionary = {
-	"machineGun": machineGun(),
-	"magNum": magNum(),
-	"shotGun": shotGun()
+#	"machineGun": machineGun(),
+#	"magNum": magNum(),
+#	"shotGun": shotGun()
 }
 
 

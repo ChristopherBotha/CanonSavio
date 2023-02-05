@@ -14,7 +14,7 @@ var distance
 @onready var spawner = preload("res://Enemies/enemy_spawn.tscn")
 
 var spawnEnemies : Array = []
-var enemyPool = 1
+var enemyPool = 20
 var player1 : Object = null
 
 # Called when the node enters the scene tree for the first time.
